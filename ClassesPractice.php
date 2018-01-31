@@ -1,25 +1,36 @@
 <?php
 
 class Person {
+	// base properties of person
+	public $hgt;
+	public $wgt;
+	public $sex;
+	public $personName;
 
-	public $personHeight;
-	public $personWeight;
-	public $personGender;
-
-	public function __construct($height, $weight, $gender) {
-		$this->personHeight = $height;
-		$this->personWeight = $weight;
-		$this->personGender = $gender;
+	//must be constructed with the following parameters, by default a name is not needed.
+	public function __construct($height, $weight, $gender, $name = null) {
+		$this->hgt = $height;
+		$this->wgt = $weight;
+		$this->sex = $gender;
+		$this->personName = $name;
 	}
 
+	/* If the person is constructed with a $name, this function prints their name with the correct pronoun.
+	 * If the person is constructed without passing a $name arg, this method prints a gender nuetral pronoun.
+	 */
 	public function echoPerson() {
-		echo "This person is " . $this->personHeight .", " . $this->personWeight . ", and they are " . $this->personGender . ".\n";
+
+		$pronoun = $this->sex == "male" ? "he" : "she";
+
+		if (!is_null($this->personName)) {
+
+			echo $this->personName . " is " . $this->hgt .", " . $this->wgt . ", and " . $pronoun . " is " . $this->sex . ".\n";
+		} else {
+			echo "This person is " . $this->hgt .", " . $this->wgt . ", and they are " . $this->sex . ".\n";
+		}
 	}
 
 }
-
-$Zoe = new Person("6'2", "140 lbs.", "male");
-$Zoe->echoPerson();
 
 abstract class Human {
 
@@ -48,10 +59,6 @@ class Giant extends Human {
 	}
 }
 
-$giant = new Giant();
-$giant->setHgt(6);
-$giant->showHgt();
-
 class Male extends Human {
 
 	function __construct() {
@@ -76,11 +83,6 @@ class Male extends Human {
 	}
 }
 
-$guy = new Male();
-$guy->showHgt();
-$guy->setHgt("6'2");
-$guy->showHgt();
-
 class Female extends Male {
 
 
@@ -102,10 +104,6 @@ class Female extends Male {
 	}
 }
 
-$girl = new Female();
-$girl->showHgt();
-$girl->setHgt("4'11");
-$girl->showHgt();
 
 
 

@@ -1,0 +1,9 @@
+* Create a database that can store "Name", "Gender", "Age", "Movements/Notes" - which accepts an array of values.
+* Create an interactive web page that has a directory of "Name"s that are links.
+* When the "Name" is clicked, the DB is queried, and the server returns the page with the all of the information formatted and styled.
+* Use Javascript to fetch the served DB query and dynamically append or change the information.
+* Include CSS styling that can be dynamically adjusted with Javascript
+* Will require event listeners
+* PHP Server-side
+* MongoDB or MySQL database
+* Javascript animations?

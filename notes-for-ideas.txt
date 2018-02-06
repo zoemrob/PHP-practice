@@ -7,3 +7,15 @@
 * PHP Server-side
 * MongoDB or MySQL database
 * Javascript animations?
+* 
+* Design requirements:
+* A bulleted list of entries with a date format for every entry
+* Displays Name, possibly Photo, Gender, Age
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* 

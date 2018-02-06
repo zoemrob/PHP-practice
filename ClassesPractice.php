@@ -65,7 +65,7 @@ class Male extends Human {
 		$this->setHgt();
 		$this->setSex();
 	}
-
+	
 	public function setHgt($val = "5'11") {
 		$this->hgt = $val;
 	}

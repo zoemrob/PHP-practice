@@ -2,17 +2,20 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<?php include(ClassesPractice.php); ?>	
+		<?php require('provide-date.php'); ?>
+		<link href="style.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="header">
 			<h1>Co-Worker Journal</h1>
 		</div>
 		<div class="name">
-			<span>Person's Name</span>
+			<span>
+			<?echo $Zoe->personName . ' Robertson'?>	
+			 </span>
 		</div>
 		<div class="gender">
-			<p>Gender:</p>
+			<p>Gender: <?echo ucfirst($Zoe->sex); ?></p>
 		</div>
 		<div class="age">
 			<p>Age: </p>

@@ -60,23 +60,9 @@ Class BasePerson {
 		// echo for testing, should set a return value or assign the string to a variable that can be displayed as an alert in the browser. Or a popup div.
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
-	// problem with line 66, logic isn't resolving correctly.
-/*	public function setNotes($note) {
-        $dateTag = date('l, F jS, Y');
-        array_push($this->notes, ['date' => $dateTag, 'noteText' => $note]);
-        echo array_key_exists(count($this->notes), $this->notes) ? $note . ' was added to the note log successfully.' : 'Your message failed to post.';
-    }
-*/
     // Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys the $notes array numerically.
     // On the front-end, $noteNumber will be the numerical order of the entry.
-<<<<<<< Updated upstream
-    public function deleteNote($noteNumber) {
-    	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
-    	unset($this->notes[$noteNumber - 1]);
-    	$this->notes = array_values($this->notes);
-    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
-=======
-    // allows index or 'all' to be passed in, removes index or all elements accordingly.
+    // allows index or true to be passed in, removes index or all elements accordingly.
 
     // break method into two options, delete all and deleteNote, they will be different options anyways.
 
@@ -93,7 +79,6 @@ Class BasePerson {
 	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
 
 		}
->>>>>>> Stashed changes
     }
 
 }

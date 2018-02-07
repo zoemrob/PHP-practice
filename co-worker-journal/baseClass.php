@@ -53,7 +53,7 @@ Class BasePerson {
 
 	// Method will add however many list items are submitted, with appropriate date tag information
 	// On the front-end this will be a dynamic jQuery structure where a button 'New Note' will append a second text field to the DOM, which will be entered in the next index
- 	public function setNotes($note) {
+ 	public function setNote($note) {
 		$lengthBefore = count($this->notes);
 		$dateTag = date('l F jS, Y');
 		array_push($this->notes, ['date' => $dateTag, 'noteText' => $note]);
@@ -67,4 +67,11 @@ Class BasePerson {
         echo array_key_exists(count($this->notes), $this->notes) ? $note . ' was added to the note log successfully.' : 'Your message failed to post.';
     }
 */
+    public function deleteNote($noteNumber) {
+    	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
+    	unset($this->notes[$noteNumber - 1]);
+    	$this->notes = array_values($this->notes);
+    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
+    }
+
 }

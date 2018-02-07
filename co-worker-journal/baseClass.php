@@ -55,7 +55,7 @@ Class BasePerson {
 	// On the front-end this will be a dynamic jQuery structure where a button 'New Note' will append a second text field to the DOM, which will be entered in the next index
  	public function setNote($note) {
 		$lengthBefore = count($this->notes);
-		$dateTag = date('l F jS, Y');
+		$dateTag = date('l, F jS, Y') . ' at ' . date('g:ia');
 		array_push($this->notes, ['date' => $dateTag, 'note' => $note]);
 		// echo for testing, should set a return value or assign the string to a variable that can be displayed as an alert in the browser. Or a popup div.
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
@@ -67,6 +67,8 @@ Class BasePerson {
         echo array_key_exists(count($this->notes), $this->notes) ? $note . ' was added to the note log successfully.' : 'Your message failed to post.';
     }
 */
+    // Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys the $notes array numerically.
+    // On the front-end, $noteNumber will be the numerical order of the entry.
     public function deleteNote($noteNumber) {
     	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
     	unset($this->notes[$noteNumber - 1]);

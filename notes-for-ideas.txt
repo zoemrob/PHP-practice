@@ -12,6 +12,18 @@
 * A bulleted list of entries with a date format for every entry
 * Displays Name, possibly Photo, Gender, Age
 * 
+* Handling forms:
+* -have form entry be dynamically appended by JavaScript.
+* -A button 'New Entry' -> alters html, brings up "name", "gender", "age" forms.
+* -search form with 'submit' button
+* -with retrieved Entry, displaying list of $notes, a button "New Note"
+* -"New Note" will be an Event Listener button, that will append a form with a button "Add Note"
+* -If successful (Event Listener), div will popup with "Your note was successfully added"
+* -When div is closed with 'X' (Event Listener) the new list of notes will appear.
+* 
+* 
+* 
+* 
 * 
 * 
 * 

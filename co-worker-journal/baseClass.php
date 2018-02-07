@@ -69,11 +69,31 @@ Class BasePerson {
 */
     // Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys the $notes array numerically.
     // On the front-end, $noteNumber will be the numerical order of the entry.
+<<<<<<< Updated upstream
     public function deleteNote($noteNumber) {
     	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
     	unset($this->notes[$noteNumber - 1]);
     	$this->notes = array_values($this->notes);
     	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
+=======
+    // allows index or 'all' to be passed in, removes index or all elements accordingly.
+
+    // break method into two options, delete all and deleteNote, they will be different options anyways.
+
+    // also add a method that can take an array of indexes, and delete multiples if necessary.ss
+    public function deleteNote($noteNumber, $deleteAll = false) {
+    	if ($deleteAll) {
+    			$this->notes = [];
+    		} 
+			echo "Your notes on " . $this->name . "were successfully deleted.\n";
+		} else {
+	    	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
+	    	unset($this->notes[$noteNumber - 1]);
+	    	$this->notes = array_values($this->notes);
+	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
+
+		}
+>>>>>>> Stashed changes
     }
 
 }

@@ -25,8 +25,9 @@ Class BasePerson {
 	}
 
 	// Method will return age to front end PHP/Javascript to be appended to html
-	public function getAge() {
-		return $this->age;
+	// if pageLoad is true
+	public function getAge($pageLoad) {
+		return $pageLoad ?$this->age: '' ;
 	}
 
 	// Methood will receive data from Javascript or form submission
@@ -36,8 +37,9 @@ Class BasePerson {
 	}
 
 	// Method will return name to front end PHP/Javascript to be appended to html
-	public function getName() {
-		return $this->name;
+	// if page load is true
+	public function getName($pageLoad) {
+		return $pageLoad ? $this->name: '';
 	}
 	// Methood will receive data from Javascript or form submission
 	// Possibly from database query
@@ -47,8 +49,9 @@ Class BasePerson {
 	}
 
 	// Method will return sex to front end PHP/Javascript to be appended to html
-	public function getSex() {
-		return $this->sex;
+	// if pageLoad is true
+	public function getSex($pageLoad) {
+		return $pageLoad ? $this->sex: '';
 	}
 
 	// Method will add however many list items are submitted, with appropriate date tag information
@@ -60,20 +63,29 @@ Class BasePerson {
 		// echo for testing, should set a return value or assign the string to a variable that can be displayed as an alert in the browser. Or a popup div.
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
-	// problem with line 66, logic isn't resolving correctly.
-/*	public function setNotes($note) {
-        $dateTag = date('l, F jS, Y');
-        array_push($this->notes, ['date' => $dateTag, 'noteText' => $note]);
-        echo array_key_exists(count($this->notes), $this->notes) ? $note . ' was added to the note log successfully.' : 'Your message failed to post.';
-    }
-*/
+	
+	public function getNotes($pageLoad) {
+		if ($pageLoad) {
+			return !empty($this->notes) ? $this->notes : 'You have no notes in for this person!';
+		}
+	}
+
     // Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys the $notes array numerically.
     // On the front-end, $noteNumber will be the numerical order of the entry.
+    // allows index or 'all' to be passed in, removes index or all elements accordingly.
     public function deleteNote($noteNumber) {
-    	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
-    	unset($this->notes[$noteNumber - 1]);
-    	$this->notes = array_values($this->notes);
-    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
+    	if ($noteNumber === 'all') {
+    		foreach($this->notes as $key => $value) {
+    			unset($this->notes[$key]);
+			} 
+			echo "Your notes on " . $this->name . "were successfully deleted.\n";
+		} else {
+	    	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
+	    	unset($this->notes[$noteNumber - 1]);
+	    	$this->notes = array_values($this->notes);
+	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
+
+		}
     }
 
 }

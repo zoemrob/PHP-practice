@@ -56,7 +56,7 @@ Class BasePerson {
  	public function setNote($note) {
 		$lengthBefore = count($this->notes);
 		$dateTag = date('l F jS, Y');
-		array_push($this->notes, ['date' => $dateTag, 'noteText' => $note]);
+		array_push($this->notes, ['date' => $dateTag, 'note' => $note]);
 		// echo for testing, should set a return value or assign the string to a variable that can be displayed as an alert in the browser. Or a popup div.
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 

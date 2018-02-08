@@ -82,7 +82,6 @@ Class BasePerson {
 		$lengthBefore = count($this->notes);
 		$dateTag = date('l, F jS, Y') . ' at ' . date('g:ia');
 		array_push($this->notes, ['date' => $dateTag, 'note' => $note]);
-		// echo for testing, should set a return value or assign the string to a variable that can be displayed as an alert in the browser. Or a popup div.
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
 
@@ -100,7 +99,6 @@ Class BasePerson {
 			}
 			if (count($notesToDelete) === 1) {
 				$deletedNote = array_splice($this->notes, $notesToDelete[0], 1);
-			//	var_dump($deletedNote); used for debugging Array to String conversion.
 				echo "Your note '" . $deletedNote[0]['note'] . "' was deleted.\n";
 			} else {
 				foreach($notesToDelete as $key => $value) {
@@ -119,31 +117,4 @@ Class BasePerson {
 		} else { echo "Your delete was not successful."; }
 	}
 
-   /* Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys
-    * the $notes array numerically.
-    * On the front-end, $noteNumber will be the numerical order of the entry.
-    * @param $noteNumber is index of $this->notes array
-    * if index does not exist in $this->notes, echo alert.
-	*/
-/*    public function deleteSingleNote($noteNumber) {
-    	if (isset($this->notes[$noteNumber])) {
-	    	$deletedNote = $this->notes[$noteNumber]['note']; 
-	    	unset($this->notes[$noteNumber]);
-	    	$this->notes = array_values($this->notes);
-	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";    		
-    	} else {
-    		echo "That note does not exist!\n";
-    	}
-	}
-*/
-	// Method deletes all notes from array. Clears log.
-/*	public function deleteAllNotes() {
-		if ($this->notes === []) {
-			echo "You don't have any notes on this person!\n";
-		} else {
-			$this->notes = [];
-			echo "All of your notes about " . $this->name . " were deleted.\n";
-		}
-	}
-*/
 }

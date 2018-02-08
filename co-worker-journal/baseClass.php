@@ -14,8 +14,28 @@ Class BasePerson {
 	public $sex;
 	public $notes = [];
 
-	public function __construct() {
+   /*  __construct method allows for the optional parameters to be created upon initialization
+	* @param $name = string, name of person creating entry
+	* 
+	*
+	*/
+	public function __construct($name = null, $age = null, $sex = null) {
+		// add control flow essentially, if this is a new person, do this, if this is an existingperson do this, 
+		// POSSIBLY BREAK THIS INTO TWO DIFFERENT CLASSES, ONE FOR GETTING AND SETTING A PERSON WHO EXISTS, ANOTHER FOR CREATING A NEW PERSON ENTRY
+		// SET SOME SORT OF LIVE BACKUP TO DATABASE. IF IT IS NEWLY CREATED, IT WILL STORE IN DB, IF NOT, THE CONSTRUCT ARGUMENTS WILL BE PASSED BASED ON THE RESULT OF QUERY.
+		!is_null($name) ? $this->setName($name): '';
+		!is_null($age) ? $this->setAge($age): '';
+		!is_null($sex) ? $this->setSex($sex): '';
+		$this->displayDemographics();
+	}
 
+	/* echos/returns demographic information to UI/console
+	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
+	 */
+	public function displayDemographics() {
+		$this->getName();
+		$this->getAge();
+		$this->getSex();
 	}
 
 	// Method will receive data from JavaScript or form submission
@@ -26,7 +46,8 @@ Class BasePerson {
 
 	// Method will return age to front end PHP/Javascript to be appended to html
 	public function getAge() {
-		return $this->age;
+		echo $this->age . "\n";
+		return $this->age . "\n";
 	}
 
 	// Methood will receive data from Javascript or form submission
@@ -37,7 +58,8 @@ Class BasePerson {
 
 	// Method will return name to front end PHP/Javascript to be appended to html
 	public function getName() {
-		return $this->name;
+		echo $this->name . "\n";
+		return $this->name . "\n";
 	}
 	// Methood will receive data from Javascript or form submission
 	// Possibly from database query
@@ -48,7 +70,8 @@ Class BasePerson {
 
 	// Method will return sex to front end PHP/Javascript to be appended to html
 	public function getSex() {
-		return $this->sex;
+		echo $this->sex . "\n";
+		return $this->sex . "\n";
 	}
 
    /* Method will add however many list items are submitted, with appropriate date tag information

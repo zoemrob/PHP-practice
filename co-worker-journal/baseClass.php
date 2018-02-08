@@ -14,8 +14,28 @@ Class BasePerson {
 	public $sex;
 	public $notes = [];
 
-	public function __construct() {
+   /*  __construct method allows for the optional parameters to be created upon initialization
+	* @param $name = string, name of person creating entry
+	* 
+	*
+	*/
+	public function __construct($name = null, $age = null, $sex = null) {
+		// add control flow essentially, if this is a new person, do this, if this is an existingperson do this, 
+		// POSSIBLY BREAK THIS INTO TWO DIFFERENT CLASSES, ONE FOR GETTING AND SETTING A PERSON WHO EXISTS, ANOTHER FOR CREATING A NEW PERSON ENTRY
+		// SET SOME SORT OF LIVE BACKUP TO DATABASE. IF IT IS NEWLY CREATED, IT WILL STORE IN DB, IF NOT, THE CONSTRUCT ARGUMENTS WILL BE PASSED BASED ON THE RESULT OF QUERY.
+		!is_null($name) ? $this->setName($name): '';
+		!is_null($age) ? $this->setAge($age): '';
+		!is_null($sex) ? $this->setSex($sex): '';
+		$this->displayDemographics();
+	}
 
+	/* echos/returns demographic information to UI/console
+	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
+	 */
+	public function displayDemographics() {
+		$this->getName();
+		$this->getAge();
+		$this->getSex();
 	}
 
 	// Method will receive data from JavaScript or form submission
@@ -25,21 +45,21 @@ Class BasePerson {
 	}
 
 	// Method will return age to front end PHP/Javascript to be appended to html
-	// if pageLoad is true
-	public function getAge($pageLoad) {
-		return $pageLoad ?$this->age: '' ;
+	public function getAge() {
+		echo $this->age . "\n";
+		return $this->age . "\n";
 	}
 
-	// Methood will receive data from Javascript or form submission
+	// Method will receive data from Javascript or form submission
 	// Possibly from databse query
 	public function setName($str) {
 		$this->name = $str;
 	}
 
 	// Method will return name to front end PHP/Javascript to be appended to html
-	// if page load is true
-	public function getName($pageLoad) {
-		return $pageLoad ? $this->name: '';
+	public function getName() {
+		echo $this->name . "\n";
+		return $this->name . "\n";
 	}
 	// Methood will receive data from Javascript or form submission
 	// Possibly from database query
@@ -49,13 +69,15 @@ Class BasePerson {
 	}
 
 	// Method will return sex to front end PHP/Javascript to be appended to html
-	// if pageLoad is true
-	public function getSex($pageLoad) {
-		return $pageLoad ? $this->sex: '';
+	public function getSex() {
+		echo $this->sex . "\n";
+		return $this->sex . "\n";
 	}
 
-	// Method will add however many list items are submitted, with appropriate date tag information
-	// On the front-end this will be a dynamic jQuery structure where a button 'New Note' will append a second text field to the DOM, which will be entered in the next index
+   /* Method will add however many list items are submitted, with appropriate date tag information
+	* On the front-end this will be a dynamic jQuery structure where a button 'New Note' will append a * second text field to the DOM, which will be entered in the next index
+	* @param $note string that will be added to note log
+	*/
  	public function setNote($note) {
 		$lengthBefore = count($this->notes);
 		$dateTag = date('l, F jS, Y') . ' at ' . date('g:ia');
@@ -63,29 +85,34 @@ Class BasePerson {
 		// echo for testing, should set a return value or assign the string to a variable that can be displayed as an alert in the browser. Or a popup div.
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
-	
-	public function getNotes($pageLoad) {
-		if ($pageLoad) {
-			return !empty($this->notes) ? $this->notes : 'You have no notes in for this person!';
-		}
+
+    // also add a method that can take an array of indexes, and delete multiples if necessary.ss
+
+   /* Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys
+    * the $notes array numerically.
+    * On the front-end, $noteNumber will be the numerical order of the entry.
+    * @param $noteNumber is index of $this->notes array
+    * if index does not exist in $this->notes, echo alert.
+	*/
+    public function deleteSingleNote($noteNumber) {
+    	if (isset($this->notes[$noteNumber])) {
+	    	$deletedNote = $this->notes[$noteNumber]['note']; 
+	    	unset($this->notes[$noteNumber]);
+	    	$this->notes = array_values($this->notes);
+	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";    		
+    	} else {
+    		echo "That note does not exist!\n";
+    	}
 	}
 
-    // Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys the $notes array numerically.
-    // On the front-end, $noteNumber will be the numerical order of the entry.
-    // allows index or 'all' to be passed in, removes index or all elements accordingly.
-    public function deleteNote($noteNumber) {
-    	if ($noteNumber === 'all') {
-    		foreach($this->notes as $key => $value) {
-    			unset($this->notes[$key]);
-			} 
-			echo "Your notes on " . $this->name . "were successfully deleted.\n";
+	// Method deletes all notes from array. Clears log.
+	public function deleteAllNotes() {
+		if ($this->notes === []) {
+			echo "You don't have any notes on this person!\n";
 		} else {
-	    	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
-	    	unset($this->notes[$noteNumber - 1]);
-	    	$this->notes = array_values($this->notes);
-	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
-
+			$this->notes = [];
+			echo "All of your notes about " . $this->name . " were deleted.\n";
 		}
-    }
+	}
 
 }

@@ -46,7 +46,7 @@ Class BasePerson {
 
 	// Method will return age to front end PHP/Javascript to be appended to html
 	public function getAge() {
-		echo $this->age . "\n";
+		echo "Age: " . $this->age . "\n";
 		return $this->age . "\n";
 	}
 
@@ -58,7 +58,7 @@ Class BasePerson {
 
 	// Method will return name to front end PHP/Javascript to be appended to html
 	public function getName() {
-		echo $this->name . "\n";
+		echo "Name: " . $this->name . "\n";
 		return $this->name . "\n";
 	}
 	// Methood will receive data from Javascript or form submission
@@ -70,7 +70,7 @@ Class BasePerson {
 
 	// Method will return sex to front end PHP/Javascript to be appended to html
 	public function getSex() {
-		echo $this->sex . "\n";
+		echo "Sex: " . $this->sex . "\n";
 		return $this->sex . "\n";
 	}
 
@@ -86,7 +86,38 @@ Class BasePerson {
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
 
-    // also add a method that can take an array of indexes, and delete multiples if necessary.ss
+	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
+	 * @param $notesToDelete, array or boolean.
+	 * if $notesToDelete = true, all notes will be deleted.
+	 * if $notesToDelete = array of indexes, notes at indexes will be removed.
+	 * FUTURE PLANNING: Instead of deleting the notes permanently, store them in a seperate DB category, where "Deleted Notes can be viewed".
+	 */
+	public function deleteMultipleNotes($notesToDelete) {
+		if (is_array($notesToDelete)) {
+			$verifiedNotesToDelete = [];
+			foreach($notesToDelete as $index) {
+				isset($this->notes[$index]) ? $verifiedNotesToDelete[] = $index : ''; //echo "The note number " . $index . " does not exist."; commented out to replan logic later.
+			}
+			if (count($notesToDelete) === 1) {
+				$deletedNote = array_splice($this->notes, $notesToDelete[0], 1);
+			//	var_dump($deletedNote); used for debugging Array to String conversion.
+				echo "Your note '" . $deletedNote[0]['note'] . "' was deleted.\n";
+			} else {
+				foreach($notesToDelete as $key => $value) {
+					unset($this->notes[$value]);
+				}
+				echo "Selected notes deleted.\n";
+			}
+			$this->notes = array_values($this->notes);
+		} else if ($notesToDelete === true) {
+			if ($this->notes === []) {
+				echo "You don't have any notes on this person!\n";
+			} else {
+				$this->notes = [];
+				echo "All of your notes about " . $this->name . " were deleted.\n";
+			}
+		} else { echo "Your delete was not successful."; }
+	}
 
    /* Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys
     * the $notes array numerically.
@@ -94,7 +125,7 @@ Class BasePerson {
     * @param $noteNumber is index of $this->notes array
     * if index does not exist in $this->notes, echo alert.
 	*/
-    public function deleteSingleNote($noteNumber) {
+/*    public function deleteSingleNote($noteNumber) {
     	if (isset($this->notes[$noteNumber])) {
 	    	$deletedNote = $this->notes[$noteNumber]['note']; 
 	    	unset($this->notes[$noteNumber]);
@@ -104,9 +135,9 @@ Class BasePerson {
     		echo "That note does not exist!\n";
     	}
 	}
-
+*/
 	// Method deletes all notes from array. Clears log.
-	public function deleteAllNotes() {
+/*	public function deleteAllNotes() {
 		if ($this->notes === []) {
 			echo "You don't have any notes on this person!\n";
 		} else {
@@ -114,5 +145,5 @@ Class BasePerson {
 			echo "All of your notes about " . $this->name . " were deleted.\n";
 		}
 	}
-
+*/
 }

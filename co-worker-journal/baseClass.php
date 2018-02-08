@@ -86,7 +86,17 @@ Class BasePerson {
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
 
-    // also add a method that can take an array of indexes, and delete multiples if necessary.ss
+	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
+	 * @param $notesToDelete, array
+	 *
+	 */
+	public function deleteMultipleNotes($notesToDelete) {
+		foreach($notesToDelete as $key => $value) {
+			unset($this->notes[$value]);
+		}
+		$this->notes = array_values($this->notes);
+		echo "Selected notes deleted.";
+	}
 
    /* Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys
     * the $notes array numerically.

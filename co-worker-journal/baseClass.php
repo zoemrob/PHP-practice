@@ -26,7 +26,7 @@ Class BasePerson {
 		!is_null($name) ? $this->setName($name): '';
 		!is_null($age) ? $this->setAge($age): '';
 		!is_null($sex) ? $this->setSex($sex): '';
-		$this->displayDemographics();
+		// $this->displayDemographics();
 	}
 
 	/* echos/returns demographic information to UI/console

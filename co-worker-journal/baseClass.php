@@ -51,8 +51,10 @@ Class BasePerson {
 		return $this->sex;
 	}
 
-	// Method will add however many list items are submitted, with appropriate date tag information
-	// On the front-end this will be a dynamic jQuery structure where a button 'New Note' will append a second text field to the DOM, which will be entered in the next index
+   /* Method will add however many list items are submitted, with appropriate date tag information
+	* On the front-end this will be a dynamic jQuery structure where a button 'New Note' will append a * second text field to the DOM, which will be entered in the next index
+	* @param $note string that will be added to note log
+	*/
  	public function setNote($note) {
 		$lengthBefore = count($this->notes);
 		$dateTag = date('l, F jS, Y') . ' at ' . date('g:ia');
@@ -60,25 +62,34 @@ Class BasePerson {
 		// echo for testing, should set a return value or assign the string to a variable that can be displayed as an alert in the browser. Or a popup div.
 		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
-    // Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys the $notes array numerically.
-    // On the front-end, $noteNumber will be the numerical order of the entry.
-    // allows index or true to be passed in, removes index or all elements accordingly.
-
-    // break method into two options, delete all and deleteNote, they will be different options anyways.
 
     // also add a method that can take an array of indexes, and delete multiples if necessary.ss
-    public function deleteNote($noteNumber, $deleteAll = false) {
-    	if ($deleteAll) {
-    			$this->notes = [];
-    		} 
-			echo "Your notes on " . $this->name . "were successfully deleted.\n";
-		} else {
-	    	$deletedNote = $this->notes[$noteNumber - 1]['note']; 
-	    	unset($this->notes[$noteNumber - 1]);
-	    	$this->notes = array_values($this->notes);
-	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";
 
+   /* Method deletes a note from the $notes array, and echo's the note that was deleted. And re-keys
+    * the $notes array numerically.
+    * On the front-end, $noteNumber will be the numerical order of the entry.
+    * @param $noteNumber is index of $this->notes array
+    * if index does not exist in $this->notes, echo alert.
+	*/
+    public function deleteSingleNote($noteNumber) {
+    	if (isset($this->notes[$noteNumber])) {
+	    	$deletedNote = $this->notes[$noteNumber]['note']; 
+	    	unset($this->notes[$noteNumber]);
+	    	$this->notes = array_values($this->notes);
+	    	echo "Your note '" . $deletedNote . "' was successfully deleted.\n";    		
+    	} else {
+    		echo "That note does not exist!\n";
+    	}
+	}
+
+	// Method deletes all notes from array. Clears log.
+	public function deleteAllNotes() {
+		if ($this->notes === []) {
+			echo "You don't have any notes on this person!\n";
+		} else {
+			$this->notes = [];
+			echo "All of your notes about " . $this->name . " were deleted.\n";
 		}
-    }
+	}
 
 }

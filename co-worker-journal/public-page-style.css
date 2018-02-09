@@ -3,15 +3,25 @@ p[class^="note-date-"], p[class*=" note-date-"] {
 	color: #fff;
 	font-family: arial, helvetica, sans-serif;
 	padding: 10px;
+	margin-bottom: 0;
 }
+
 p[class^="note-text-"], p[class*=" note-text-"] {
 	padding-left: 50px;
+	padding-top: 20px;
+	padding-bottom:5px;
+	background-color: #717171;
+	margin-top: 0;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	font-family: 'Montserrat', sans-serif;
 }
 
 .header {
 	background-color: #e2ba6f;
 	max-width: 50%;
 	margin: 0 auto;
+	margin-top: 20px;
 	border-radius: 30px;
 	box-shadow: 10px 10px 25px #727272;
 	border-style: solid;

@@ -8,7 +8,7 @@
 		<!--<script src="frontEnd.js"></script>-->
 
 		<?php 
-		require("baseClass.php");
+		require("PersonClass.php");
 		$person = new BasePerson("Zoe", 22, "M"); 
 		$person->setNote("I met up with some of my peers in the Udacity Grow-with-Google Scholarship.\nWe had a great time, we learned a lot. I arrived first at Case Study Coffee Roasters. Ginny arrived shortly after. We finished studying there, then we went to Starbucks, and studied a bit more. Andrew showed up a bit later, and now we are getting ready to go over a group project");
 		$person->setNote("This is your 2nd test note.");

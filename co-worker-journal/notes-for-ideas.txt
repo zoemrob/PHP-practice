@@ -21,9 +21,9 @@
 * -If successful (Event Listener), div will popup with "Your note was successfully added"
 * -When div is closed with 'X' (Event Listener) the new list of notes will appear.
 * 
-* 
-* 
-* 
+* 1. submit a text field, which causes Javascript to pass the string to the server setNote method
+* 2. have the server run the setNote method, return the formatted $note template to Javascript
+* 3. have Javascript append the returned value to the UI.
 * 
 * 
 * 

@@ -33,15 +33,15 @@ Class BasePerson {
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
 	public function displayDemographics() {
-		$this->getName();
-		$this->getAge();
-		$this->getSex();
+		$this->getName(); echo "\n";
+		$this->getAge(); echo "\n";
+		$this->getSex(); echo "\n";
 	}
 
 	// Method will receive data from JavaScript or form submission
 	// Possibly from database query
 	public function setAge($num) {
-		$this->age = $num;
+		$this->age = $num . "\n";
 	}
 
 	// Method will return age to front end PHP/Javascript to be appended to html
@@ -53,7 +53,7 @@ Class BasePerson {
 	// Method will receive data from Javascript or form submission
 	// Possibly from databse query
 	public function setName($str) {
-		$this->name = $str;
+		$this->name = $str . "\n";
 	}
 
 	// Method will return name to front end PHP/Javascript to be appended to html
@@ -65,7 +65,7 @@ Class BasePerson {
 	// Possibly from database query
 	// This will be a radio select or radio-liike buttons (where only one is an option)
 	public function setSex($sexChar) {
-		$sexChar === 'M' ? $this->sex = 'Male': 'Female';
+		$sexChar === 'M' ? $this->sex = "Male\n": "Female\n";
 	}
 
 	// Method will return sex to front end PHP/Javascript to be appended to html

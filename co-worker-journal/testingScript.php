@@ -14,4 +14,5 @@ $person->deleteMultipleNotes([1, 3]);
 var_dump($person->notes);
 $person->deleteMultipleNotes([0]);
 var_dump($person->notes);
+echo $items = json_encode($person->notes);
 $person->deleteAllNotes();

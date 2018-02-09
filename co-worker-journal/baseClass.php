@@ -33,6 +33,15 @@ Class BasePerson {
 		var_dump($this->notes);
 	}
 
+	public function getNotes() {
+		foreach($this->notes as $key => $note) {
+			echo "
+				<div id='note-" . $key . "'> 
+					<p class='note-date-" . $key . "'>" . $note['date'] . " <em>you wrote</em>:</p>
+					<p class='note-text-" . $key . "'>'" . $note['note'] . "'</p>
+				</div>\n";
+		}
+	}
 	/* echos/returns demographic information to UI/console
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */

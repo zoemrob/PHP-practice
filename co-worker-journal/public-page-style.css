@@ -1,4 +1,29 @@
 p[class^="note-date-"], p[class*=" note-date-"] {
 	background-color: #232323;
 	color: #fff;
+	font-family: arial, helvetica, sans-serif;
+	padding: 10px;
+}
+p[class^="note-text-"], p[class*=" note-text-"] {
+	padding-left: 50px;
+}
+
+.header {
+	background-color: #e2ba6f;
+	max-width: 50%;
+	margin: 0 auto;
+	border-radius: 30px;
+	box-shadow: 10px 10px 25px #727272;
+	border-style: solid;
+	border-width: 2px;
+	border-color: #000;
+}
+
+.header-text {
+	text-align: center;
+	text-decoration: underline;
+	font-size: 50px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin: 7px;
 }

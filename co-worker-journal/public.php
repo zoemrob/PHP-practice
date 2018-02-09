@@ -4,6 +4,8 @@
 		<meta charset="utf-8">
 		<title>Co-Worker Journal</title>
 		<link href="public-page-style.css" rel="stylesheet">
+		<!--<script src="frontEnd.js"></script>-->
+
 		<?php 
 		require("baseClass.php");
 		$person = new BasePerson("Zoe", 22, "M"); 
@@ -21,14 +23,13 @@
 				<?php echo $person->displayDemographics(); ?>
 			</span>
 		</div>
-		<div class="notes">
-			<?php 	// loops over BasePerson->notes array, renders list of notes and assigns each element a numbered class, corresponding to the appropriate index of the note.
+		<div class="notes"><?php 	// loops over BasePerson->notes array, renders list of notes and assigns each element a numbered class, corresponding to the appropriate index of the note.
 					foreach($person->notes as $key => $note) {
 						echo "
 						<div id='note-" . $key . "'> 
-							<p class='note-date-" . $key . "'>" . $note['date'] . ":</p>
-							<p class='note-text-" . $key . "'>You wrote '" . $note['note'] . "'</p>
-						</div>";
+							<p class='note-date-" . $key . "'>" . $note['date'] . " <em>you wrote</em>:</p>
+							<p class='note-text-" . $key . "'>'" . $note['note'] . "'</p>
+						</div>\n";
 				}
 			?>
 		</div>

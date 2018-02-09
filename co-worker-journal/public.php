@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Co-Worker Journal</title>
+		<link href="public-page-style.css" rel="stylesheet">
 		<?php 
 		require("baseClass.php");
 		$person = new BasePerson("Zoe", 22, "M"); 
@@ -21,11 +22,12 @@
 			</span>
 		</div>
 		<div class="notes">
-			<?php 
+			<?php 	// loops over BasePerson->notes array, renders list of notes and assigns each element a numbered class, corresponding to the appropriate index of the note.
 					foreach($person->notes as $key => $note) {
-						echo "<div class='note" . $key . "'> 
-						<p>" . $note['date'] . ":</p>
-						<p>You wrote '" . $note['note'] . "'</p>
+						echo "
+						<div id='note-" . $key . "'> 
+							<p class='note-date-" . $key . "'>" . $note['date'] . ":</p>
+							<p class='note-text-" . $key . "'>You wrote '" . $note['note'] . "'</p>
 						</div>";
 				}
 			?>

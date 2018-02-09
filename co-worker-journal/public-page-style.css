@@ -1,0 +1,4 @@
+p[class^="note-date-"], p[class*=" note-date-"] {
+	background-color: #232323;
+	color: #fff;
+}

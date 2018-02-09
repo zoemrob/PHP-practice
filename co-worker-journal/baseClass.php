@@ -9,10 +9,10 @@
 
 Class BasePerson {
 
-	public $age;
-	public $name;
-	public $sex;
-	public $notes = [];
+	private $age;
+	private $name;
+	private $sex;
+	private $notes = [];
 
    /*  __construct method allows for the optional parameters to be created upon initialization
 	* @param $name = string, name of person creating entry
@@ -27,6 +27,10 @@ Class BasePerson {
 		!is_null($age) ? $this->setAge($age): '';
 		!is_null($sex) ? $this->setSex($sex): '';
 		// $this->displayDemographics();
+	}
+
+	public function debugNotes() {
+		var_dump($this->notes);
 	}
 
 	/* echos/returns demographic information to UI/console
@@ -86,35 +90,35 @@ Class BasePerson {
 	} 
 
 	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
-	 * @param $notesToDelete, array or boolean.
-	 * if $notesToDelete = true, all notes will be deleted.
-	 * if $notesToDelete = array of indexes, notes at indexes will be removed.
+	 * @param $notesToDelete, array.
+	 * @param $deleteAll, optional bool to delete all notes.
 	 * FUTURE PLANNING: Instead of deleting the notes permanently, store them in a seperate DB category, where "Deleted Notes can be viewed".
 	 */
-	public function deleteMultipleNotes($notesToDelete) {
-		if (is_array($notesToDelete)) {
-			$verifiedNotesToDelete = [];
-			foreach($notesToDelete as $index) {
-				isset($this->notes[$index]) ? $verifiedNotesToDelete[] = $index : ''; //echo "The note number " . $index . " does not exist."; commented out to replan logic later.
-			}
-			if (count($notesToDelete) === 1) {
-				$deletedNote = array_splice($this->notes, $notesToDelete[0], 1);
-				echo "Your note '" . $deletedNote[0]['note'] . "' was deleted.\n";
-			} else {
-				foreach($notesToDelete as $key => $value) {
-					unset($this->notes[$value]);
-				}
-				echo "Selected notes deleted.\n";
-			}
-			$this->notes = array_values($this->notes);
-		} else if ($notesToDelete === true) {
-			if ($this->notes === []) {
-				echo "You don't have any notes on this person!\n";
-			} else {
-				$this->notes = [];
-				echo "All of your notes about " . $this->name . " were deleted.\n";
-			}
-		} else { echo "Your delete was not successful."; }
-	}
+    public function deleteNotes(array $notesToDelete, $deleteAll = false) {
+        try{
+            $verifiedNotesToDelete = [];
+            if ($deleteAll) {
+                $notesToDelete = array_keys($this->notes);
+                // if $deleteAll is true, fill $verifiedNotesToDelete with all of the indexes of $this->notes.
+            }
 
+            foreach($notesToDelete as $index) {
+                if (isset($this->notes[$index])) {
+                    $verifiedNotesToDelete[] = $this->notes[$index]; 
+                } else {
+                    throw new Exception("The note you are trying to delete does not exist.\n");
+                	// throws this exception if the index is does not exist.
+                }
+                unset($this->notes[$index]);
+            }
+            $message = "Your Note" .
+                    count($verifiedNotesToDelete) > 0 ? 's' : '' .
+                    " about " . $this->name .
+                    " for notes: " .
+                    join(',', array_column($verifiedNotesToDelete, 'note'));
+            echo json_encode(['message' => $message, 'notes' => $verifiedNotesToDelete]);
+        } catch (Exception $ex) {
+            echo $ex;
+        }
+    }
 }

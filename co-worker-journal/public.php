@@ -7,6 +7,8 @@
 		require("baseClass.php");
 		$person = new BasePerson("Zoe", 22, "M"); 
 		$person->setNote("This is your 1st test note.");
+		$person->setNote("This is your 2nd test note.");
+		$person->setNote("This is your 3rd test note.");
 		?>
 	</head>
 	<body>
@@ -20,8 +22,11 @@
 		</div>
 		<div class="notes">
 			<?php 
-					foreach($person->notes as $note) {
-						echo "<p>{$note['date']}: You wrote: {$note['note']}<p>";
+					foreach($person->notes as $key => $note) {
+						echo "<div class='note" . $key . "'> 
+						<p>" . $note['date'] . ":</p>
+						<p>You wrote '" . $note['note'] . "'</p>
+						</div>";
 				}
 			?>
 		</div>

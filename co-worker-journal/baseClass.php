@@ -82,7 +82,7 @@ Class BasePerson {
 		$lengthBefore = count($this->notes);
 		$dateTag = date('l, F jS, Y') . ' at ' . date('g:ia');
 		array_push($this->notes, ['date' => $dateTag, 'note' => $note]);
-		echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
+		// echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
 
 	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.

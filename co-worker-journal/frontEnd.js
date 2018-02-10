@@ -5,7 +5,9 @@ const load = () => {
 			notes.children[i].appendChild(createDeleteButton());
 		});
 		notes.children[i].addEventListener('mouseleave', () => {
-			notes.children[i].appendChild(removeDeleteButton(notes.children[i]));
+			//notes.children[i].appendChild(
+				removeDeleteButton(notes.children[i]);
+				//);
 		});
 	}
 } 

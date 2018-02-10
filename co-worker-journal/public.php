@@ -5,7 +5,7 @@
 		<title>Co-Worker Journal</title>
 		<link href="public-page-style.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-		<!--<script src="frontEnd.js"></script>-->
+		<script src="frontEnd.js"></script>
 
 		<?php 
 		require("PersonClass.php");
@@ -24,7 +24,7 @@
 				<?php echo $person->displayDemographics(); ?>
 			</p>
 		</div>
-		<div class="notes">
+		<div class="notes" id="notes">
 			<?php 	
 				$person->getNotes();
 			?>

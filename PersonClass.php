@@ -37,9 +37,9 @@ Class BasePerson {
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
 	public function displayDemographics() {
-		$this->getName(); echo "\n";
-		$this->getAge(); echo "\n";
-		$this->getSex(); echo "\n";
+		echo "<p class='demographics-data'>Name: " . $this->name . "</p>\n" .
+			 "<p class='demographics-data'>Age: " . $this->age . "</p>\n" .
+			 "<p class='demographics-data'>Gender: " . $this->sex . "</p>\n";
 	}
 
 	// Method will receive data from JavaScript or form submission
@@ -93,7 +93,7 @@ Class BasePerson {
     *  Uses $this->notes indexes to create unique ids and classes for every html element,
     *
     */
-	public function getNotes() {
+	public function displayNotes() {
 		foreach($this->notes as $key => $note) {
 			echo "
 				<div id='note-" . $key . "'> 
@@ -103,7 +103,7 @@ Class BasePerson {
 					<div class='note-text-div' id='note-text-div-" . $key ."'> 
 						<p class='note-text' id='note-text-" . $key . "'>" . $note['note'] . "</p>
 					</div>
-				</div>\n";
+				</div>";
 		}
 	}
 	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.

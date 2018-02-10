@@ -1,5 +1,5 @@
 <?php
-
+require('HelperClass.php');
 /*
 	This Class will be used to create a new instance of a person to enter into database.
 	A new instance of this object will be created on the HTML page, and an API will scrape the information out of the instanced
@@ -33,15 +33,6 @@ Class BasePerson {
 		var_dump($this->notes);
 	}
 
-	public function getNotes() {
-		foreach($this->notes as $key => $note) {
-			echo "
-				<div id='note-" . $key . "'> 
-					<p class='note-date-" . $key . "'>" . $note['date'] . " <em>you wrote</em>:</p>
-					<p class='note-text-" . $key . "'>'" . $note['note'] . "'</p>
-				</div>\n";
-		}
-	}
 	/* echos/returns demographic information to UI/console
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
@@ -93,11 +84,24 @@ Class BasePerson {
 	*/
  	public function setNote($note) {
 		$lengthBefore = count($this->notes);
-		$dateTag = date('l, F jS, Y') . ' at ' . date('g:ia');
+		$dateTag = HelperClass::getTimeUI('dmyt');
 		array_push($this->notes, ['date' => $dateTag, 'note' => $note]);
 		// echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
 	} 
 
+   /** Method echos html elements on the initial load of the page.
+    *  Uses $this->notes indexes to create unique ids and classes for every html element,
+    *
+    */
+	public function getNotes() {
+		foreach($this->notes as $key => $note) {
+			echo "
+				<div id='note-" . $key . "'> 
+					<p class='note-date-" . $key . "' id='note-date-" . $key . "'>" . $note['date'] . " <em>you wrote</em>:</p>
+					<p class='note-text-" . $key . "' id='note-text-" . $key . "'>" . $note['note'] . "</p>
+				</div>\n";
+		}
+	}
 	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
 	 * @param $notesToDelete, array.
 	 * @param $deleteAll, optional bool to delete all notes.

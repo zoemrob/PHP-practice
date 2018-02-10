@@ -1,11 +1,17 @@
 const load = () => {
 	const notes = document.getElementById("notes");
+
 	for (let i = 0; i < notes.children.length; i++ ) {
-		notes.children[i].addEventListener('mouseenter', () => {
-			notes.children[i].appendChild(createDeleteButton());
+		let mousedOverNote = notes.children[i];
+
+		mousedOverNote.addEventListener('mouseenter', () => {
+			mousedOverNote.children[1].appendChild(createDeleteButton());
+			mousedOverNote.children[1].setAttribute('id', 'moused-over-note')
 		});
-		notes.children[i].addEventListener('mouseleave', () => {
-				removeDeleteButton(notes.children[i]);
+
+		mousedOverNote.addEventListener('mouseleave', () => {
+			mousedOverNote.children[1].removeAttribute('id');	
+			removeDeleteButton(mousedOverNote.children[1]);
 		});
 	}
 } 
@@ -13,15 +19,25 @@ const load = () => {
 window.onload = load; 
 
 function createDeleteButton () {
+
 	const button = document.createElement('button');
 	button.innerHTML = 'DELETE';
-	button.setAttribute('id', 'mouseoverDeleteButton');
-	return button;
+	button.setAttribute('id', 'moused-over-delete-button');
+
+	const buttonDiv = document.createElement('div');
+	buttonDiv.setAttribute('id', 'moused-over-delete-button-div');
+
+	buttonDiv.appendChild(button);
+	return buttonDiv
 }
 
 function removeDeleteButton (node) {
-	const button = document.getElementById('mouseoverDeleteButton');
+	const button = document.getElementById('moused-over-delete-button');
 	if (node.contains(button)) {
 		button.remove();
+	}
+	const buttonDiv = document.getElementById('moused-over-delete-button-div');
+	if (node.contains(buttonDiv)) {
+		buttonDiv.remove();
 	}
 }

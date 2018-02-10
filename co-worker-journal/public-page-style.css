@@ -1,4 +1,4 @@
-p[class^="note-date-"], p[class*=" note-date-"] {
+p.note-date {
 	background-color: #232323;
 	color: #fff;
 	font-family: arial, helvetica, sans-serif;
@@ -6,7 +6,7 @@ p[class^="note-date-"], p[class*=" note-date-"] {
 	margin-bottom: 0;
 }
 
-p[class^="note-text-"], p[class*=" note-text-"] {
+p.note-text {
 	padding-left: 50px;
 	padding-top: 20px;
 	padding-bottom:10px;
@@ -16,6 +16,10 @@ p[class^="note-text-"], p[class*=" note-text-"] {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	font-family: 'Montserrat', sans-serif;
+}
+
+.inline-em {
+	font-style: italic;
 }
 
 .notes {
@@ -49,4 +53,12 @@ p[class^="note-text-"], p[class*=" note-text-"] {
 	padding-top: 3px;
 	padding-bottom: 3px;
 	margin: 7px;
+}
+
+#moused-over-note {
+	
+}
+
+#moused-over-delete-button-div {
+
 }

@@ -97,8 +97,12 @@ Class BasePerson {
 		foreach($this->notes as $key => $note) {
 			echo "
 				<div id='note-" . $key . "'> 
-					<p class='note-date-" . $key . "' id='note-date-" . $key . "'>" . $note['date'] . " <em>you wrote</em>:</p>
-					<p class='note-text-" . $key . "' id='note-text-" . $key . "'>" . $note['note'] . "</p>
+					<div class='note-date-div' id='note-date-div-" . $key . "'>
+						<p class='note-date' id='note-date-" . $key . "'>" . $note['date'] . " <span class='inline-em'>you wrote</span>:</p>
+					</div>
+					<div class='note-text-div' id='note-text-div-" . $key ."'> 
+						<p class='note-text' id='note-text-" . $key . "'>" . $note['note'] . "</p>
+					</div>
 				</div>\n";
 		}
 	}

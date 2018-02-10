@@ -5,9 +5,7 @@ const load = () => {
 			notes.children[i].appendChild(createDeleteButton());
 		});
 		notes.children[i].addEventListener('mouseleave', () => {
-			//notes.children[i].appendChild(
 				removeDeleteButton(notes.children[i]);
-				//);
 		});
 	}
 } 
@@ -23,7 +21,6 @@ function createDeleteButton () {
 
 function removeDeleteButton (node) {
 	const button = document.getElementById('mouseoverDeleteButton');
-
 	if (node.contains(button)) {
 		button.remove();
 	}

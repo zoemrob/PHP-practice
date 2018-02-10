@@ -2,16 +2,22 @@ const load = () => {
 	const notes = document.getElementById("notes");
 
 	for (let i = 0; i < notes.children.length; i++ ) {
-		let mousedOverNote = notes.children[i];
+		const mousedOverNote = notes.children[i];
+		const mousedOverNoteText = mousedOverNote.children[1].children[0];
+		const mousedOverNoteId = mousedOverNote.getAttribute('id');
+		console.log(mousedOverNoteId);
 
 		mousedOverNote.addEventListener('mouseenter', () => {
-			mousedOverNote.children[1].appendChild(createDeleteButton());
-			mousedOverNote.children[1].setAttribute('id', 'moused-over-note')
+			mousedOverNote.appendChild(createDeleteButton());
+			mousedOverNote.setAttribute('id', 'moused-over-note')
+			mousedOverNoteText.setAttribute('class', 'moused-over-note-text')
 		});
 
 		mousedOverNote.addEventListener('mouseleave', () => {
-			mousedOverNote.children[1].removeAttribute('id');	
-			removeDeleteButton(mousedOverNote.children[1]);
+			mousedOverNote.setAttribute('id', mousedOverNoteId);
+			mousedOverNote.children[1].removeAttribute('id');
+			mousedOverNoteText.setAttribute('class', 'note-text');
+			removeDeleteButton(mousedOverNote);
 		});
 	}
 } 
@@ -21,7 +27,7 @@ window.onload = load;
 function createDeleteButton () {
 
 	const button = document.createElement('button');
-	button.innerHTML = 'DELETE';
+	button.innerHTML = 'DELETE NOTE';
 	button.setAttribute('id', 'moused-over-delete-button');
 
 	const buttonDiv = document.createElement('div');

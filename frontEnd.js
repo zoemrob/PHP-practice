@@ -31,9 +31,7 @@ const load = () => {
 } 
 
 // calls load function expression
-document.addEventListener('DOMContentLoaded', () => {
-	load
-});
+window.onload = load;
 
 /*
 	This function is used to create the delete button when a note is moused over.
@@ -45,6 +43,7 @@ function createDeleteButton () {
 	const button = document.createElement('button');
 	const buttonDiv = document.createElement('div');
 	const targetNoteToDelete = document.getElementById('moused-over-note');
+	console.log(targetNoteToDelete);
 	
 	button.innerHTML = 'DELETE NOTE';
 	button.setAttribute('id', 'moused-over-delete-button');

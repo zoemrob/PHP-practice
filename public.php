@@ -5,7 +5,6 @@
 		<title>Co-Worker Journal</title>
 		<link href="public-page-style.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-		<script src="frontEnd.js"></script>
 
 		<?php 
 		require("PersonClass.php");
@@ -29,5 +28,6 @@
 				$person->displayNotes();
 			?>
 		</div>
+		<script src="frontEnd.js"></script>
 	</body>
 </html>

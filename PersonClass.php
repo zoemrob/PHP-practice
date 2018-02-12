@@ -9,28 +9,53 @@ require('HelperClass.php');
 
 Class BasePerson {
 
+	private $dbInstance;
+	private $mongoId;
+	private $personDocument;
 	private $age;
 	private $name;
 	private $sex;
 	private $notes = [];
 
    /*  __construct method allows for the optional parameters to be created upon initialization
+	* @param $mongoId
 	* @param $name = string, name of person creating entry
-	* 
 	*
 	*/
-	public function __construct($name = null, $age = null, $sex = null) {
-		// add control flow essentially, if this is a new person, do this, if this is an existingperson do this, 
+	public function __construct($mongoId, $name = null, $age = null, $sex = null) {
+		//this is where the Person requested is queried.
+		if ($mongoId) {
+			$this->dbInstance = MongoHelper::createDBInstance();
+			$this->setMongoId($mongoId);
+			$this->personDocument = MongoHelper::queryById($this->dbInstance, $this->mongoId);
+			$this->setAge();
+			$this->setName();
+			$this->setSex();
+		} else {
 		// POSSIBLY BREAK THIS INTO TWO DIFFERENT CLASSES, ONE FOR GETTING AND SETTING A PERSON WHO EXISTS, ANOTHER FOR CREATING A NEW PERSON ENTRY
-		// SET SOME SORT OF LIVE BACKUP TO DATABASE. IF IT IS NEWLY CREATED, IT WILL STORE IN DB, IF NOT, THE CONSTRUCT ARGUMENTS WILL BE PASSED BASED ON THE RESULT OF QUERY.
+		// SET SOME SORT OF LIVE BACKUP TO DATABASE. IF IT IS NEWLY CREATED, IT WILL STORE IN DB.
 		!is_null($name) ? $this->setName($name): '';
 		!is_null($age) ? $this->setAge($age): '';
 		!is_null($sex) ? $this->setSex($sex): '';
-		// $this->displayDemographics();
+		}
 	}
 
-	public function debugNotes() {
-		var_dump($this->notes);
+	/* Method sets mongoId for person instance.
+	 * @param $mongoId = str of mongoId
+	 */
+	public function setMongoId($mongoId) {
+		$this->mongoId = $mongoId;
+	}
+
+	/* Method returns the mongoId for person instance.
+	 */
+	public function getMongoId() {
+		return $this->mongoId;
+	}
+
+
+	public function getNotes() {
+		return $this->notes;
 	}
 
 	/* echos/returns demographic information to UI/console
@@ -42,40 +67,44 @@ Class BasePerson {
 			 "<p class='demographics-data'>Gender: " . $this->sex . "</p>\n";
 	}
 
-	// Method will receive data from JavaScript or form submission
-	// Possibly from database query
-	public function setAge($num) {
-		$this->age = $num . "\n";
+	/* Method sets age for Person instance based on $this->personDocument.
+	 */
+	public function setAge() {
+		$this->age = MongoHelper::getDocAge($this->personDocument);
 	}
 
-	// Method will return age to front end PHP/Javascript to be appended to html
+	/* Method returns/echoes $this->age.
+	 */
 	public function getAge() {
 		echo "Age: " . $this->age . "\n";
-		return $this->age . "\n";
+		return $this->age;
 	}
 
-	// Method will receive data from Javascript or form submission
-	// Possibly from databse query
-	public function setName($str) {
-		$this->name = $str . "\n";
+	/* Method sets $this-name for Person instance based on $this->personDocument.
+	 */
+	public function setName() {
+		$this->name = MongoHelper::getDocName($this->personDocument);
 	}
 
-	// Method will return name to front end PHP/Javascript to be appended to html
+	/* Method returns/echoes $this->name.
+	 */
 	public function getName() {
 		echo "Name: " . $this->name . "\n";
-		return $this->name . "\n";
-	}
-	// Methood will receive data from Javascript or form submission
-	// Possibly from database query
-	// This will be a radio select or radio-liike buttons (where only one is an option)
-	public function setSex($sexChar) {
-		$sexChar === 'M' ? $this->sex = "Male\n": "Female\n";
+		return $this->name;
 	}
 
-	// Method will return sex to front end PHP/Javascript to be appended to html
+	/* Method sets $this->sex for Person instance based on $this->personDocument.
+	 */
+	public function setSex() {
+		$sexChar = MongoHelper::getDocSex($this->personDocument);
+		$sexChar === 'M' ? $this->sex = "Male": "Female";
+	}
+
+	/* Method returns/echoes $this->sex.
+	 */
 	public function getSex() {
 		echo "Sex: " . $this->sex . "\n";
-		return $this->sex . "\n";
+		return $this->sex;
 	}
 
    /* Method will add however many list items are submitted, with appropriate date tag information
@@ -138,4 +167,11 @@ Class BasePerson {
             echo $ex;
         }
     }
+
+	/* Method used simply for debugging.
+	 */
+	public function debugNotes() {
+		var_dump($this->notes);
+	}
+
 }

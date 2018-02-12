@@ -1,5 +1,7 @@
 <?php
+require('vendor/autoload.php');
 require('HelperClass.php');
+require('MongoHelper.php');
 /*
 	This Class will be used to create a new instance of a person to enter into database.
 	A new instance of this object will be created on the HTML page, and an API will scrape the information out of the instanced

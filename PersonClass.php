@@ -64,9 +64,9 @@ Class BasePerson {
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
 	public function displayDemographics() {
-		echo "<p class='demographics-data'>Name: " . $this->name . "</p>\n" .
-			 "<p class='demographics-data'>Age: " . $this->age . "</p>\n" .
-			 "<p class='demographics-data'>Gender: " . $this->sex . "</p>\n";
+		echo "<p class='demographics-data'>Name: " . $this->getName() . "</p>\n" .
+			 "<p class='demographics-data'>Age: " . $this->getAge() . "</p>\n" .
+			 "<p class='demographics-data'>Sex: " . $this->getSex() . "</p>\n";
 	}
 
 	/* Method sets age for Person instance based on $this->personDocument.
@@ -78,7 +78,7 @@ Class BasePerson {
 	/* Method returns/echoes $this->age.
 	 */
 	public function getAge() {
-		echo "Age: " . $this->age . "\n";
+		//echo "Age: " . $this->age . "\n";
 		return $this->age;
 	}
 
@@ -91,7 +91,7 @@ Class BasePerson {
 	/* Method returns/echoes $this->name.
 	 */
 	public function getName() {
-		echo "Name: " . $this->name . "\n";
+		//echo "Name: " . $this->name . "\n";
 		return $this->name;
 	}
 
@@ -105,7 +105,7 @@ Class BasePerson {
 	/* Method returns/echoes $this->sex.
 	 */
 	public function getSex() {
-		echo "Sex: " . $this->sex . "\n";
+		//echo "Sex: " . $this->sex . "\n";
 		return $this->sex;
 	}
 

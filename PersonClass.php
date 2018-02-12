@@ -42,6 +42,10 @@ Class BasePerson {
 		}
 	}
 
+	public function getDBinstance () {
+		return $this->dbInstance;
+	}
+
 	/* Method sets mongoId for person instance.
 	 * @param $mongoId = str of mongoId
 	 */
@@ -110,14 +114,15 @@ Class BasePerson {
 	}
 
    /* Method will add however many list items are submitted, with appropriate date tag information
-	* On the front-end this will be a dynamic jQuery structure where a button 'New Note' will append a * second text field to the DOM, which will be entered in the next index
-	* @param $note string that will be added to note log
+	* Method will return the note array created.
+	* @param $noteText string that will be added to note log
 	*/
- 	public function setNote($note) {
+ 	public function setNote($noteText) {
 		$lengthBefore = count($this->notes);
 		$dateTag = HelperClass::getTimeUI('dmyt');
-		array_push($this->notes, ['date' => $dateTag, 'note' => $note]);
-		// echo $lengthBefore + 1 === count($this->notes) ? "'" . $note . "' was added to the note log successfully. \n\n" : "Your message failed to post.\n\n";
+		$note = ['date' => $dateTag, 'note' => $noteText];
+		array_push($this->notes, $note);
+		return $note;
 	} 
 
    /** Method echos html elements on the initial load of the page.

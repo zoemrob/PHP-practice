@@ -51,4 +51,23 @@ Class MongoHelper {
 		return $BSONDocument->sex;
 	}
 
+	/* This method will insert the note into the notes array in the Person's Document. 
+	 * @param $dbInstance = obj - Instance of database->collection
+	 * @param $mongoId = str - Unique ObjectId
+	 * @param $note = array - containing 'date' and 'note'
+	 */
+	public static function insertNoteDB($dbInstance, $mongoId, $note) {
+		$result = $dbInstance->updateOne(
+				[
+					"_id" => new MongoDB\BSON\ObjectId($mongoId)
+				],
+				[
+					'$push' => [
+						"notes" => $note
+					]
+				]
+			);
+		return $result->isAcknowledged(); // returns 1 if success, returns 0 if failed. Should be used to respond to AJAX request.
+	}
+
 }

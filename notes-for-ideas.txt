@@ -25,9 +25,13 @@
 * 2. have the server run the setNote method, return the formatted $note template to Javascript
 * 3. have Javascript append the returned value to the UI.
 * 
-* 
-* 
-* 
-* 
-* 
-* 
+
+Insert MongoDB:
+db.getCollection('coworkerjournal').update(
+    {_id:ObjectId('5a7fe017e662dc7ec495262d')},
+    {
+        $push: {
+            'notes': {'date' : 'Sunday, February 11th, 2018 at 9:48pm', 'note' : 'Zoe tested the update method'}
+        }
+    }
+);

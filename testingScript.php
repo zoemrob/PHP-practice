@@ -5,6 +5,10 @@ $person = new BasePerson('5a7fe017e662dc7ec495262d');
 $person->getName();
 $person->getAge();
 $person->getSex();
+
+$result = MongoHelper::insertNoteDB($person->getDBInstance(), '5a7fe017e662dc7ec495262d', $person->setNote('This is an additional test note.'));
+echo $result . "\n";
+
 //$person->setNote('Here is the first note that should be loaded.');
 //var_dump($person->getNotes());
 

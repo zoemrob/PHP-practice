@@ -24,9 +24,7 @@
 			?>
 		</div>
 		<div class="notes" id="notes">
-			<?php 	
-				$person->displayNotes();
-			?>
+			<?php= $person->displayNotes() ?>
 		</div>
 		<script src="frontEnd.js"></script>
 	</body>

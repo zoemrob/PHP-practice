@@ -117,21 +117,20 @@ Class BasePerson {
 	* Method will return the note array created.
 	* @param $noteText string that will be added to note log
 	*/
- 	public function setNote($noteText) {
-		$lengthBefore = count($this->notes);
-		$dateTag = HelperClass::getTimeUI('dmyt');
-		$note = ['date' => $dateTag, 'note' => $noteText];
-		array_push($this->notes, $note);
-		return $note;
-	} 
+	public function setNote($noteText) {
+        $note = HelperClass::makeNote($noteText);
+        $this->notes[] = $note;
+        return $note;
+    }
 
    /** Method echos html elements on the initial load of the page.
     *  Uses $this->notes indexes to create unique ids and classes for every html element,
     *
     */
 	public function displayNotes() {
+		$formattedNotes = "";
 		foreach($this->notes as $key => $note) {
-			echo "
+			$formattedNotes .= "
 				<div id='note-" . $key . "'> 
 					<div class='note-date-div' id='note-date-div-" . $key . "'>
 						<p class='note-date' id='note-date-" . $key . "'>" . $note['date'] . " <span class='inline-em'>you wrote</span>:</p>
@@ -141,6 +140,7 @@ Class BasePerson {
 					</div>
 				</div>";
 		}
+		return $formattedNotes;
 	}
 	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
 	 * @param $notesToDelete, array.

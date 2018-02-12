@@ -29,4 +29,12 @@ Class HelperClass {
 		}
 
 	}
+
+	public static function makeNote($text) {
+		$note = [
+			'date' => self::getTimeUI('dmyt'),
+			'note' => $text
+		];
+		return $note;
+	}
 }

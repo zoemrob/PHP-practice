@@ -19,7 +19,4 @@ $person->deleteNotes([1, 3]);
 $person->debugNotes();
 $person->deleteNotes([0]);
 $person->debugNotes();
-<<<<<<< Updated upstream
-$person->deleteNotes([], true);
-<<<<<<< Updated upstream
 */

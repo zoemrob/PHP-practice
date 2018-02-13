@@ -1,13 +1,13 @@
 <?php
 // Testing script, loads in various data, runs tests on it for debugging. 
 require('PersonClass.php');
-$person = new BasePerson('5a7fe017e662dc7ec495262d');
+$person = new BasePerson('5a82739fb505a6e0f0d67996');
 $person->getName();
 $person->getAge();
 $person->getSex();
 
-/*$result = MongoHelper::insertNoteDB($person->getDBInstance(), '5a7fe017e662dc7ec495262d', $person->setNewNote('This is an additional test note.'));
+$result = MongoHelper::insertNoteDB($person->getDBInstance(), '5a82739fb505a6e0f0d67996', $person->setNewNote('Monte, Josh E., and I talked in the living room about how Josh is buying a house, and about the origin of the phrase "Numnuts", and then Monte went to bed.'));
 echo $result . "\n";
-*/
-$person->setNotesFromDB();
-echo $person->displayNotes();
+
+/*$person->setNotesFromDB();
+echo $person->displayNotes();*/

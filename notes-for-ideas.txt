@@ -35,3 +35,11 @@ db.getCollection('coworkerjournal').update(
         }
     }
 );
+
+.insertOne({
+    "firstName" : "Monte",
+    "lastName" : "Carothers",
+    "age" :52,
+    "sex" : "M",
+    "notes" : [],
+    });

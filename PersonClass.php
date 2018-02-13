@@ -60,6 +60,13 @@ Class BasePerson {
 		return $this->mongoId;
 	}
 
+	/* Method returns the BSON DB document from the object instance.
+	 * 
+	 *
+	 */
+	public function getPersonDocument() {
+		return $this->personDocument;
+	}
 
 	public function getNotes() {
 		return $this->notes;
@@ -114,7 +121,7 @@ Class BasePerson {
 		return $this->sex;
 	}
 
-	/*
+	/* Called on construct, fetches notes from the database.
 	 *
 	 *
 	 */
@@ -122,13 +129,6 @@ Class BasePerson {
 		$this->notes = MongoHelper::getDocNotes($this->personDocument);
 	}
 
-	/* Method returns the BSON DB document from the object instance.
-	 * 
-	 *
-	 */
-	public function getPersonDocument() {
-		return $this->personDocument;
-	}
 
    /* Method will add however many list items are submitted, with appropriate date tag information
 	* Method will return the note array created.

@@ -33,6 +33,7 @@ Class BasePerson {
 			$this->setAge();
 			$this->setName();
 			$this->setSex();
+			$this->setNotesFromDB();
 		} else {
 		// POSSIBLY BREAK THIS INTO TWO DIFFERENT CLASSES, ONE FOR GETTING AND SETTING A PERSON WHO EXISTS, ANOTHER FOR CREATING A NEW PERSON ENTRY
 		// SET SOME SORT OF LIVE BACKUP TO DATABASE. IF IT IS NEWLY CREATED, IT WILL STORE IN DB.
@@ -113,11 +114,27 @@ Class BasePerson {
 		return $this->sex;
 	}
 
+	/*
+	 *
+	 *
+	 */
+	public function setNotesFromDB() {
+		$this->notes = MongoHelper::getDocNotes($this->personDocument);
+	}
+
+	/* Method returns the BSON DB document from the object instance.
+	 * 
+	 *
+	 */
+	public function getPersonDocument() {
+		return $this->personDocument;
+	}
+
    /* Method will add however many list items are submitted, with appropriate date tag information
 	* Method will return the note array created.
 	* @param $noteText string that will be added to note log
 	*/
-	public function setNote($noteText) {
+	public function setNewNote($noteText) {
         $note = HelperClass::makeNote($noteText);
         $this->notes[] = $note;
         return $note;
@@ -141,7 +158,9 @@ Class BasePerson {
 				</div>";
 		}
 		return $formattedNotes;
+		var_dump($formattedNotes);
 	}
+
 	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
 	 * @param $notesToDelete, array.
 	 * @param $deleteAll, optional bool to delete all notes.

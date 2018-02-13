@@ -51,6 +51,15 @@ Class MongoHelper {
 		return $BSONDocument->sex;
 	}
 
+	public static function getDocNotes($BSONDocument) {
+		$notes = array();
+		foreach($BSONDocument->notes as $noteObj) {
+			$note = ['date' => $noteObj['date'], 'note' => $noteObj['note']];
+			$notes[] = $note;
+		}
+		return $notes;
+	}
+
 	/* This method will insert the note into the notes array in the Person's Document. 
 	 * @param $dbInstance = obj - Instance of database->collection
 	 * @param $mongoId = str - Unique ObjectId

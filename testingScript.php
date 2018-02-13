@@ -6,6 +6,8 @@ $person->getName();
 $person->getAge();
 $person->getSex();
 
-$result = MongoHelper::insertNoteDB($person->getDBInstance(), '5a7fe017e662dc7ec495262d', $person->setNote('This is an additional test note.'));
+/*$result = MongoHelper::insertNoteDB($person->getDBInstance(), '5a7fe017e662dc7ec495262d', $person->setNewNote('This is an additional test note.'));
 echo $result . "\n";
-
+*/
+$person->setNotesFromDB();
+echo $person->displayNotes();

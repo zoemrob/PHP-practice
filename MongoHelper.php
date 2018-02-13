@@ -78,5 +78,31 @@ Class MongoHelper {
 			);
 		return $result->isAcknowledged(); // returns 1 if success, returns 0 if failed. Should be used to respond to AJAX request.
 	}
-
+	/* Method will delete a note from a Document in an aray
+	 * @param $dbInstance = obj, db->collection to delete from
+	 * @param $mongoId = string, of document to delete from
+	 * @param $index = int, index of notes to delete from in document.
+	 */
+	public static function deleteNoteFromDB($dbInstance, $mongoId, $index) {
+		$dbInstance->updateOne(
+			[
+				'_id' => new MongoDB\BSON\ObjectId($mongoId)
+			],
+			[
+				'$unset' => [
+					'notes.' . $index => 1
+				]
+			]
+		);
+		$result = $dbInstance->updateOne(
+			[
+				'_id' => new MongoDB\BSON\ObjectId($mongoId)
+			],
+			[
+				$pull => [
+					'notes' => null
+				]
+			]
+		);
+	}
 }

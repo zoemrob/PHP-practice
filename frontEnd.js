@@ -43,7 +43,6 @@ function createDeleteButton () {
 	const button = document.createElement('button');
 	const buttonDiv = document.createElement('div');
 	const targetNoteToDelete = document.getElementById('moused-over-note');
-	console.log(targetNoteToDelete);
 	
 	button.innerHTML = 'DELETE NOTE';
 	button.setAttribute('id', 'moused-over-delete-button');

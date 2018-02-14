@@ -11,7 +11,7 @@ require('HelperClass.php');
 
 Class BasePerson {
 
-	private $dbInstance;
+	private $collection;
 	private $mongoId;
 	private $personDocument;
 	private $age;
@@ -27,9 +27,9 @@ Class BasePerson {
 	public function __construct($mongoId, $name = null, $age = null, $sex = null) {
 		//this is where the Person requested is queried.
 		if ($mongoId) {
-			$this->dbInstance = MongoHelper::createDBInstance();
+			$this->collection = MongoHelper::createDBInstance();
 			$this->setMongoId($mongoId);
-			$this->personDocument = MongoHelper::queryById($this->dbInstance, $this->mongoId);
+			$this->personDocument = MongoHelper::queryById($this->collection, $this->mongoId);
 			$this->setAge();
 			$this->setName();
 			$this->setSex();
@@ -43,8 +43,8 @@ Class BasePerson {
 		}
 	}
 
-	public function getDBinstance () {
-		return $this->dbInstance;
+	public function getCollection () {
+		return $this->collection;
 	}
 
 	/* Method sets mongoId for person instance.

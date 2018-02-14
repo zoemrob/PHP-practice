@@ -4,7 +4,7 @@ require('vendor/autoload.php');
 Class MongoHelper {
 
     /*
-	 *	This method is used to create an instance of the coworkerjournal instance.
+	 *	This method is used to create an instance of the coworkerjournal db.
 	 */
 	public static function createDBInstance() {
 
@@ -14,17 +14,50 @@ Class MongoHelper {
 
 	/*
 	 *	This method returns the BSON Document of a DB by ObjectId
-	 *	@param $dbInstance = instance of MongoDB->coworkerjournal->Collection that is being queried
+	 *	@param $collection = instance of MongoDB->coworkerjournal->Collection that is being queried
 	 *	@param $mongoId = the ObjectId of the Document being retrieved.
 	 */
-	public static function queryById($dbInstance, $mongoId) {
-		$document = $dbInstance->findOne(
+	public static function queryById($collection, $mongoId) {
+		$document = $collection->findOne(
 			[
 				"_id" => new MongoDB\BSON\ObjectId($mongoId)
 			]
 		);
 		return $document;
 	}
+
+	// WORKS, but the CURTIS methods are better
+	public static function queryByName($collection, $name) {
+		$regexp = new MongoDB\BSON\Regex('^' . $name, 'i');
+		$result = $collection->find(
+			[
+				'$or' => [
+					[
+					'firstName' => $regexp
+					],
+					[
+					'lastName' => $regexp
+					]
+				]
+			]
+		)->toArray();
+		return $result;
+	}
+
+
+	// CURTIS METHODS
+	public static function getNotes($collection, $match) {
+	    return $collection->findOne($match, ['notes.date' => 1, 'notes.note' => 1])['notes'] ?? [];
+	}
+
+	public static function getNotesById($collection, $id) {
+	    return self::getNotes($collection, ['_id' => $id]);
+	}
+
+	public static function getNotesByName($collection, $name) {
+	    return self::getNotes($collection, ['name' => new MongoDB\BSON\Regex('^' . $name)]);
+	}
+
 
 	/*
 	 *	This method returns the "firstName" &/or "lastName" value from a Document.
@@ -61,12 +94,12 @@ Class MongoHelper {
 	}
 
 	/* This method will insert the note into the notes array in the Person's Document. 
-	 * @param $dbInstance = obj - Instance of database->collection
+	 * @param $collection = obj - Instance of database->collection
 	 * @param $mongoId = str - Unique ObjectId
 	 * @param $note = array - containing 'date' and 'note'
 	 */
-	public static function insertNoteDB($dbInstance, $mongoId, $note) {
-		$result = $dbInstance->updateOne(
+	public static function insertNoteDB($collection, $mongoId, $note) {
+		$result = $collection->updateOne(
 				[
 					"_id" => new MongoDB\BSON\ObjectId($mongoId)
 				],
@@ -79,12 +112,12 @@ Class MongoHelper {
 		return $result->isAcknowledged(); // returns 1 if success, returns 0 if failed. Should be used to respond to AJAX request.
 	}
 	/* Method will delete a note from a Document in an aray
-	 * @param $dbInstance = obj, db->collection to delete from
+	 * @param $collection = obj, db->collection to delete from
 	 * @param $mongoId = string, of document to delete from
 	 * @param $index = int, index of notes to delete from in document.
 	 */
-	public static function deleteNoteFromDB($dbInstance, $mongoId, $index) {
-		$dbInstance->updateOne(
+	public static function deleteNoteFromDB($collection, $mongoId, $index) {
+		$collection->updateOne(
 			[
 				'_id' => new MongoDB\BSON\ObjectId($mongoId)
 			],
@@ -94,7 +127,7 @@ Class MongoHelper {
 				]
 			]
 		);
-		$result = $dbInstance->updateOne(
+		$result = $collection->updateOne(
 			[
 				'_id' => new MongoDB\BSON\ObjectId($mongoId)
 			],

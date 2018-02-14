@@ -6,25 +6,23 @@ Class HelperClass {
 	* @param $format, passes in a string to format time
 	* @param optional integer, GMT timezone, default timezone set to GMT -8:00 PST
 	*/
-	public static function getTimeUI(string $format, $timezone = -8) {
-		$dayLightSavingsCheck = time() + 3600*($timezone+date("I"));
-
+	public static function getTimeUI(string $format) {
 		switch($format) {
 			// example: Friday, February 9th, 2017 at 3:35pm
 			case 'dmyt':
-				return gmdate('l, F jS, Y', $dayLightSavingsCheck) . ' at ' . date('g:ia', $dayLightSavingsCheck);
+				return date('l, F jS, Y') . ' at ' . date('g:ia');
 				break;
 			// example: Friday, February 9th
 			case 'dmy':
-				return gmdate('l, F jS, Y', $dayLightSavingsCheck);
+				return date('l, F jS, Y');
 				break;
 			// example: February 9th, 2017
 			case 'my':
-				return gmdate('F jS, Y', $dayLightSavingsCheck);
+				return date('F jS, Y');
 				break;
 			// example: Friday
 			case 'd':
-				return gmdate('l', $dayLightSavingsCheck);
+				return date('l');
 				break;
 		}
 

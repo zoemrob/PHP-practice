@@ -55,7 +55,7 @@ Class MongoHelper {
 	}
 
 	public static function getNotesByName($collection, $name) {
-	    return self::getNotes($collection, ['name' => new MongoDB\BSON\Regex('^' . $name)]);
+	    return self::getNotes($collection, ['firstName' => new MongoDB\BSON\Regex('^' . $name, 'i')]);
 	}
 
 
@@ -84,6 +84,8 @@ Class MongoHelper {
 		return $BSONDocument->sex;
 	}
 
+
+	// Will be deprecated!!!
 	public static function getDocNotes($BSONDocument) {
 		$notes = array();
 		foreach($BSONDocument->notes as $noteObj) {
@@ -91,6 +93,20 @@ Class MongoHelper {
 			$notes[] = $note;
 		}
 		return $notes;
+	}
+
+	public static function returnNoteInfo($notes, $person = null) {
+		if ($person) {
+			foreach($notes as $note) {
+				$person->notes[] = ['date' => $note['date'], 'note' => $note['note']];
+			}
+		} else {
+			$notesArray = array();
+			foreach($notes as $note) {
+				$notesArray[] = ['date' => $note['date'], 'note' => $note['note']];
+			}
+			return $notesArray;		
+		}
 	}
 
 	/* This method will insert the note into the notes array in the Person's Document. 

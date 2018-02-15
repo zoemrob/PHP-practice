@@ -10,9 +10,24 @@ $person = new BasePerson('5a82739fb505a6e0f0d67996');
 //$result = MongoHelper::queryByName($person->getCollection(), "z");
 //var_dump($result);
 
-$result = MongoHelper::getNotesByName(MongoHelper::createDBInstance(), 'zo');
-$notes = MongoHelper::returnNoteInfo($result);
-var_dump($notes);
+$db = MongoHelper::createDBInstance();
+/*$db->insertOne(
+	[
+		'firstName' => 'Suzi',
+		'lastName' => 'Austin',
+		'age' => 31,
+		'sex' => 'F',
+		'notes' => [],
+	]
+	);
+*/
+$result = MongoHelper::queryByName($db, 'Suzi');
+foreach ($result as $data) {
+	var_dump($data);
+};
+//$result = MongoHelper::getNotesByName(MongoHelper::createDBInstance(), 'zo');
+//$notes = MongoHelper::returnNoteInfo($result);
+//var_dump($notes);
 //var_dump($result);
 //MongoHelper::getDocNotes($result);
 

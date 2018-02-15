@@ -2,6 +2,7 @@
 require('MongoHelper.php');
 //require('vendor/autoload.php');
 require('HelperClass.php');
+require('AbstractPerson.php');
 /*
 	This Class will be used to create a new instance of a person to enter into database.
 	A new instance of this object will be created on the HTML page, and an API will scrape the information out of the instanced
@@ -9,15 +10,15 @@ require('HelperClass.php');
 	$age, $name, $sex, and $notes will be received from form submission.
 */
 
-Class BasePerson {
+Class BasePerson extends AbstractPerson {
 
-	private $collection;
-	private $mongoId;
-	private $personDocument;
-	private $age;
-	private $name;
-	private $sex;
-	private $notes = [];
+					/*	private $collection;
+						private $mongoId;
+						private $personDocument;
+						private $age;
+						private $name;
+						private $sex;
+						private $notes = [];*/
 
    /*  __construct method allows for the optional parameters to be created upon initialization
 	* @param $mongoId
@@ -27,7 +28,7 @@ Class BasePerson {
 	public function __construct($mongoId, $name = null, $age = null, $sex = null) {
 		//this is where the Person requested is queried.
 		if ($mongoId) {
-			$this->collection = MongoHelper::createDBInstance();
+			$this->setCollection();
 			$this->setMongoId($mongoId);
 			$this->personDocument = MongoHelper::queryById($this->collection, $this->mongoId);
 			$this->setAge();
@@ -43,9 +44,13 @@ Class BasePerson {
 		}
 	}
 
-	public function getCollection () {
-		return $this->collection;
-	}
+								/*public function getCollection () {
+									return $this->collection;
+								}
+*/
+								/*	public function setCollection() {
+										$this->collection = MongoHelper::createDBInstance();
+									}*/
 
 	/* Method sets mongoId for person instance.
 	 * @param $mongoId = str of mongoId
@@ -56,9 +61,9 @@ Class BasePerson {
 
 	/* Method returns the mongoId for person instance.
 	 */
-	public function getMongoId() {
-		return $this->mongoId;
-	}
+								/*	public function getMongoId() {
+										return $this->mongoId;
+									}*/
 
 	/* Method returns the BSON DB document from the object instance.
 	 * 
@@ -134,11 +139,11 @@ Class BasePerson {
 	* Method will return the note array created.
 	* @param $noteText string that will be added to note log
 	*/
-	public function setNewNote($noteText) {
-        $note = HelperClass::makeNote($noteText);
-        $this->notes[] = $note;
-        return $note;
-    }
+							/*	public function setNewNote($noteText) {
+							        $note = HelperClass::makeNote($noteText);
+							        $this->notes[] = $note;
+							        return $note;
+							    }*/
 
    /** Method echos html elements on the initial load of the page.
     *  Uses $this->notes indexes to create unique ids and classes for every html element,

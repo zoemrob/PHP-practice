@@ -27,6 +27,21 @@ p.note-text {
 	margin: 0 auto;
 }
 
+.entry-fields {
+	text-align: center;
+}
+
+.form {
+	padding: 10px;
+}
+
+.subheader {
+	text-align: center;
+	font-size: 30px;
+	padding-bottom: 30px;
+	margin: 0;
+}
+
 .demographics-data {
 	text-align: center;
 	font-size: 30px;

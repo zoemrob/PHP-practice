@@ -154,4 +154,16 @@ Class MongoHelper {
 			]
 		);
 	}
+
+	public static function insertNewEntryIntoDB($collection, $firstName, $lastName, $age, $sex) {
+		$result = $collection->insertOne(
+			[
+				'firstName' => $firstName,
+				'lastName' => $lastName,
+				'age' => $age,
+				'sex' => $sex
+			]
+		);
+		return $result->isAcknowledged();
+	}
 }

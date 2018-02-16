@@ -7,8 +7,8 @@
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
 		<?php 
-		require("PersonClass.php");
-		require("testingScript.php");
+		//require("PersonClass.php");
+		//require("testingScript.php");
 		//$person = new BasePerson("5a82739fb505a6e0f0d67996"); 
 		?>
 	</head>
@@ -19,7 +19,7 @@
 		<div class="container">
 <!-- 		Everything in this div will be the ultimate file, and will be the page dynamically appended.-->
 			<div class="entry-fields">
-				<form method="post" id="new-entry-form" action="/testingScript.php">
+				<form id="new-entry-form">
 					<h2 class="subheader">New Entry</h2>
 					<div class="form">
 						<div class="form">
@@ -43,7 +43,7 @@
 						</div>
 					</div>
 					<div class="form">
-						<button type="submit">SUBMIT</button>
+						<button type="click" id="submit-button">SUBMIT</button>
 					</div>
 				</form>
 			</div>

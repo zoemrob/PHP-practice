@@ -1,5 +1,10 @@
 <?php
+require('NewEntryClass.php');
+$receivedData = file_get_contents('php://input');
+echo $receivedData;
+// I will sanitize the data as a stretch goal :) Right now it is only local, so
+// https://stackoverflow.com/questions/37533162/sanitize-json-with-php 
+// link to sanitize.
 
-$receivedData = $_POST('parsedData');
 $newEntry = new NewEntry($receivedData);
 

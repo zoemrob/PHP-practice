@@ -35,4 +35,8 @@ Class HelperClass {
 		];
 		return $note;
 	}
+
+	public static function JSONtoArray($JSONString) {
+		return json_decode($JSONString, true);
+	}
 }

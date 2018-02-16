@@ -19,6 +19,16 @@ form.addEventListener('submit', () => {
 		return false;
 	}
 
+	const parsedData = JSON.stringify({
+		"firstName" : firstName,
+		"lastName" : lastName,
+		"age" : age,
+		"sex" : sex,
+		// include php method for handling
+		"method" : ""
+	});
+
+
 
 });
 /*const verify = function () {

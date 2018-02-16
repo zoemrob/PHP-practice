@@ -8,6 +8,7 @@
 
 		<?php 
 		require("PersonClass.php");
+		require("testingScript.php");
 		//$person = new BasePerson("5a82739fb505a6e0f0d67996"); 
 		?>
 	</head>
@@ -18,20 +19,20 @@
 		<div class="container">
 <!-- 		Everything in this div will be the ultimate file, and will be the page dynamically appended.-->
 			<div class="entry-fields">
-				<form id="new-entry-form">
+				<form method="post" id="new-entry-form" action="/testingScript.php">
 					<h2 class="subheader">New Entry</h2>
 					<div class="form">
 						<div class="form">
 							<label>First Name:</label>
-							<input id="first-name" type="text">
+							<input id="first-name" name="first-name" type="text" placeholder="Enter first name" required>
 						</div>
 						<div class="form">
 							<label>Last Name:</label>
-							<input id="last-name" type="text">
+							<input id="last-name" name="last-name" type="text" placeholder="Enter last name" required>
 						</div>
 						<div class="form">
 							<label>Age:</label>
-							<input id="age" type="text">
+							<input id="age" name="age" type="number" placeholder="Age" required>
 						</div>
 						<div class="form">
 							<label>Gender:</label>
@@ -42,7 +43,7 @@
 						</div>
 					</div>
 					<div class="form">
-						<button type="button" onclick="submit()">SUBMIT</button>
+						<button type="submit">SUBMIT</button>
 					</div>
 				</form>
 			</div>
@@ -50,6 +51,6 @@
 				
 			</div>
 		</div>
-		<script src="frontEnd.js"></script>
+		<script src="newEntryHandler.js"></script>
 	</body>
 </html>

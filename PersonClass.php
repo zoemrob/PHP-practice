@@ -1,31 +1,23 @@
 <?php
 require('MongoHelper.php');
-//require('vendor/autoload.php');
 require('HelperClass.php');
 require('AbstractPerson.php');
 /*
-	This Class will be used to create a new instance of a person to enter into database.
-	A new instance of this object will be created on the HTML page, and an API will scrape the information out of the instanced
-	objecct to create a database entry.
-	$age, $name, $sex, and $notes will be received from form submission.
+	This Class is used to render an entry from the database.
 */
 
 Class BasePerson extends AbstractPerson {
 
-					/*	private $collection;
-						private $mongoId;
-						private $personDocument;
-						private $age;
-						private $name;
-						private $sex;
-						private $notes = [];*/
+	protected $personDocument;
+	protected $mongoId;
+	protected $notes = [];
 
    /*  __construct method allows for the optional parameters to be created upon initialization
 	* @param $mongoId
 	* @param $name = string, name of person creating entry
 	*
 	*/
-	public function __construct($mongoId, $name = null, $age = null, $sex = null) {
+	public function __construct($mongoId) {
 		//this is where the Person requested is queried.
 		if ($mongoId) {
 			$this->setCollection();
@@ -36,21 +28,9 @@ Class BasePerson extends AbstractPerson {
 			$this->setSex();
 			$this->setNotesFromDB();
 		} else {
-		// POSSIBLY BREAK THIS INTO TWO DIFFERENT CLASSES, ONE FOR GETTING AND SETTING A PERSON WHO EXISTS, ANOTHER FOR CREATING A NEW PERSON ENTRY
-		// SET SOME SORT OF LIVE BACKUP TO DATABASE. IF IT IS NEWLY CREATED, IT WILL STORE IN DB.
-		!is_null($name) ? $this->setName($name): '';
-		!is_null($age) ? $this->setAge($age): '';
-		!is_null($sex) ? $this->setSex($sex): '';
+
 		}
 	}
-
-								/*public function getCollection () {
-									return $this->collection;
-								}
-*/
-								/*	public function setCollection() {
-										$this->collection = MongoHelper::createDBInstance();
-									}*/
 
 	/* Method sets mongoId for person instance.
 	 * @param $mongoId = str of mongoId
@@ -58,12 +38,6 @@ Class BasePerson extends AbstractPerson {
 	public function setMongoId($mongoId) {
 		$this->mongoId = $mongoId;
 	}
-
-	/* Method returns the mongoId for person instance.
-	 */
-								/*	public function getMongoId() {
-										return $this->mongoId;
-									}*/
 
 	/* Method returns the BSON DB document from the object instance.
 	 * 
@@ -92,24 +66,10 @@ Class BasePerson extends AbstractPerson {
 		$this->age = MongoHelper::getDocAge($this->personDocument);
 	}
 
-	/* Method returns/echoes $this->age.
-	 */
-	public function getAge() {
-		//echo "Age: " . $this->age . "\n";
-		return $this->age;
-	}
-
 	/* Method sets $this-name for Person instance based on $this->personDocument.
 	 */
 	public function setName() {
 		$this->name = MongoHelper::getDocName($this->personDocument);
-	}
-
-	/* Method returns/echoes $this->name.
-	 */
-	public function getName() {
-		//echo "Name: " . $this->name . "\n";
-		return $this->name;
 	}
 
 	/* Method sets $this->sex for Person instance based on $this->personDocument.
@@ -119,31 +79,13 @@ Class BasePerson extends AbstractPerson {
 		$sexChar === 'M' ? $this->sex = "Male": "Female";
 	}
 
-	/* Method returns/echoes $this->sex.
-	 */
-	public function getSex() {
-		//echo "Sex: " . $this->sex . "\n";
-		return $this->sex;
-	}
-
 	/* Called on construct, fetches notes from the database.
 	 *
 	 *
 	 */
 	public function setNotesFromDB() {
-		$this->notes = MongoHelper::getDocNotes($this->personDocument);
+		$this->notes = MongoHelper::getDocNotes($this->personDocument); //stay here
 	}
-
-
-   /* Method will add however many list items are submitted, with appropriate date tag information
-	* Method will return the note array created.
-	* @param $noteText string that will be added to note log
-	*/
-							/*	public function setNewNote($noteText) {
-							        $note = HelperClass::makeNote($noteText);
-							        $this->notes[] = $note;
-							        return $note;
-							    }*/
 
    /** Method echos html elements on the initial load of the page.
     *  Uses $this->notes indexes to create unique ids and classes for every html element,

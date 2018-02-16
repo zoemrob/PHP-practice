@@ -1,15 +1,16 @@
 <?php
 
-Class AbstractPerson {
+abstract Class AbstractPerson {
 	
 	protected $collection;
-	protected $mongoId;
-	protected $personDocument;
 	protected $age;
 	protected $name;
 	protected $sex;
-	protected $notes = [];
+	protected $notes;
 
+   	public function setCollection() {
+		$this->collection = MongoHelper::createDBInstance();
+	}
 	public function getCollection () {
 		return $this->collection;
 	}
@@ -20,10 +21,7 @@ Class AbstractPerson {
         return $note;
     }
 
-   	public function setCollection() {
-		$this->collection = MongoHelper::createDBInstance();
-	}
-
+    abstract public function setMongoId($mongoId);
 	/* Method returns the mongoId for person instance.
 	 */
 	public function getMongoId() {
@@ -31,8 +29,25 @@ Class AbstractPerson {
 	}
 
 	abstract public function setAge();
+	/* Method returns $this->age.
+	 */
+	public function getAge() {
+		return $this->age;
+	}
 
-	abstract public function __construct();
+	abstract public function setSex();
+	/* Method returns $this->sex.
+	 */
+	public function getSex() {					
+		return $this->sex;
+	}
+
+	abstract public function setName();
+	/* Method returns $this->name.
+	 */
+	public function getName() {
+		return $this->name;
+	}
 
 
 }

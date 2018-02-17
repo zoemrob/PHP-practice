@@ -47,9 +47,7 @@
 					</div>
 				</form>
 			</div>
-			<div class="submit-button">
-				
-			</div>
+			
 		</div>
 		<script src="newEntryHandler.js"></script>
 	</body>

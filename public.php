@@ -15,10 +15,10 @@
 		?>
 	</head>
 	<body>
+		<div class="header">
+			<h1 class="header-text">Co-Worker Journal</h1>
+		</div>
 		<div class="container">
-			<div class="header">
-				<h1 class="header-text">Co-Worker Journal</h1>
-			</div>
 			<div class="demographics">
 				<?php 
 					$person->displayDemographics(); 

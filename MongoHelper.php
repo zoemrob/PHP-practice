@@ -160,8 +160,9 @@ Class MongoHelper {
 			[
 				'firstName' => $firstName,
 				'lastName' => $lastName,
-				'age' => $age,
-				'sex' => $sex
+				'age' => (int)$age,
+				'sex' => $sex,
+				'notes' => []
 			]
 		);
 		return $result->isAcknowledged();

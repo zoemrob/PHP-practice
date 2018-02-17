@@ -22,19 +22,29 @@ Class NewEntry extends AbstractPerson {
 	}
 
 	// this method sets the $firstName, $lastName, and $name properties from the $JSONString arg passed to the constructor.
-	public function setName() {
+	protected function setName() {
 		$this->firstName = $this->receivedData['firstName'];
 		$this->lastName = $this->receivedData['lastName'];
 		$this->name = $this->firstName . " " . $this->lastName;
 	}
 
+	// gets $this->firstName
+	protected function getFirstName() {
+		return $this->firstName;
+	}
+
+	// gets $this->lastName
+	protected function getLastName() {
+		return $this->lastName;
+	}
+
 	// this method sets the $age property from the $JSONString arg passed to the constructor.
-	public function setAge() {
+	protected function setAge() {
 		$this->age = $this->receivedData['age'];
 	}
 
 	// this method sets the $sex property from the $JSONString arg passed to the constructor.
-	public function setSex() {
+	protected function setSex() {
 		$this->sex = $this->receivedData['sex'];
 	}
 
@@ -49,7 +59,7 @@ Class NewEntry extends AbstractPerson {
 	}
 
 	// this method allows for the $JSONString data to be set used to add a new entry to the database collection.
-	public function insertEntryIntoDB($firstName, $lastName, $sex, $age) {
-		echo MongoHelper::insertNewEntryIntoDB($this->getCollection(), $this->firstName, $this->lastName, $this->sex, $this->age);
+	public function insertEntryIntoDB() {
+		return MongoHelper::insertNewEntryIntoDB($this->getCollection(), $this->getFirstName(), $this->getLastName(), $this->getSex(), $this->getAge());
 	}
 }

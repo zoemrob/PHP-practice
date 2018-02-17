@@ -6,5 +6,5 @@ $receivedData = file_get_contents('php://input');
 // link to sanitize.
 
 $newEntry = new NewEntry($receivedData);
-echo $receivedData;
-
+$confirmation = $newEntry->insertEntryIntoDB();
+echo $confirmation;

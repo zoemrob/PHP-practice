@@ -23,7 +23,7 @@ p.note-text {
 }
 
 .notes {
-	max-width: 85%;
+	max-width: 50%;
 	margin: 0 auto;
 }
 
@@ -49,7 +49,7 @@ p.note-text {
 	margin: 0;
 }
 
-.header {
+.header, .new-entry-div {
 	background-color: #e2ba6f;
 	max-width: 50%;
 	margin: 0 auto;
@@ -98,5 +98,15 @@ p.moused-over-note-text {
 
 #moused-over-delete-button {
 	font-family: 'Montserrat', sans-serif;
+}
 
+.new-entry-div {
+	padding: 3px;
+	text-align:right;
+}
+
+#new-entry-button {
+	margin-right: 100px;
+	padding: 10px;
+	width: 42.5%;
 }

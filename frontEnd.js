@@ -49,6 +49,13 @@ const load = () => {
 		});
 	});
 
+	/*
+		************************************************************************************************************************************
+		Add a client-side data parser function. One that checks all incoming data, and checkes 'dataType', and knows how to handle the data.	
+		************************************************************************************************************************************
+	*/
+
+
 	searchBar.addEventListener('keyup', () => {
 		const nameData = JSON.stringify({'dataType': 'name', 'data' : searchBar.value}); // set dataType for form handler to process
 		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]

@@ -78,9 +78,10 @@ Class HelperClass {
 	// @param $dataType str, lets client know how to process data.
 	// @param $data, mixed, data to send to client
 	public static function sendClientData($dataType, $data) {
-		$agreeableData = array();
-		$agreeableData[] = 'dataType' => $dataType;
-		$agreeableData[] = 'data' => $data;
-		echo $agreeableData;
+		$agreeableData = array(
+			'dataType' => $dataType,
+			'data' => $data
+			);
+		echo json_encode($agreeableData);
 	}
 }

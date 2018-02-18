@@ -13,9 +13,11 @@ Class MongoHelper {
 	}
 
 	public static function getMongoIdString($cursor) {
+		$results = array();
 		foreach($cursor as $mongoId) {
-			return $mongoId->_id;
+			$results[] = $mongoId->_id;
 		}
+		return $results;
 	}
 
 	/*

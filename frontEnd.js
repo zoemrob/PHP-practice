@@ -49,32 +49,28 @@ const load = () => {
 		});
 	});
 
-	/*
-		************************************************************************************************************************************
-		Add a client-side data parser function. One that checks all incoming data, and checkes 'dataType', and knows how to handle the data.	
-		************************************************************************************************************************************
-	*/
 
-
+	// *** Search Bar Function ***
 	searchBar.addEventListener('keyup', () => {
 		const nameData = JSON.stringify({'dataType': 'name', 'data' : searchBar.value}); // set dataType for form handler to process
 		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]
 			console.log(response);
-/*			response.forEach(element => {
-				const displayName = element['firstName'] + ' ' + element['lastName']; 
-				const searchResult = document.createElement('div');
-				searchResult.setAttribute('id', element['mongoId']);
+			const people = parseResponse(response);
+			people.forEach(person => {
+				const displayName = person.firstName + ' ' + person.lastName, 
+					searchResult = document.createElement('div');
+				searchResult.setAttribute('id', person.mongoId);
 				searchResult.setAttribute('class', 'search-results');
 				searchResult.innerHTML = displayName;
 				searchResult.addEventListener('click', () => {
-					const mongoIdData = JSON.stringify(['dataType': 'mongoId', 'data' : searchResult.getAttribute('id')]);
+					const mongoIdData = JSON.stringify({'dataType': 'mongoId', 'data' : searchResult.getAttribute('id')});
 					postAjax('SearchHandler.php', data, function(response) {
 						// This will be the PersonInstance page of the person who was searched for.
 					});
 				})
 				navBar.appendChild(searchResult);
 
-			});*/
+			});
 		});
 	});
 
@@ -82,6 +78,31 @@ const load = () => {
 
 // calls load function expression
 window.onload = load;
+	/*
+		************************************************************************************************************************************
+		Add a client-side data parser function. One that checks all incoming data, and checkes 'dataType', and knows how to handle the data.	
+		************************************************************************************************************************************
+	*/
+
+function parseResponse(response) {
+	const formattedResponse = JSON.parse(response);
+	const dataType = formattedResponse.dataType;
+	switch (dataType) {
+		case 'mongoId&Name':
+			people = [];
+			formattedResponse.data.forEach(person => {
+				const obj = {
+					mongoId: person.mongoId.$oid,
+					firstName: person.firstName,
+					lastName: person.lastName 
+				};
+				people.push(obj);
+			});
+			return people;
+			break;
+	}
+
+}
 
 /*
 	This function is used to create the delete button when a note is moused over.

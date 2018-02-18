@@ -15,7 +15,7 @@
 		<div class="header">
 			<h1 class="header-text">Co-Worker Journal</h1>
 		</div>
-		<div class="nav-div">
+		<div class="nav-div" id="nav-div">
 <!-- 			<button id="search" type="button" class="navigation">Search</button> -->
 			<input id="search" type="text" placeholder="Search" class="navigation">
 			<button id="new-entry-button" type="button" class="navigation">New Entry</button>

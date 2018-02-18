@@ -77,11 +77,11 @@ Class HelperClass {
 	// This method formats the data into JSON in the agreeable format and sends it.
 	// @param $dataType str, lets client know how to process data.
 	// @param $data, mixed, data to send to client
-	public static function sendClientData($dataType, $data) {
+	public static function formatClientData($dataType, $data) {
 		$agreeableData = array(
 			'dataType' => $dataType,
 			'data' => $data
 			);
-		echo json_encode($agreeableData);
+		return $agreeableData;
 	}
 }

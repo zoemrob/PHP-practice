@@ -10,13 +10,14 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 
 	switch ($clientData['dataType']) {
 		case 'name':
+//			$readyToSend = array();
 			$cursor = MongoHelper::queryByName(MongoHelper::createDBInstance(), $data);
-			$results = MongoHelper::getMongoIdString($cursor);
-			HelperClass::sendClientData('mongoId', $results);
+			$readyToSend = HelperClass::formatClientData('mongoId&Name', MongoHelper::getNameAndMongoId($cursor));
+			echo json_encode($readyToSend);
 			break;
-	}
-	
+	}	
+
 } else {
-	HelperClass::sendClientData('error', 1); // will create a list of constants on the server side, and communicate a constant which will be received on the client.
+	echo json_encode(HelperClass::formatClientData('error', 1)); // will create a list of constants on the server side, and communicate a constant which will be received on the client.
 	// 1 = 'no value given'
 }

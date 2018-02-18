@@ -49,7 +49,11 @@ Class MongoHelper {
 				]
 			],
 			[
-				'projection' => ["_id" => 1]
+				'projection' => [
+					'_id' => 1,
+					'firstName' => 1,
+					'lastName' => 1
+				]
 			]
 		)->toArray();
 		return $result;
@@ -69,6 +73,17 @@ Class MongoHelper {
 	    return self::getNotes($collection, ['firstName' => new MongoDB\BSON\Regex('^' . $name, 'i')]);
 	}
 
+	public static function getNameAndMongoId($cursor) {
+		$results = array();
+		foreach($cursor as $document) {
+			$results[] = array(
+				'mongoId' => $document->_id,
+				'firstName' => $document->firstName,
+				'lastName' => $document->lastName		
+			);
+		}
+		return $results;
+	}
 
 	/*
 	 *	This method returns the "firstName" &/or "lastName" value from a Document.

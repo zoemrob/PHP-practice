@@ -54,23 +54,35 @@ const load = () => {
 	searchBar.addEventListener('keyup', () => {
 		const nameData = JSON.stringify({'dataType': 'name', 'data' : searchBar.value}); // set dataType for form handler to process
 		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]
-			console.log(response);
+			
 			const people = parseResponse(response);
-			people.forEach(person => {
-				const displayName = person.firstName + ' ' + person.lastName, 
-					searchResult = document.createElement('div');
-				searchResult.setAttribute('id', person.mongoId);
-				searchResult.setAttribute('class', 'search-results');
-				searchResult.innerHTML = displayName;
-				searchResult.addEventListener('click', () => {
-					const mongoIdData = JSON.stringify({'dataType': 'mongoId', 'data' : searchResult.getAttribute('id')});
-					postAjax('SearchHandler.php', data, function(response) {
-						// This will be the PersonInstance page of the person who was searched for.
-					});
-				})
-				navBar.appendChild(searchResult);
+			try {
+				if (Array.isArray(people)) {
 
-			});
+					people.forEach(person => { // iterate over the people response.
+					
+						const displayName = person.firstName + ' ' + person.lastName, 
+							searchResult = document.createElement('div');
+					
+						searchResult.setAttribute('id', person.mongoId);
+						searchResult.setAttribute('class', 'search-results');
+						searchResult.innerHTML = displayName;
+						searchResult.addEventListener('click', () => {
+					
+							const mongoIdData = JSON.stringify({'dataType': 'mongoId', 'data' : searchResult.getAttribute('id')});
+					
+							postAjax('SearchHandler.php', mongoIdData, function(response) {
+								console.log(response); // this will actually append the person's page to the DOM.
+							});
+						})
+						navBar.appendChild(searchResult); // have to add an event listener to remove the searched person... not sure how to do that.
+
+					});
+				} else { throw 'No people were seached for.' }	
+
+			} catch(e) {
+				console.log(e);
+			}
 		});
 	});
 
@@ -85,20 +97,24 @@ window.onload = load;
 	*/
 
 function parseResponse(response) {
-	const formattedResponse = JSON.parse(response);
-	const dataType = formattedResponse.dataType;
+	const formattedResponse = JSON.parse(response),
+		dataType = formattedResponse.dataType; // get dataType
+
 	switch (dataType) {
 		case 'mongoId&Name':
 			people = [];
 			formattedResponse.data.forEach(person => {
-				const obj = {
+				const obj = { // format into an easily usable JS object.
 					mongoId: person.mongoId.$oid,
 					firstName: person.firstName,
 					lastName: person.lastName 
 				};
 				people.push(obj);
 			});
-			return people;
+			return people; // return an array of JS objects to iterate over.
+			break;
+		case 'error':
+			return formattedResponse.error;
 			break;
 	}
 

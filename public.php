@@ -18,7 +18,8 @@
 		<div class="new-entry-div">
 			<button id="new-entry-button" type="button">New Entry</button>
 		</div>
-		<div class="container">
+		<div id="container">
+
 			<div class="demographics">
 				<?php 
 					$person->displayDemographics(); 
@@ -28,6 +29,8 @@
 				<?php echo $person->displayNotes(); ?>
 			</div>
 		</div>
-		<script src="frontEnd.js"></script>
+		<div id="javascript">
+			<script type="text/javascript" src="frontEnd.js"></script>
+		</div>
 	</body>
 </html>

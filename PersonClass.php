@@ -1,6 +1,4 @@
 <?php
-require('MongoHelper.php');
-require('HelperClass.php');
 require('AbstractPerson.php');
 /*
 	This Class is used to render an entry from the database.

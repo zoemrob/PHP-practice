@@ -1,7 +1,5 @@
 <?php
 require('AbstractPerson.php');
-require('HelperClass.php');
-require('MongoHelper.php');
 
 Class NewEntry extends AbstractPerson {
 

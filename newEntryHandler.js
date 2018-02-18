@@ -28,12 +28,26 @@ form.addEventListener('click', () => {
 		// include php method for handling in the future
 	});
 
-	const request = new XMLHttpRequest();
-	request.open('POST', 'newEntryFormHandler.php', true);
-	request.send(parsedData);
-	request.onload = () => {
-		const response = request.responseText;
+	postAjax('newEntryFormHandler.php', parsedData, response => {
 		console.log(response);
-	}
+	})
 
 });
+
+function getAjax(url, onSuccess) {
+	const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+	xhr.open('GET', url, true);
+	xhr.onload = () => {
+		onSuccess(xhr.responseText);
+	};
+	xhr.send();
+}
+
+function postAjax(url, data, onSuccess) {
+	const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+	xhr.open('POST', url, true);
+	xhr.send(data);
+	xhr.onload = () => {
+		onSuccess(xhr.responseText);
+	};
+}

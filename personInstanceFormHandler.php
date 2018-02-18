@@ -1,6 +1,5 @@
 <?php
-require('NewEntryClass.php');
 require('PersonClass.php');
 
-$receivedData = file_get_contents('php://input');
-HelperClass::generateNewEntryForm();
+//var_dump($_POST[1]);
+echo HelperClass::generateNewEntryForm();

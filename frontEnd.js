@@ -6,6 +6,9 @@
 */
 const load = () => {
 	const notes = document.getElementById("notes");
+	const newEntryButton = document.getElementById("new-entry-button");
+	const containerDiv = document.getElementById("container");
+	const javascriptFiles = document.getElementById("javascript");
 
 	for (let i = 0; i < notes.children.length; i++ ) {
 		const mousedOverNote = notes.children[i];
@@ -28,6 +31,17 @@ const load = () => {
 			removeDeleteButton(mousedOverNote);
 		});
 	}
+
+	newEntryButton.addEventListener('click', () => {
+		postAjax('personInstanceFormHandler.php', 1, response => {
+			const data = JSON.parse(response);
+			console.log(data['displayData']);
+			containerDiv.innerHTML = (data['displayData']);
+			javascriptFiles.innerHTML = ('<script type="text/javascript" src="newEntryHandler.js"></script>');
+		});
+
+	})
+
 } 
 
 // calls load function expression
@@ -102,3 +116,13 @@ function deleteNoteFromUI (elements) {
 function deleteNoteFromDB () {
 
 }
+
+function postAjax(url, data, onSuccess) {
+	const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+	xhr.open('POST', url, true);
+	xhr.send(data);
+	xhr.onload = () => {
+		onSuccess(xhr.responseText);
+	};
+}
+

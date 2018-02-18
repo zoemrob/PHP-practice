@@ -1,4 +1,6 @@
 <?php
+require('HelperClass.php');
+require('MongoHelper.php');
 
 abstract Class AbstractPerson {
 	

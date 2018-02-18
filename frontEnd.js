@@ -8,7 +8,9 @@ const load = () => {
 	const notes = document.getElementById("notes"),
 		newEntryButton = document.getElementById("new-entry-button"),
 		containerDiv = document.getElementById("container"),
-		javascriptFiles = document.getElementById("javascript");
+		javascriptFiles = document.getElementById("javascript"),
+		searchBar = document.getElementById("search"),
+		navBar = document.getElementById("nav-div");
 
 	for (let i = 0; i < notes.children.length; i++ ) {
 		const mousedOverNote = notes.children[i],
@@ -45,8 +47,29 @@ const load = () => {
 		    firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag); // append the script to the DOM
 			})('script');
 		});
+	});
 
-	})
+	searchBar.addEventListener('keyup', () => {
+		const nameData = JSON.stringify({'dataType': 'name', 'data' : searchBar.value}); // set dataType for form handler to process
+		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]
+			console.log(response);
+/*			response.forEach(element => {
+				const displayName = element['firstName'] + ' ' + element['lastName']; 
+				const searchResult = document.createElement('div');
+				searchResult.setAttribute('id', element['mongoId']);
+				searchResult.setAttribute('class', 'search-results');
+				searchResult.innerHTML = displayName;
+				searchResult.addEventListener('click', () => {
+					const mongoIdData = JSON.stringify(['dataType': 'mongoId', 'data' : searchResult.getAttribute('id')]);
+					postAjax('SearchHandler.php', data, function(response) {
+						// This will be the PersonInstance page of the person who was searched for.
+					});
+				})
+				navBar.appendChild(searchResult);
+
+			});*/
+		});
+	});
 
 } 
 

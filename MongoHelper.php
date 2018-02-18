@@ -12,6 +12,12 @@ Class MongoHelper {
 		return $db->coworkerjournal->coworkerjournal;
 	}
 
+	public static function getMongoIdString($cursor) {
+		foreach($cursor as $mongoId) {
+			return $mongoId->_id;
+		}
+	}
+
 	/*
 	 *	This method returns the BSON Document of a DB by ObjectId
 	 *	@param $collection = instance of MongoDB->coworkerjournal->Collection that is being queried
@@ -26,7 +32,7 @@ Class MongoHelper {
 		return $document;
 	}
 
-	// WORKS, but the CURTIS methods are better
+	// used for search bar feature
 	public static function queryByName($collection, $name) {
 		$regexp = new MongoDB\BSON\Regex('^' . $name, 'i');
 		$result = $collection->find(

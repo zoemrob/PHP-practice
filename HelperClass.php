@@ -74,4 +74,13 @@ Class HelperClass {
 		'];
 		return json_encode($data);
 	}
+	// This method formats the data into JSON in the agreeable format and sends it.
+	// @param $dataType str, lets client know how to process data.
+	// @param $data, mixed, data to send to client
+	public static function sendClientData($dataType, $data) {
+		$agreeableData = array();
+		$agreeableData[] = 'dataType' => $dataType;
+		$agreeableData[] = 'data' => $data;
+		echo $agreeableData;
+	}
 }

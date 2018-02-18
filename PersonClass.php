@@ -93,7 +93,7 @@ Class BasePerson extends AbstractPerson {
 		$formattedNotes = "";
 		foreach($this->notes as $key => $note) {
 			$formattedNotes .= "
-				<div id='note-" . $key . "'> 
+				<div id='note-" . $key . "' class='note'> 
 					<div class='note-date-div' id='note-date-div-" . $key . "'>
 						<p class='note-date' id='note-date-" . $key . "'>" . $note['date'] . " <span class='inline-em'>you wrote</span>:</p>
 					</div>

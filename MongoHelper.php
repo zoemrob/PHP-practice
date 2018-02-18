@@ -39,6 +39,9 @@ Class MongoHelper {
 					'lastName' => $regexp
 					]
 				]
+			],
+			[
+				'projection' => ["_id" => 1]
 			]
 		)->toArray();
 		return $result;

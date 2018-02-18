@@ -5,15 +5,15 @@
 	These Event Listeners call the create/removeDeleteButton functions.
 */
 const load = () => {
-	const notes = document.getElementById("notes");
-	const newEntryButton = document.getElementById("new-entry-button");
-	const containerDiv = document.getElementById("container");
-	const javascriptFiles = document.getElementById("javascript");
+	const notes = document.getElementById("notes"),
+		newEntryButton = document.getElementById("new-entry-button"),
+		containerDiv = document.getElementById("container"),
+		javascriptFiles = document.getElementById("javascript");
 
 	for (let i = 0; i < notes.children.length; i++ ) {
-		const mousedOverNote = notes.children[i];
-		const mousedOverNoteText = mousedOverNote.children[1].children[0];
-		const mousedOverNoteId = mousedOverNote.getAttribute('id');
+		const mousedOverNote = notes.children[i],
+			mousedOverNoteText = mousedOverNote.children[1].children[0],
+			mousedOverNoteId = mousedOverNote.getAttribute('id');
 
 		// for each of these Event Listeners, I could in the future create them as functions themselves, cleaning the code even more.
 		// createDeleteButton
@@ -32,12 +32,18 @@ const load = () => {
 		});
 	}
 
+	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.addEventListener('click', () => {
 		postAjax('personInstanceFormHandler.php', 1, response => {
 			const data = JSON.parse(response);
-			console.log(data['displayData']);
 			containerDiv.innerHTML = (data['displayData']);
-			javascriptFiles.innerHTML = ('<script type="text/javascript" src="newEntryHandler.js"></script>');
+			// appends an additional javascript script when the element is clicked
+			(tag => {
+		    const scriptTag = document.createElement(tag), // create a script tag
+			    firstScriptTag = document.getElementsByTagName(tag)[0]; // find the first script tag in the document
+		    scriptTag.src = 'newEntryHandler.js';
+		    firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag); // append the script to the DOM
+			})('script');
 		});
 
 	})
@@ -54,9 +60,9 @@ window.onload = load;
 */
 function createDeleteButton () {
 
-	const button = document.createElement('button');
-	const buttonDiv = document.createElement('div');
-	const targetNoteToDelete = document.getElementById('moused-over-note');
+	const button = document.createElement('button'),
+		buttonDiv = document.createElement('div'),
+		targetNoteToDelete = document.getElementById('moused-over-note');
 	
 	button.innerHTML = 'DELETE NOTE';
 	button.setAttribute('id', 'moused-over-delete-button');
@@ -65,7 +71,7 @@ function createDeleteButton () {
 		// here will be a call to the deleteNoteFromDB function;
 	})
 
-	buttonDiv.setAttribute('id', 'moused-over-delete-button-div');
+	buttonDiv.setAttribute('id', 'moused-over-delete-button-div'); // changes id to allow CSS selection.
 
 	buttonDiv.appendChild(button);
 	return buttonDiv
@@ -122,7 +128,7 @@ function postAjax(url, data, onSuccess) {
 	xhr.open('POST', url, true);
 	xhr.send(data);
 	xhr.onload = () => {
-		onSuccess(xhr.responseText);
+		onSuccess(xhr.responseText); // executes the callback function on the server response.
 	};
 }
 

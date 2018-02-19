@@ -60,9 +60,9 @@ Class HelperClass {
 						</div>
 						<div class="form">
 							<label>Gender:</label>
-							<input type="radio" class="gender-input" name="gender-input" id="male" value="M">
+							<input type="radio" class="gender-input" name="gender-input" id="male" value="M" required>
 							<label for="male">Male</label>
-							<input type="radio" class="gender-input" name="gender-input" id="female" value="F">
+							<input type="radio" class="gender-input" name="gender-input" id="female" value="F" required>
 							<label for="female">Female</label>
 						</div>
 					</div>

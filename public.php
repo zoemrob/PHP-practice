@@ -27,6 +27,9 @@
 					$person->displayDemographics(); 
 				?>
 			</div>
+			<div class="new-note">
+				<button type="button" id="new-note-button">New Note</button>
+			</div>
 			<div class="notes" id="notes">
 				<?php echo $person->displayNotes(); ?>
 			</div>

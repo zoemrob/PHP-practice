@@ -10,7 +10,8 @@ const load = () => {
 		containerDiv = document.getElementById("container"),
 		javascriptFiles = document.getElementById("javascript"),
 		searchBar = document.getElementById("search"),
-		navBar = document.getElementById("nav-div");
+		navBar = document.getElementById("nav-div"),
+		newNoteButton = document.getElementById("new-note-button");
 
 	for (let i = 0; i < notes.children.length; i++ ) {
 		const mousedOverNote = notes.children[i],
@@ -52,7 +53,8 @@ const load = () => {
 
 	// *** Search Bar Function ***
 	searchBar.addEventListener('keyup', () => {
-		const nameData = JSON.stringify({'dataType': 'name', 'data' : searchBar.value}); // set dataType for form handler to process
+		const nameData = formatServerData('name', searchBar.value);
+//		JSON.stringify({'dataType': 'name', 'data' : searchBar.value}); // set dataType for form handler to process
 		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]
 			
 			const people = parseResponse(response);
@@ -69,7 +71,8 @@ const load = () => {
 						searchResult.innerHTML = displayName;
 						searchResult.addEventListener('click', () => {
 					
-							const mongoIdData = JSON.stringify({'dataType': 'mongoId', 'data' : searchResult.getAttribute('id')});
+							const mongoIdData = formatServerData('mongoId', searchResult.getAttribute('id'));
+//							JSON.stringify({'dataType': 'mongoId', 'data' : searchResult.getAttribute('id')});
 					
 							postAjax('SearchHandler.php', mongoIdData, function(response) {
 								console.log(response); // this will actually append the person's page to the DOM.
@@ -86,6 +89,10 @@ const load = () => {
 		});
 	});
 
+	newNoteButton.addEventListener('click', () => {
+		console.log('clicked!');
+	})
+
 } 
 
 // calls load function expression
@@ -95,6 +102,10 @@ window.onload = load;
 		Add a client-side data parser function. One that checks all incoming data, and checkes 'dataType', and knows how to handle the data.	
 		************************************************************************************************************************************
 	*/
+// formats server-send data
+function formatServerData (dataType, data) {
+	return JSON.stringify({'dataType': dataType, 'data' : data});
+}
 
 function parseResponse(response) {
 	const formattedResponse = JSON.parse(response),

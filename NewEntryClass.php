@@ -58,6 +58,6 @@ Class NewEntry extends AbstractPerson {
 
 	// this method allows for the $JSONString data to be set used to add a new entry to the database collection.
 	public function insertEntryIntoDB() {
-		return MongoHelper::insertNewEntryIntoDB($this->getCollection(), $this->getFirstName(), $this->getLastName(), $this->getSex(), $this->getAge());
+		return MongoHelper::insertNewEntryIntoDB($this->getCollection(), $this->getFirstName(), $this->getLastName(), $this->getAge(), $this->getSex());
 	}
 }

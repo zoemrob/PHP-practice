@@ -32,6 +32,10 @@ p.note-text {
 	margin: 0 auto;
 }
 
+.new-note {
+	text-align: center;
+}
+
 .entry-fields {
 	text-align: center;
 }

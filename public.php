@@ -7,7 +7,7 @@
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
 		<?php 
-		require("PersonClass.php");
+		 require("PersonClass.php");
 		$person = new BasePerson("5a7fe017e662dc7ec495262d"); 
 		?>
 	</head>
@@ -22,7 +22,7 @@
 		</div>
 		<br />
 		<div id="container">
-			<div class="demographics">
+			<div class="demographics" id="demographics">
 				<?php 
 					$person->displayDemographics(); 
 				?>

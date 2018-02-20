@@ -35,6 +35,11 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 				echo json_encode($readyToSend);
 			}
 			break;
+		case 'mongoId':
+			$mongoId = $data;
+			$person = new BasePerson($mongoId);
+			$readyToSend = HelperClass::formatClientData('person', ['demographics' => $person->displayDemographics(), 'notes' => $person->displayNotes()]);
+			echo json_encode($readyToSend);
 	}	
 
 } else {

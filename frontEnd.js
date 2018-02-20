@@ -170,6 +170,8 @@ function parseResponse(response) {
 		case 'newNoteSet':
 			return formattedResponse.data;
 			break;
+		case 'person':
+			return formattedResponse.data;
 	}
 
 }

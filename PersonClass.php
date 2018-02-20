@@ -49,6 +49,12 @@ Class BasePerson extends AbstractPerson {
 		return $this->personDocument;
 	}
 
+	public function setNoteFromUI($note) {
+		$confirmation = MongoHelper::insertNoteDB($this->getCollection(), $this->getMongoId(), HelperClass::makeNote($note));
+		$confirmation == 1 ? $this->setNotesFromDB() : '';
+		return $confirmation;
+	}
+
 	public function getNotes() {
 		return $this->notes;
 	}
@@ -107,7 +113,6 @@ Class BasePerson extends AbstractPerson {
 				</div>";
 		}
 		return $formattedNotes;
-		var_dump($formattedNotes);
 	}
 
 	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
@@ -149,7 +154,7 @@ Class BasePerson extends AbstractPerson {
 		var_dump($this->notes);
 	}
 
-	public function createNewNoteEntry() {
+	public function createNewNoteForm() {
 		return 
 		"<div id='new-note-modal-content'>" .
 			"<span id='close-note-modal'>&times;</span>" .

@@ -11,7 +11,8 @@ const load = () => {
 		javascriptFiles = document.getElementById("javascript"),
 		searchBar = document.getElementById("search"),
 		navBar = document.getElementById("nav-div"),
-		newNoteButton = document.getElementById("new-note-button");
+		newNoteButton = document.getElementById("new-note-button"),
+		mongoId = document.getElementsByClassName('demographics-data')[0].getAttribute('id');
 
 	for (let i = 0; i < notes.children.length; i++ ) {
 		const mousedOverNote = notes.children[i],
@@ -34,7 +35,7 @@ const load = () => {
 			removeDeleteButton(mousedOverNote);
 		});
 	}
-
+ // MUST REWORK WITH THE COMMUNICATION CONTRACT AND parseServerData()
 	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.onclick = () => {
 		postAjax('personInstanceFormHandler.php', 1, response => {
@@ -84,7 +85,7 @@ const load = () => {
 	});
 			// Add new note modal
 	newNoteButton.onclick = () => {
-		const newNoteRequest = formatServerData('newNoteRequest', document.getElementsByClassName('demographics-data')[0].getAttribute('id')), // gets the mongoId of the person, stored in the Name Div
+		const newNoteRequest = formatServerData('newNoteRequest', mongoId), // gets the mongoId of the person, stored in the Name Div
 			noteModal = document.createElement('div');
 		noteModal.setAttribute('id', 'noteModal');
 		document.body.appendChild(noteModal);
@@ -107,11 +108,20 @@ const load = () => {
 			}
 
 			submitNote.onclick = () => {
-				const data = document.getElementById('new-note-entry').value;
-				if (data == null || data == undefined || data == '') {
+				const entry = document.getElementById('new-note-entry').value;
+				if (entry == null || entry == undefined || entry == '') {
 					window.alert('You have to enter a note!');
+				} else {
+					const data = formatServerData('newNote', {'mongoId': mongoId, 'note': entry});
+					// add note to person instance, return new person instance data with appended note.
+					postAjax('SearchHandler.php', data, response => {
+						const newInfo = parseResponse(response);
+						if (newInfo) {
+							notes.innerHTML = newInfo;
+						}
+					})
 				}
-			}
+			};
 		},
 		50);
 		
@@ -149,9 +159,13 @@ function parseResponse(response) {
 			return people; // return an array of JS objects to iterate over.
 			break;
 		case 'error':
-			return formattedResponse.error;
+			window.alert(formattedResponse.data);
+			return null;
 			break;
 		case 'newNoteRequest':
+			return formattedResponse.data;
+			break;
+		case 'newNoteSet':
 			return formattedResponse.data;
 			break;
 	}

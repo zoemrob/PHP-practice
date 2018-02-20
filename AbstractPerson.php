@@ -17,10 +17,8 @@ abstract Class AbstractPerson {
 		return $this->collection;
 	}
 
-	protected function setNewNote($noteText) {
-        $note = HelperClass::makeNote($noteText);
+	protected function setNewNote($note) {
         $this->notes[] = $note;
-        return $note;
     }
 
     abstract protected function setMongoId($mongoId);

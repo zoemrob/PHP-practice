@@ -1,6 +1,7 @@
 <?php
-require('MongoHelper.php');
-require('HelperClass.php');
+//require('MongoHelper.php');
+//require('HelperClass.php');
+require('PersonClass.php');
 
 $clientData = json_decode(file_get_contents('php://input'), true);
 
@@ -13,6 +14,12 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 //			$readyToSend = array();
 			$cursor = MongoHelper::queryByName(MongoHelper::createDBInstance(), $data);
 			$readyToSend = HelperClass::formatClientData('mongoId&Name', MongoHelper::getNameAndMongoId($cursor));
+			echo json_encode($readyToSend);
+			break;
+		case 'newNoteRequest':
+			$mongoId = $data;
+			$person = new BasePerson($mongoId);
+			$readyToSend = HelperClass::formatClientData('newNoteRequest', $person->createNewNoteEntry());
 			echo json_encode($readyToSend);
 			break;
 	}	

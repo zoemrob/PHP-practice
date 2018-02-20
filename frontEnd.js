@@ -36,7 +36,7 @@ const load = () => {
 	}
 
 	// Event Listener which when clicked appends the new entry form to the public.php page.
-	newEntryButton.addEventListener('click', () => {
+	newEntryButton.onclick = () => {
 		postAjax('personInstanceFormHandler.php', 1, response => {
 			const data = JSON.parse(response);
 			containerDiv.innerHTML = (data['displayData']);
@@ -48,50 +48,74 @@ const load = () => {
 		    firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag); // append the script to the DOM
 			})('script');
 		});
-	});
+	}
 
 
 	// *** Search Bar Function ***
 	searchBar.addEventListener('keyup', () => {
 		const nameData = formatServerData('name', searchBar.value);
-//		JSON.stringify({'dataType': 'name', 'data' : searchBar.value}); // set dataType for form handler to process
-		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]
-			
+		
+		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]	
 			const people = parseResponse(response);
 			try {
 				if (Array.isArray(people)) {
-
-					people.forEach(person => { // iterate over the people response.
-					
+					people.forEach(person => { // iterate over the people response.					
 						const displayName = person.firstName + ' ' + person.lastName, 
 							searchResult = document.createElement('div');
 					
 						searchResult.setAttribute('id', person.mongoId);
 						searchResult.setAttribute('class', 'search-results');
 						searchResult.innerHTML = displayName;
-						searchResult.addEventListener('click', () => {
-					
+						
+						searchResult.onclick = () => {
 							const mongoIdData = formatServerData('mongoId', searchResult.getAttribute('id'));
-//							JSON.stringify({'dataType': 'mongoId', 'data' : searchResult.getAttribute('id')});
-					
+
 							postAjax('SearchHandler.php', mongoIdData, function(response) {
 								console.log(response); // this will actually append the person's page to the DOM.
 							});
-						})
+						}
 						navBar.appendChild(searchResult); // have to add an event listener to remove the searched person... not sure how to do that.
-
 					});
-				} else { throw 'No people were seached for.' }	
-
+				} else { throw 'No people were seached for.'; }	
 			} catch(e) {
 				console.log(e);
 			}
 		});
 	});
+			// Add new note modal
+	newNoteButton.onclick = () => {
+		const newNoteRequest = formatServerData('newNoteRequest', document.getElementsByClassName('demographics-data')[0].getAttribute('id')), // gets the mongoId of the person, stored in the Name Div
+			noteModal = document.createElement('div');
+		noteModal.setAttribute('id', 'noteModal');
+		document.body.appendChild(noteModal);
+		
+		postAjax('SearchHandler.php', newNoteRequest, response => {
+			noteModal.innerHTML = parseResponse(response); // get new note modal format.
+		});
 
-	newNoteButton.addEventListener('click', () => {
-		console.log('clicked!');
-	})
+		// Modal events, set a 50 millisecond timeout to have time to fetch the elements
+		setTimeout(() => {
+			const closeModal = document.getElementById('close-note-modal'),
+				submitNote = document.getElementById('submit-new-note');
+			// closes modal if close button is clicked.
+			closeModal.onclick = () => {
+				noteModal.remove();	
+			};
+			// closes modal if outside of the text entry is clicked.
+			noteModal.onclick = event => {
+				event.target == noteModal ? noteModal.remove() : '';
+			}
+
+			submitNote.onclick = () => {
+				const data = document.getElementById('new-note-entry').value;
+				if (data == null || data == undefined || data == '') {
+					window.alert('You have to enter a note!');
+				}
+			}
+		},
+		50);
+		
+	};
 
 } 
 
@@ -126,6 +150,9 @@ function parseResponse(response) {
 			break;
 		case 'error':
 			return formattedResponse.error;
+			break;
+		case 'newNoteRequest':
+			return formattedResponse.data;
 			break;
 	}
 

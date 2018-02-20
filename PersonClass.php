@@ -37,6 +37,10 @@ Class BasePerson extends AbstractPerson {
 		$this->mongoId = $mongoId;
 	}
 
+	public function getMongoId() {
+		return $this->mongoId;
+	}
+
 	/* Method returns the BSON DB document from the object instance.
 	 * 
 	 *
@@ -53,7 +57,7 @@ Class BasePerson extends AbstractPerson {
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
 	public function displayDemographics() {
-		echo "<p class='demographics-data'>Name: " . $this->getName() . "</p>\n" .
+		echo "<p class='demographics-data' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
 			 "<p class='demographics-data'>Age: " . $this->getAge() . "</p>\n" .
 			 "<p class='demographics-data'>Sex: " . $this->getSex() . "</p>\n";
 	}
@@ -144,5 +148,17 @@ Class BasePerson extends AbstractPerson {
 	public function debugNotes() {
 		var_dump($this->notes);
 	}
+
+	public function createNewNoteEntry() {
+		return 
+		"<div id='new-note-modal-content'>" .
+			"<span id='close-note-modal'>&times;</span>" .
+			"<span>New note about " . $this->getName() . ":</span>" . 
+			"<br />" .
+			"<textarea cols='50' rows='10' id='new-note-entry' maxlength='500' minlength='1' placeholder='Write your new note here...'></textarea>" .
+			"<br />" .
+			"<button id='submit-new-note' type='button'>Enter Note</button>" .
+		"</div>";
+	}	
 
 }

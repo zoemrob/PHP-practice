@@ -17,10 +17,15 @@ p.note-text {
 	border-bottom-right-radius: 10px;
 	font-family: 'Montserrat', sans-serif;
 }
+
 .note {
 	box-shadow: 10px 10px 25px #727272;
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
+}
+
+textarea {
+	resize: none;
 }
 
 .inline-em {
@@ -141,4 +146,50 @@ p.moused-over-note-text {
 
 .search-results {
 	
+}
+
+#noteModal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 15%; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+#new-note-modal-content {
+    background-color: #e2ba6f;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+	box-shadow: 10px 10px 25px #202021;
+    border: 2px solid #000;
+    width: 45%;
+	font-family: 'Montserrat', sans-serif;
+}
+
+#close-note-modal {
+    color: #000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#close-note-modal:hover {
+	background-color: #af935f;
+	cursor: pointer;
+}
+
+#new-note-entry {
+	width: 95%;
+}
+
+#submit-new-note {
+	margin-left: 85%;
 }

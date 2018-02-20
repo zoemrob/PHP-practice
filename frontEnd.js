@@ -116,11 +116,13 @@ const load = () => {
 					// add note to person instance, return new person instance data with appended note.
 					postAjax('SearchHandler.php', data, response => {
 						const newInfo = parseResponse(response);
+						console.log(newInfo);
 						if (newInfo) {
 							notes.innerHTML = newInfo;
 						}
 					})
 				}
+				noteModal.remove();
 			};
 		},
 		50);

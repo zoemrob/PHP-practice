@@ -20,7 +20,7 @@ Class BasePerson extends AbstractPerson {
 		if ($mongoId) {
 			$this->setCollection();
 			$this->setMongoId($mongoId);
-			$this->personDocument = MongoHelper::queryById($this->collection, $this->mongoId);
+			$this->setPersonDocument();
 			$this->setAge();
 			$this->setName();
 			$this->setSex();
@@ -28,6 +28,10 @@ Class BasePerson extends AbstractPerson {
 		} else {
 
 		}
+	}
+ 	
+	public function setPersonDocument() {
+			$this->personDocument = MongoHelper::queryById($this->getCollection(), $this->getMongoId());		
 	}
 
 	/* Method sets mongoId for person instance.
@@ -92,7 +96,8 @@ Class BasePerson extends AbstractPerson {
 	 *
 	 */
 	public function setNotesFromDB() {
-		$this->notes = MongoHelper::getDocNotes($this->personDocument); //stay here
+		$this->setPersonDocument();
+		$this->notes = MongoHelper::getDocNotes($this->personDocument);
 	}
 
    /** Method echos html elements on the initial load of the page.
@@ -101,7 +106,8 @@ Class BasePerson extends AbstractPerson {
     */
 	public function displayNotes() {
 		$formattedNotes = "";
-		foreach($this->notes as $key => $note) {
+		$notesToDisplay = array_reverse($this->notes, true);
+		foreach($notesToDisplay as $key => $note) {
 			$formattedNotes .= "
 				<div id='note-" . $key . "' class='note'> 
 					<div class='note-date-div' id='note-date-div-" . $key . "'>

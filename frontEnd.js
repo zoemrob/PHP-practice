@@ -6,13 +6,14 @@
 */
 const load = () => {
 	const notes = document.getElementById("notes"),
+		mongoIdContainer = document.getElementsByClassName('id-holder')[0],
 		newEntryButton = document.getElementById("new-entry-button"),
 		containerDiv = document.getElementById("container"),
 		javascriptFiles = document.getElementById("javascript"),
 		searchField = document.getElementById("search"),
 		navBar = document.getElementById("nav-div"),
 		newNoteButton = document.getElementById("new-note-button"),
-		mongoId = document.getElementsByClassName('id-holder')[0].getAttribute('id');
+		demographicsDiv = document.getElementById('demographics');
 
 	for (let i = 0; i < notes.children.length; i++ ) {
 		const mousedOverNote = notes.children[i],
@@ -74,54 +75,24 @@ const load = () => {
 						const child = tr.firstChild,
 							mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
 						postAjax('SearchHandler.php', mongoIdData, response => {
-							console.log(response);
+							console.log(parseResponse(response));
+							mongoIdContainer.setAttribute('id', parseResponse(response).mongoId);
+							demographicsDiv.innerHTML = parseResponse(response).demographics;
+							notes.innerHTML = parseResponse(response).notes;
 						});
 					};
 				});
-				/*
-				const elements = searchBar.getElementsByClassName('results');
-				for (let i = 0; i < elements.length; i++) {
-					elements[i].onclick = () => {
-						const mongoIdData = formatServerData('mongoId', elements[i].getAttribute('id'));
-						postAjax('SearchHandler.php', mongoIdData, response => {
-							console.log(response);
-						})
-					}
-				}*/
+			});
+		} else {
 
-				
-			//try {
-				//if (Array.isArray(people)) {
-					/*people.forEach(person => { // iterate over the people response.					
-						const displayName = person.firstName + ' ' + person.lastName, 
-							searchResult = document.createElement('div');
-					
-						searchResult.setAttribute('id', person.mongoId);
-						searchResult.setAttribute('class', 'search-results');
-						searchResult.innerHTML = displayName;*/
-						
-						/*searchResult.onclick = () => {
-							const mongoIdData = formatServerData('mongoId', searchResult.getAttribute('id'));
-
-							postAjax('SearchHandler.php', mongoIdData, function(response) {
-								console.log(response); // this will actually append the person's page to the DOM.
-							});
-						}
-						navBar.appendChild(searchResult);*/ // have to add an event listener to remove the searched person... not sure how to do that.
-					});
-				
-				//} else { throw 'No people were seached for.'; }	
-			//} catch(e) {
-				//console.log(e);
-			//}
-			//});
-		} else { }
+		}
 	};
 
 
 			// Add new note modal
 	newNoteButton.onclick = () => {
-		const newNoteRequest = formatServerData('newNoteRequest', mongoId), // gets the mongoId of the person, stored in the Name Div
+		const mongoId = mongoIdContainer.getAttribute('id'),
+			newNoteRequest = formatServerData('newNoteRequest', mongoId), // gets the mongoId of the person, stored in the Name Div
 			noteModal = document.createElement('div');
 		noteModal.classList.toggle('modal-bkgd');
 		document.body.appendChild(noteModal);
@@ -185,16 +156,6 @@ function parseResponse(response) {
 	switch (dataType) {
 		case 'mongoId&Name':
 			return formattedResponse.data;
-			/*people = [];
-			formattedResponse.data.forEach(person => {
-				const obj = { // format into an easily usable JS object.
-					mongoId: person.mongoId.$oid,
-					firstName: person.firstName,
-					lastName: person.lastName 
-				};
-				people.push(obj);
-			});*/
-			//return people; // return an array of JS objects to iterate over.
 			break;
 		case 'error':
 			return formattedResponse.data;
@@ -207,6 +168,8 @@ function parseResponse(response) {
 			break;
 		case 'person':
 			return formattedResponse.data;
+			// return formattedResponse.data;
+			break;
 	}
 
 }

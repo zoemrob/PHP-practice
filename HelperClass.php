@@ -40,6 +40,8 @@ Class HelperClass {
 		return json_decode($JSONString, true);
 	}
 
+	/* Method creates new entry form to allow a new database entry to be added.
+	 */
 	public static function generateNewEntryForm() {
 		$data = ['displayData' => '
 			<div class="center">
@@ -74,9 +76,10 @@ Class HelperClass {
 		'];
 		return json_encode($data);
 	}
-	// This method formats the data into JSON in the agreeable format and sends it.
-	// @param $dataType str, lets client know how to process data.
-	// @param $data, mixed, data to send to client
+	/* This method formats the data into JSON in the agreeable format and sends it.
+	 * @param $dataType str, lets client know how to process data.
+	 * @param $data, mixed, data to send to client
+	 */
 	public static function formatClientData($dataType, $data) {
 		$agreeableData = array(
 			'dataType' => $dataType,
@@ -85,14 +88,15 @@ Class HelperClass {
 		return $agreeableData;
 	}
 
+	/* Method formats the results of Search Bar function from UI into table data elements which are appended to the DOM.
+	 * @param $cursor, cursor turned array
+	 */
 	public static function formatSearchResults($cursor){
 		$htmlStringSearchResults = array();
 		$data = MongoHelper::getNameAndMongoId($cursor);
 		foreach($data as $person) {
 			$htmlStringSearchResults[] =
-			//"<tr id='" . $person['mongoId'] . "' class='search-table montserrat-font results'>" . 
 				"<td id='" . $person['mongoId'] . "'>" . $person['firstName'] . " " . $person['lastName'] . "</td>";
-			//"</tr>";
 		}
 		return $htmlStringSearchResults;
 	}

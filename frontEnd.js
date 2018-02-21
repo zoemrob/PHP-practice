@@ -26,7 +26,6 @@ const load = () => {
 			mousedOverNote.setAttribute('id', 'moused-over-note');
 			mousedOverNoteText.classList.toggle('margin-btm-0');
 			mousedOverNoteText.classList.toggle('bottom-corner-radius');
-			// mousedOverNoteText.setAttribute('class', 'moused-over-note-text');
 			mousedOverNote.appendChild(createDeleteButton());
 		});
 
@@ -37,7 +36,6 @@ const load = () => {
 			mousedOverNoteText.classList.toggle('margin-btm-0');
 			mousedOverNoteText.classList.toggle('moused-over-note-text');
 			mousedOverNoteText.classList.toggle('bottom-corner-radius');
-			//mousedOverNoteText.setAttribute('class', 'note-text');
 			removeDeleteButton(mousedOverNote);
 		});
 	}
@@ -188,10 +186,10 @@ function createDeleteButton () {
 	button.innerHTML = 'DELETE NOTE';
 	button.classList.add('montserrat-font')
 	button.setAttribute('id', 'moused-over-delete-button');
-	button.addEventListener('click', () => {
+	button.addEventListener.onclick = () => {
 		deleteNoteFromUI([targetNoteToDelete]);
 		// here will be a call to the deleteNoteFromDB function;
-	})
+	};
 
 	buttonDiv.classList.add('bottom-corner-radius', 'standard-bkgd-color');
 	buttonDiv.setAttribute('id', 'moused-over-delete-button-div'); // changes id to allow CSS selection.

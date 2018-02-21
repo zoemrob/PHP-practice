@@ -12,7 +12,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 	switch ($clientData['dataType']) {
 		case 'name':
 			$cursor = MongoHelper::queryByName(MongoHelper::createDBInstance(), $data);
-			$readyToSend = HelperClass::formatClientData('mongoId&Name', MongoHelper::getNameAndMongoId($cursor));
+			$readyToSend = HelperClass::formatClientData('mongoId&Name', HelperClass::formatSearchResults($cursor));
 			echo json_encode($readyToSend);
 			break;
 		case 'newNoteRequest':

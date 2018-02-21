@@ -9,10 +9,10 @@ const load = () => {
 		newEntryButton = document.getElementById("new-entry-button"),
 		containerDiv = document.getElementById("container"),
 		javascriptFiles = document.getElementById("javascript"),
-		searchBar = document.getElementById("search"),
+		searchField = document.getElementById("search"),
 		navBar = document.getElementById("nav-div"),
 		newNoteButton = document.getElementById("new-note-button"),
-		mongoId = document.getElementsByClassName('demographics-data')[0].getAttribute('id');
+		mongoId = document.getElementsByClassName('id-holder')[0].getAttribute('id');
 
 	for (let i = 0; i < notes.children.length; i++ ) {
 		const mousedOverNote = notes.children[i],
@@ -23,7 +23,7 @@ const load = () => {
 		// createDeleteButton
 		mousedOverNote.addEventListener('mouseenter', () => {
 			mousedOverNote.setAttribute('id', 'moused-over-note');
-			mousedOverNoteText.classList.toggle('moused-over-note-text');
+			mousedOverNoteText.classList.toggle('margin-btm-0');
 			mousedOverNoteText.classList.toggle('bottom-corner-radius');
 			// mousedOverNoteText.setAttribute('class', 'moused-over-note-text');
 			mousedOverNote.appendChild(createDeleteButton());
@@ -33,6 +33,7 @@ const load = () => {
 		mousedOverNote.addEventListener('mouseleave', () => {
 			mousedOverNote.setAttribute('id', mousedOverNoteId);
 			mousedOverNote.children[1].removeAttribute('id');
+			mousedOverNoteText.classList.toggle('margin-btm-0');
 			mousedOverNoteText.classList.toggle('moused-over-note-text');
 			mousedOverNoteText.classList.toggle('bottom-corner-radius');
 			//mousedOverNoteText.setAttribute('class', 'note-text');
@@ -57,41 +58,72 @@ const load = () => {
 
 
 	// *** Search Bar Function ***
-	searchBar.onkeyup = () => {
-		const nameData = formatServerData('name', searchBar.value);
-		
-		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]	
-			const people = parseResponse(response);
-			try {
-				if (Array.isArray(people)) {
-					people.forEach(person => { // iterate over the people response.					
+	searchField.onkeyup = () => {
+		if (searchField.value !== '') {
+			const nameData = formatServerData('name', searchField.value);
+			postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]	
+				const results = parseResponse(response),
+					searchBar = document.getElementById('js-append-searches');
+
+				//searchBar.innerHTML = results;
+				results.forEach(result => {
+					const tr = document.createElement('tr');
+					tr.innerHTML = result;
+					insertAfter(tr, searchBar);
+					tr.onclick = () => {
+						const child = tr.firstChild,
+							mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
+						postAjax('SearchHandler.php', mongoIdData, response => {
+							console.log(response);
+						});
+					};
+				});
+				/*
+				const elements = searchBar.getElementsByClassName('results');
+				for (let i = 0; i < elements.length; i++) {
+					elements[i].onclick = () => {
+						const mongoIdData = formatServerData('mongoId', elements[i].getAttribute('id'));
+						postAjax('SearchHandler.php', mongoIdData, response => {
+							console.log(response);
+						})
+					}
+				}*/
+
+				
+			//try {
+				//if (Array.isArray(people)) {
+					/*people.forEach(person => { // iterate over the people response.					
 						const displayName = person.firstName + ' ' + person.lastName, 
 							searchResult = document.createElement('div');
 					
 						searchResult.setAttribute('id', person.mongoId);
 						searchResult.setAttribute('class', 'search-results');
-						searchResult.innerHTML = displayName;
+						searchResult.innerHTML = displayName;*/
 						
-						searchResult.onclick = () => {
+						/*searchResult.onclick = () => {
 							const mongoIdData = formatServerData('mongoId', searchResult.getAttribute('id'));
 
 							postAjax('SearchHandler.php', mongoIdData, function(response) {
 								console.log(response); // this will actually append the person's page to the DOM.
 							});
 						}
-						navBar.appendChild(searchResult); // have to add an event listener to remove the searched person... not sure how to do that.
+						navBar.appendChild(searchResult);*/ // have to add an event listener to remove the searched person... not sure how to do that.
 					});
-				} else { throw 'No people were seached for.'; }	
-			} catch(e) {
-				console.log(e);
-			}
-		});
+				
+				//} else { throw 'No people were seached for.'; }	
+			//} catch(e) {
+				//console.log(e);
+			//}
+			//});
+		} else { }
 	};
+
+
 			// Add new note modal
 	newNoteButton.onclick = () => {
 		const newNoteRequest = formatServerData('newNoteRequest', mongoId), // gets the mongoId of the person, stored in the Name Div
 			noteModal = document.createElement('div');
-		noteModal.setAttribute('id', 'noteModal');
+		noteModal.classList.toggle('modal-bkgd');
 		document.body.appendChild(noteModal);
 		
 		postAjax('SearchHandler.php', newNoteRequest, response => {
@@ -152,7 +184,8 @@ function parseResponse(response) {
 
 	switch (dataType) {
 		case 'mongoId&Name':
-			people = [];
+			return formattedResponse.data;
+			/*people = [];
 			formattedResponse.data.forEach(person => {
 				const obj = { // format into an easily usable JS object.
 					mongoId: person.mongoId.$oid,
@@ -160,8 +193,8 @@ function parseResponse(response) {
 					lastName: person.lastName 
 				};
 				people.push(obj);
-			});
-			return people; // return an array of JS objects to iterate over.
+			});*/
+			//return people; // return an array of JS objects to iterate over.
 			break;
 		case 'error':
 			return formattedResponse.data;
@@ -190,13 +223,14 @@ function createDeleteButton () {
 		targetNoteToDelete = document.getElementById('moused-over-note');
 	
 	button.innerHTML = 'DELETE NOTE';
+	button.classList.add('montserrat-font')
 	button.setAttribute('id', 'moused-over-delete-button');
 	button.addEventListener('click', () => {
 		deleteNoteFromUI([targetNoteToDelete]);
 		// here will be a call to the deleteNoteFromDB function;
 	})
 
-	buttonDiv.classList.add('bottom-corner-radius');
+	buttonDiv.classList.add('bottom-corner-radius', 'standard-bkgd-color');
 	buttonDiv.setAttribute('id', 'moused-over-delete-button-div'); // changes id to allow CSS selection.
 
 	buttonDiv.appendChild(button);
@@ -258,3 +292,6 @@ function postAjax(url, data, onSuccess) {
 	};
 }
 
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}

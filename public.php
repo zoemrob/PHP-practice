@@ -12,25 +12,31 @@
 		?>
 	</head>
 	<body>
-		<div class="header">
-			<h1 class="header-text">Co-Worker Journal</h1>
+		<div class="header standard-bkgd-color standard-shadow margin0 wth50">
+			<p class="header-text center">Co-Worker Journal</p>
 		</div>
-		<div class="nav-div" id="nav-div">
+		<div class="nav-div center standard-bkgd-color standard-shadow margin0 wth50" id="nav-div">
 <!-- 			<button id="search" type="button" class="navigation">Search</button> -->
-			<input id="search" type="text" placeholder="Search" class="navigation">
-			<button id="new-entry-button" type="button" class="navigation">New Entry</button>
+			<table class='search-bar'>
+				<tr id='js-append-searches'>
+					<td>
+						<input id="search" type="text" placeholder="Search" class="navigation pad10">
+					</td>
+					<button id="new-entry-button" type="button" class="floatR pad10">New Entry</button>
+				</tr>
+			</table>
 		</div>
 		<br />
 		<div id="container">
-			<div class="demographics" id="demographics">
+			<div class="demographics center" id="demographics">
 				<?php 
 					echo $person->displayDemographics(); 
 				?>
 			</div>
-			<div class="new-note">
+			<div class="center">
 				<button type="button" id="new-note-button">New Note</button>
 			</div>
-			<div class="notes" id="notes">
+			<div class="margin0 wth50" id="notes">
 				<?php echo $person->displayNotes(); ?>
 			</div>
 		</div>

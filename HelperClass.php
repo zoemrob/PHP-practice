@@ -42,23 +42,23 @@ Class HelperClass {
 
 	public static function generateNewEntryForm() {
 		$data = ['displayData' => '
-			<div class="entry-fields">
+			<div class="center">
 				<form id="new-entry-form">
-					<h2 class="subheader">New Entry</h2>
-					<div class="form">
-						<div class="form">
+					<p class="subheader margin0">New Entry</p>
+					<div class="pad10">
+						<div class="pad10">
 							<label>First Name:</label>
 							<input id="first-name" name="first-name" type="text" placeholder="Enter first name" required>
 						</div>
-						<div class="form">
+						<div class="pad10">
 							<label>Last Name:</label>
 							<input id="last-name" name="last-name" type="text" placeholder="Enter last name" required>
 						</div>
-						<div class="form">
+						<div class="pad10">
 							<label>Age:</label>
 							<input id="age" name="age" type="number" placeholder="Age" required>
 						</div>
-						<div class="form">
+						<div class="pad10">
 							<label>Gender:</label>
 							<input type="radio" class="gender-input" name="gender-input" id="male" value="M" required>
 							<label for="male">Male</label>
@@ -66,7 +66,7 @@ Class HelperClass {
 							<label for="female">Female</label>
 						</div>
 					</div>
-					<div class="form">
+					<div class="pad10">
 						<button type="click" id="submit-button">SUBMIT</button>
 					</div>
 				</form>
@@ -83,5 +83,17 @@ Class HelperClass {
 			'data' => $data
 			);
 		return $agreeableData;
+	}
+
+	public static function formatSearchResults($cursor){
+		$htmlStringSearchResults = array();
+		$data = MongoHelper::getNameAndMongoId($cursor);
+		foreach($data as $person) {
+			$htmlStringSearchResults[] =
+			//"<tr id='" . $person['mongoId'] . "' class='search-table montserrat-font results'>" . 
+				"<td id='" . $person['mongoId'] . "'>" . $person['firstName'] . " " . $person['lastName'] . "</td>";
+			//"</tr>";
+		}
+		return $htmlStringSearchResults;
 	}
 }

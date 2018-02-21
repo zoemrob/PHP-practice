@@ -7,10 +7,8 @@ $person = new BasePerson('5a82739fb505a6e0f0d67996');
 //$person->getSex();
 
 //$result = MongoHelper::insertNoteDB($person->getDBInstance(), '5a82739fb505a6e0f0d67996', $person->setNewNote('Monte, Josh E., and I talked in the living room about how Josh is buying a house, and about the origin of the phrase "Numnuts", and then Monte went to bed.'));
-$cursor = MongoHelper::queryByName(MongoHelper::createDBInstance(), "j");
-foreach($cursor as $MongoId) {
-	echo $MongoId->_id . "\n";
-}
+$cursor = MongoHelper::queryByName(MongoHelper::createDBInstance(), "c");
+echo HelperClass::formatSearchResults($cursor);
 
 //var_dump($result);
 

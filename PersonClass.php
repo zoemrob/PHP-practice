@@ -67,9 +67,9 @@ Class BasePerson extends AbstractPerson {
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
 	public function displayDemographics() {
-		return "<p class='demographics-data' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
-			 "<p class='demographics-data'>Age: " . $this->getAge() . "</p>\n" .
-			 "<p class='demographics-data'>Sex: " . $this->getSex() . "</p>\n";
+		return "<p class='id-holder subheader center margin0' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
+			 "<p class='subheader center margin0'>Age: " . $this->getAge() . "</p>\n" .
+			 "<p class='subheader center margin0'>Sex: " . $this->getSex() . "</p>\n";
 	}
 
 	/* Method sets age for Person instance based on $this->personDocument.
@@ -109,12 +109,12 @@ Class BasePerson extends AbstractPerson {
 		$notesToDisplay = array_reverse($this->notes, true);
 		foreach($notesToDisplay as $key => $note) {
 			$formattedNotes .= "
-				<div id='note-" . $key . "' class='note'> 
+				<div id='note-" . $key . "' class='bottom-corner-radius standard-shadow'> 
 					<div class='note-date-div' id='note-date-div-" . $key . "'>
-						<p class='note-date' id='note-date-" . $key . "'>" . $note['date'] . " <span class='inline-em'>you wrote</span>:</p>
+						<p class='note-date margin-btm-0 pad10' id='note-date-" . $key . "'>" . $note['date'] . " <span class='inline-em'>you wrote</span>:</p>
 					</div>
 					<div class='note-text-div' id='note-text-div-" . $key ."'> 
-						<p class='note-text montserrat-font bottom-corner-radius' id='note-text-" . $key . "'>" . $note['note'] . "</p>
+						<p class='note-text montserrat-font bottom-corner-radius standard-bkgd-color' id='note-text-" . $key . "'>" . $note['note'] . "</p>
 					</div>
 				</div>";
 		}
@@ -162,11 +162,11 @@ Class BasePerson extends AbstractPerson {
 
 	public function createNewNoteForm() {
 		return 
-		"<div id='new-note-modal-content'>" .
+		"<div class='modal standard-bkgd-color standard-shadow montserrat-font margin0' id='new-note-modal-content'>" .
 			"<span id='close-note-modal'>&times;</span>" .
 			"<span>New note about " . $this->getName() . ":</span>" . 
 			"<br />" .
-			"<textarea cols='50' rows='10' id='new-note-entry' maxlength='500' minlength='1' placeholder='Write your new note here...'></textarea>" .
+			"<textarea cols='50' rows='10' class='fix-size' id='new-note-entry' maxlength='500' minlength='1' placeholder='Write your new note here...'></textarea>" .
 			"<br />" .
 			"<button id='submit-new-note' type='button'>Enter Note</button>" .
 		"</div>";

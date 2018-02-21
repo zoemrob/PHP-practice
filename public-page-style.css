@@ -7,159 +7,126 @@
 	border-bottom-right-radius: 10px;
 }
 
+.standard-shadow {
+	box-shadow: 10px 10px 25px #202021;
+}
+
+.center {
+	text-align: center;
+}
+
+.standard-bkgd-color {
+	background-color: #e2ba6f
+}
+
+.margin-btm-0 {
+	margin-bottom: 0;
+}
+
+.pad10 {
+	padding: 10px;
+}
+
+.fix-size {
+	width: 95%;
+	resize: none;
+}
+
+.margin0 {
+	margin: 0 auto;
+}
+
+.wth50 {
+	max-width: 50%;
+}
+
+.floatR {
+	float: right;
+}
 /***************************************/
-p.note-date {
+.note-date {
+	font-family: arial, helvetica, sans-serif;
 	background-color: #232323;
 	color: #fff;
-	font-family: arial, helvetica, sans-serif;
-	padding: 10px;
-	margin-bottom: 0;
 }
 
-p.note-text {
+.note-text {
 	padding-left: 50px;
 	padding-top: 20px;
 	padding-bottom:10px;
 	padding-right: 30px;
-	background-color: #e2ba6f;
 	margin-top: 0;
-	/* border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px; */
-}
-
-p.moused-over-note-text {
-	padding-left: 50px;
-	padding-top: 20px;
-	padding-bottom:10px;
-	padding-right: 30px;
-	background-color: #e2ba6f;
-	margin-top: 0;
-	margin-bottom: 0;
-	font-family: 'Montserrat', sans-serif;
-}
-.note {
-	box-shadow: 10px 10px 25px #727272;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-}
-
-textarea {
-	resize: none;
 }
 
 .inline-em {
 	font-style: italic;
 }
 
-.notes {
-	max-width: 50%;
-	margin: 0 auto;
-}
-
-.new-note {
-	text-align: center;
-}
-
-.entry-fields {
-	text-align: center;
-}
-
-.form {
-	padding: 10px;
-}
-
 .subheader {
-	text-align: center;
 	font-size: 30px;
 	padding-bottom: 30px;
-	margin: 0;
+	z-index: 1;
 }
-
-.demographics-data {
-	text-align: center;
-	font-size: 30px;
-	padding-bottom: 30px;
-	margin: 0;
+/* .demographics {
+	position: absolute;
 }
-
+ */
 .header, .nav-div {
-	background-color: #e2ba6f;
-	max-width: 50%;
-	margin: 0 auto;
 	margin-top: 20px;
 	margin-bottom: 30px;
 	border-radius: 30px;
-	box-shadow: 10px 10px 25px #727272;
 	border-style: solid;
 	border-width: 2px;
 	border-color: #000;
 }
 
 .header-text {
-	text-align: center;
 	text-decoration: underline;
 	font-size: 50px;
 	padding-top: 3px;
 	padding-bottom: 3px;
 	margin: 7px;
-}
-
-
-#moused-over-note {
-	box-shadow: 10px 10px 25px #727272;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	font-weight: bold;
 }
 
 #moused-over-delete-button-div {
 	padding-bottom: 10px;
 	padding-right: 75px;
 	text-align: right;
-	background-color: #e2ba6f;
 	margin-top: 0;
-	/* border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px; */
-}
-
-#moused-over-delete-button {
-	font-family: 'Montserrat', sans-serif;
 }
 
 .nav-div {
 	padding: 5px;
- 	text-align: center;
-	width: 50%;
 	font-size: 20px;
+	padding-right: 15px;
+	min-height: 45px;
 }
 
 .navigation {
 	padding-right: 20px;
-	padding-left: 20px;
-	padding: 10px;	
+	padding-left: 20px;	
 }
 
 #new-entry-button {
-	margin-right: 5%;
-	margin-left: 5%;
+	margin-right: 10%;
 }
-
-#search {
-	margin-left: 5%;
+.search-bar {
+	margin-left: 15%;
 	width: 25%;
-	/* margin-right: 25% */
-}
-
-#container {
-	width: 100%;
+	float: left;
+	z-index: 3;
+	overflow: scroll;
+	background-color: #EEEEECFF;
 }
 
 .search-results {
 	
 }
 
-#noteModal {
+.modal-bkgd {
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 3; /* Sit on top */
     padding-top: 15%; /* Location of the box */
     left: 0;
     top: 0;
@@ -170,15 +137,11 @@ textarea {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-#new-note-modal-content {
-    background-color: #e2ba6f;
-    margin: auto;
+.modal {
     padding: 20px;
     border-radius: 10px;
-	box-shadow: 10px 10px 25px #202021;
     border: 2px solid #000;
     width: 45%;
-	font-family: 'Montserrat', sans-serif;
 }
 
 #close-note-modal {
@@ -193,10 +156,6 @@ textarea {
 #close-note-modal:hover {
 	background-color: #af935f;
 	cursor: pointer;
-}
-
-#new-note-entry {
-	width: 95%;
 }
 
 #submit-new-note {

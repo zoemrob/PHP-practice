@@ -24,7 +24,7 @@
 		<div id="container">
 			<div class="demographics" id="demographics">
 				<?php 
-					$person->displayDemographics(); 
+					echo $person->displayDemographics(); 
 				?>
 			</div>
 			<div class="new-note">

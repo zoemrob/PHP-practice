@@ -22,8 +22,10 @@ const load = () => {
 		// for each of these Event Listeners, I could in the future create them as functions themselves, cleaning the code even more.
 		// createDeleteButton
 		mousedOverNote.addEventListener('mouseenter', () => {
-			mousedOverNote.setAttribute('id', 'moused-over-note')
-			mousedOverNoteText.setAttribute('class', 'moused-over-note-text')
+			mousedOverNote.setAttribute('id', 'moused-over-note');
+			mousedOverNoteText.classList.toggle('moused-over-note-text');
+			mousedOverNoteText.classList.toggle('bottom-corner-radius');
+			// mousedOverNoteText.setAttribute('class', 'moused-over-note-text');
 			mousedOverNote.appendChild(createDeleteButton());
 		});
 
@@ -31,7 +33,9 @@ const load = () => {
 		mousedOverNote.addEventListener('mouseleave', () => {
 			mousedOverNote.setAttribute('id', mousedOverNoteId);
 			mousedOverNote.children[1].removeAttribute('id');
-			mousedOverNoteText.setAttribute('class', 'note-text');
+			mousedOverNoteText.classList.toggle('moused-over-note-text');
+			mousedOverNoteText.classList.toggle('bottom-corner-radius');
+			//mousedOverNoteText.setAttribute('class', 'note-text');
 			removeDeleteButton(mousedOverNote);
 		});
 	}
@@ -53,7 +57,7 @@ const load = () => {
 
 
 	// *** Search Bar Function ***
-	searchBar.addEventListener('keyup', () => {
+	searchBar.onkeyup = () => {
 		const nameData = formatServerData('name', searchBar.value);
 		
 		postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]	
@@ -82,7 +86,7 @@ const load = () => {
 				console.log(e);
 			}
 		});
-	});
+	};
 			// Add new note modal
 	newNoteButton.onclick = () => {
 		const newNoteRequest = formatServerData('newNoteRequest', mongoId), // gets the mongoId of the person, stored in the Name Div
@@ -116,7 +120,6 @@ const load = () => {
 					// add note to person instance, return new person instance data with appended note.
 					postAjax('SearchHandler.php', data, response => {
 						const newInfo = parseResponse(response);
-						console.log(newInfo);
 						if (newInfo) {
 							notes.innerHTML = newInfo;
 						}
@@ -161,8 +164,7 @@ function parseResponse(response) {
 			return people; // return an array of JS objects to iterate over.
 			break;
 		case 'error':
-			window.alert(formattedResponse.data);
-			return null;
+			return formattedResponse.data;
 			break;
 		case 'newNoteRequest':
 			return formattedResponse.data;
@@ -194,6 +196,7 @@ function createDeleteButton () {
 		// here will be a call to the deleteNoteFromDB function;
 	})
 
+	buttonDiv.classList.add('bottom-corner-radius');
 	buttonDiv.setAttribute('id', 'moused-over-delete-button-div'); // changes id to allow CSS selection.
 
 	buttonDiv.appendChild(button);

@@ -67,7 +67,7 @@ Class BasePerson extends AbstractPerson {
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
 	public function displayDemographics() {
-		echo "<p class='demographics-data' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
+		return "<p class='demographics-data' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
 			 "<p class='demographics-data'>Age: " . $this->getAge() . "</p>\n" .
 			 "<p class='demographics-data'>Sex: " . $this->getSex() . "</p>\n";
 	}
@@ -114,7 +114,7 @@ Class BasePerson extends AbstractPerson {
 						<p class='note-date' id='note-date-" . $key . "'>" . $note['date'] . " <span class='inline-em'>you wrote</span>:</p>
 					</div>
 					<div class='note-text-div' id='note-text-div-" . $key ."'> 
-						<p class='note-text' id='note-text-" . $key . "'>" . $note['note'] . "</p>
+						<p class='note-text montserrat-font bottom-corner-radius' id='note-text-" . $key . "'>" . $note['note'] . "</p>
 					</div>
 				</div>";
 		}

@@ -17,7 +17,7 @@
 		</div>
 		<div class="nav-div center standard-bkgd-color standard-shadow margin0 wth50" id="nav-div">
 <!-- 			<button id="search" type="button" class="navigation">Search</button> -->
-			<table class='search-bar'>
+			<table class='search-bar' id='js-searches'>
 				<tr id='js-append-searches'>
 					<td>
 						<input id="search" type="text" placeholder="Search" class="navigation pad10">

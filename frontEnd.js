@@ -13,7 +13,8 @@ const load = () => {
 		searchField = document.getElementById("search"),
 		navBar = document.getElementById("nav-div"),
 		newNoteButton = document.getElementById("new-note-button"),
-		demographicsDiv = document.getElementById('demographics');
+		demographicsDiv = document.getElementById('demographics'),
+		searchBar = document.getElementById('js-searches');
 
 	for (let i = 0; i < notes.children.length; i++ ) {
 		const mousedOverNote = notes.children[i],
@@ -57,35 +58,66 @@ const load = () => {
 
 
 	// *** Search Bar Function ***
-	searchField.onkeyup = () => {
-		if (searchField.value !== '') {
-			const nameData = formatServerData('name', searchField.value);
-			postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]	
-				const results = parseResponse(response),
-					searchBar = document.getElementById('js-append-searches');
+	setTimeout(() => {
+		searchField.onkeyup = () => {
+			if (searchField.value !== '') {
+				delay(() => {
+					const nameData = formatServerData('name', searchField.value);
+					postAjax('SearchHandler.php', nameData, response => { // response will be a JSON string formatted [{'firstName': 'some name', 'lastName': 'some name', 'mongoId': 'some id'}, {...}]	
+						const results = parseResponse(response),
+							searchResultLocation = document.getElementById('js-append-searches');
 
-				//searchBar.innerHTML = results;
-				results.forEach(result => {
-					const tr = document.createElement('tr');
-					tr.innerHTML = result;
-					insertAfter(tr, searchBar);
-					tr.onclick = () => {
-						const child = tr.firstChild,
-							mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
-						postAjax('SearchHandler.php', mongoIdData, response => {
-							console.log(parseResponse(response));
-							mongoIdContainer.setAttribute('id', parseResponse(response).mongoId);
-							demographicsDiv.innerHTML = parseResponse(response).demographics;
-							notes.innerHTML = parseResponse(response).notes;
+						//searchBar.innerHTML = results;
+						results.forEach(result => {
+							const tr = document.createElement('tr');
+							tr.classList.add('search-result');
+							tr.innerHTML = result;
+							insertAfter(tr, searchResultLocation);
+							tr.onclick = () => {
+								const child = tr.firstChild,
+									mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
+								postAjax('SearchHandler.php', mongoIdData, response => {
+									console.log(parseResponse(response));
+									mongoIdContainer.setAttribute('id', parseResponse(response).mongoId);
+									demographicsDiv.innerHTML = parseResponse(response).demographics;
+									notes.innerHTML = parseResponse(response).notes;
+								});
+							};
 						});
-					};
-				});
-			});
-		} else {
 
-		}
-	};
+						navBar.onmouseleave = () => {
+							const visibleSearchResults = searchBar.getElementsByClassName('search-result');
+							for (let i = 0, l = visibleSearchResults.length; i < l; i++) {
+								visibleSearchResults[i].classList.add('hide');
+							}	
+						}
 
+						navBar.onmouseenter = () => {
+							const hiddenSearchResults = searchBar.getElementsByClassName('search-result');
+							for (let i = 0, l = hiddenSearchResults.length; i < l; i++) {
+								hiddenSearchResults[i].classList.remove('hide');
+							}	
+						}
+					});
+
+					searchField.onkeydown = () => {
+						const previousSearchResults = searchBar.getElementsByClassName('search-result');
+						for (let i = 0, l = previousSearchResults.length; i < l; i++) {
+							previousSearchResults[0].remove();
+						}
+					}
+				}, 200);
+
+			} else {
+				const previousSearchResults = searchBar.getElementsByClassName('search-result');
+				for (let i = 0, l = previousSearchResults.length; i < l; i++) {
+						previousSearchResults[0].remove();
+					}
+			}
+		};
+
+	}, 
+	50);
 
 			// Add new note modal
 	newNoteButton.onclick = () => {
@@ -134,6 +166,13 @@ const load = () => {
 	};
 
 } 
+const delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 
 // calls load function expression
 window.onload = load;
@@ -166,7 +205,6 @@ function parseResponse(response) {
 			break;
 		case 'person':
 			return formattedResponse.data;
-			// return formattedResponse.data;
 			break;
 	}
 

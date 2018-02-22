@@ -43,12 +43,24 @@
 .floatR {
 	float: right;
 }
+
+.hide {
+	display: none;
+}
 /***************************************/
 .note-date {
 	font-family: arial, helvetica, sans-serif;
 	background-color: #232323;
 	color: #fff;
 }
+
+/* .search-result {
+	display: none;
+}
+
+.show {
+	display: contents;
+} */
 
 .note-text {
 	padding-left: 50px;

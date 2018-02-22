@@ -167,7 +167,7 @@ const load = () => {
 
 } 
 const delay = (function(){
-  var timer = 0;
+  let timer = 0;
   return function(callback, ms){
     clearTimeout (timer);
     timer = setTimeout(callback, ms);

@@ -53,6 +53,12 @@ const load = () => {
 									setNewNoteEvent();
 									setNoteMouseoverEvents();
 								});
+								searchField.value = '';
+								const searchResults = document.getElementsByClassName('search-result');
+								console.log(searchResults);
+								Array.prototype.forEach.call(searchResults, result => {
+									result.remove();
+								});
 							};
 						});
 

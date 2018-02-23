@@ -5,41 +5,17 @@
 	These Event Listeners call the create/removeDeleteButton functions.
 */
 const load = () => {
-	const notes = document.getElementById("notes"),
-		mongoIdContainer = document.getElementsByClassName('id-holder')[0],
-		newEntryButton = document.getElementById("new-entry-button"),
-		containerDiv = document.getElementById("container"),
+	const newEntryButton = document.getElementById("new-entry-button"),
+		containerDiv = document.getElementsByClassName("container")[0],
 		javascriptFiles = document.getElementById("javascript"),
 		searchField = document.getElementById("search"),
 		navBar = document.getElementById("nav-div"),
-		newNoteButton = document.getElementById("new-note-button"),
-		demographicsDiv = document.getElementById('demographics'),
 		searchBar = document.getElementById('js-searches');
 
-	for (let i = 0; i < notes.children.length; i++ ) {
-		const mousedOverNote = notes.children[i],
-			mousedOverNoteText = mousedOverNote.children[1].children[0],
-			mousedOverNoteId = mousedOverNote.getAttribute('id');
+	//setNewNoteEvent();
+	//setNoteMouseoverEvents();
 
-		// for each of these Event Listeners, I could in the future create them as functions themselves, cleaning the code even more.
-		// createDeleteButton
-		mousedOverNote.addEventListener('mouseenter', () => {
-			mousedOverNote.setAttribute('id', 'moused-over-note');
-			mousedOverNoteText.classList.toggle('margin-btm-0');
-			mousedOverNoteText.classList.toggle('bottom-corner-radius');
-			mousedOverNote.appendChild(createDeleteButton());
-		});
 
-		// removeDeleteButton
-		mousedOverNote.addEventListener('mouseleave', () => {
-			mousedOverNote.setAttribute('id', mousedOverNoteId);
-			mousedOverNote.children[1].removeAttribute('id');
-			mousedOverNoteText.classList.toggle('margin-btm-0');
-			mousedOverNoteText.classList.toggle('moused-over-note-text');
-			mousedOverNoteText.classList.toggle('bottom-corner-radius');
-			removeDeleteButton(mousedOverNote);
-		});
-	}
 	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.onclick = () => {
 		const newEntryRequest = formatServerData('newEntryRequest', true);
@@ -72,10 +48,10 @@ const load = () => {
 								const child = tr.firstChild,
 									mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
 								postAjax('SearchHandler.php', mongoIdData, response => {
-									console.log(parseResponse(response));
-									mongoIdContainer.setAttribute('id', parseResponse(response).mongoId);
-									demographicsDiv.innerHTML = parseResponse(response).demographics;
-									notes.innerHTML = parseResponse(response).notes;
+									containerDiv.setAttribute('id', parseResponse(response).mongoId);
+									containerDiv.innerHTML = parseResponse(response).render;
+									setNewNoteEvent();
+									setNoteMouseoverEvents();
 								});
 							};
 						});
@@ -114,51 +90,6 @@ const load = () => {
 	}, 
 	50);
 
-			// Add new note modal
-	newNoteButton.onclick = () => {
-		const mongoId = mongoIdContainer.getAttribute('id'),
-			newNoteRequest = formatServerData('newNoteRequest', mongoId), // gets the mongoId of the person, stored in the Name Div
-			noteModal = document.createElement('div');
-		noteModal.classList.toggle('modal-bkgd');
-		document.body.appendChild(noteModal);
-		
-		postAjax('SearchHandler.php', newNoteRequest, response => {
-			noteModal.innerHTML = parseResponse(response); // get new note modal format.
-		});
-
-		// Modal events, set a 50 millisecond timeout to have time to fetch the elements
-		setTimeout(() => {
-			const closeModal = document.getElementById('close-note-modal'),
-				submitNote = document.getElementById('submit-new-note');
-			// closes modal if close button is clicked.
-			closeModal.onclick = () => {
-				noteModal.remove();	
-			};
-			// closes modal if outside of the text entry is clicked.
-			noteModal.onclick = event => {
-				event.target == noteModal ? noteModal.remove() : '';
-			}
-
-			submitNote.onclick = () => {
-				const entry = document.getElementById('new-note-entry').value;
-				if (entry == null || entry == undefined || entry == '') {
-					window.alert('You have to enter a note!');
-				} else {
-					const data = formatServerData('newNote', {'mongoId': mongoId, 'note': entry});
-					// add note to person instance, return new person instance data with appended note.
-					postAjax('SearchHandler.php', data, response => {
-						const newInfo = parseResponse(response);
-						if (newInfo) {
-							notes.innerHTML = newInfo;
-						}
-					})
-				}
-				noteModal.remove();
-			};
-		},
-		50);
-		
-	};
 
 }
 
@@ -295,9 +226,7 @@ function insertAfter(newNode, referenceNode) {
 
 
 function getFormData () {
-								const notes = document.getElementById("notes"),
-									mongoIdContainer = document.getElementsByClassName('id-holder')[0],
-									demographicsDiv = document.getElementById('demographics');
+	const containerDiv = document.getElementsByClassName('container')[0];
 
 	const form = document.getElementById('submit-button');
 	form.addEventListener('click', () => {
@@ -337,11 +266,90 @@ function getFormData () {
 			};
 			const readyToSend = formatServerData('newEntryData', newEntryData);
 			postAjax('SearchHandler.php', readyToSend, response => {
-				console.log(parseResponse(response));
-				mongoIdContainer.setAttribute('id', parseResponse(response).mongoId);
-				demographicsDiv.innerHTML = parseResponse(response).demographics;
-				notes.innerHTML = parseResponse(response).notes;
+				containerDiv.setAttribute('id', parseResponse(response).mongoId);
+				containerDiv.innerHTML = parseResponse(response).render;
+				setNewNoteEvent();
+				setNoteMouseoverEvents();
 			});
 		}
 	});
+}
+
+	// Add new note modal
+function setNewNoteEvent() {
+	const newNoteButton = document.getElementById("new-note-button"),
+		containerDiv = document.getElementsByClassName('container')[0];
+
+	newNoteButton.onclick = () => {
+		const mongoId = containerDiv.getAttribute('id'),
+			newNoteRequest = formatServerData('newNoteRequest', mongoId), // gets the mongoId of the person, stored in the Name Div
+			noteModal = document.createElement('div');
+		console.log(mongoId);
+		noteModal.classList.toggle('modal-bkgd');
+		document.body.appendChild(noteModal);
+		
+		postAjax('SearchHandler.php', newNoteRequest, response => {
+			noteModal.innerHTML = parseResponse(response); // get new note modal format.
+		});
+
+		// Modal events, set a 50 millisecond timeout to have time to fetch the elements
+		setTimeout(() => {
+			const closeModal = document.getElementById('close-note-modal'),
+				submitNote = document.getElementById('submit-new-note');
+			// closes modal if close button is clicked.
+			closeModal.onclick = () => {
+				noteModal.remove();	
+			};
+			// closes modal if outside of the text entry is clicked.
+			noteModal.onclick = event => {
+				event.target == noteModal ? noteModal.remove() : '';
+			}
+
+			submitNote.onclick = () => {
+				const entry = document.getElementById('new-note-entry').value;
+				if (entry == null || entry == undefined || entry == '') {
+					window.alert('You have to enter a note!');
+				} else {
+					const data = formatServerData('newNote', {'mongoId': mongoId, 'note': entry});
+					// add note to person instance, return new person instance data with appended note.
+					postAjax('SearchHandler.php', data, response => {
+						const newInfo = parseResponse(response);
+						if (newInfo) {
+							notes.innerHTML = newInfo;
+						}
+					})
+				}
+				noteModal.remove();
+			};
+		},
+		50);	
+	};
+}
+
+function setNoteMouseoverEvents() {
+		const notes = document.getElementById("notes"); console.log(notes);
+	
+	for (let i = 0, l = notes.children.length; i < l; i++ ) {
+		const mousedOverNote = notes.children[i],
+			mousedOverNoteText = mousedOverNote.children[1].children[0],
+			mousedOverNoteId = mousedOverNote.getAttribute('id');
+
+		// createDeleteButton
+		mousedOverNote.mouseenter = () => {
+			mousedOverNote.setAttribute('id', 'moused-over-note');
+			mousedOverNoteText.classList.toggle('margin-btm-0');
+			mousedOverNoteText.classList.toggle('bottom-corner-radius');
+			mousedOverNote.appendChild(createDeleteButton());
+		};
+
+		// removeDeleteButton
+		mousedOverNote.mouseleave = () => {
+			mousedOverNote.setAttribute('id', mousedOverNoteId);
+			mousedOverNote.children[1].removeAttribute('id');
+			mousedOverNoteText.classList.toggle('margin-btm-0');
+			mousedOverNoteText.classList.toggle('moused-over-note-text');
+			mousedOverNoteText.classList.toggle('bottom-corner-radius');
+			removeDeleteButton(mousedOverNote);
+		};
+	}
 }

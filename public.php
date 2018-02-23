@@ -6,10 +6,10 @@
 		<link href="public-page-style.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
-		<?php 
-		 require("PersonClass.php");
-		$person = new BasePerson("5a7fe017e662dc7ec495262d"); 
-		?>
+<!-- 		<?php 
+ require("PersonClass.php");
+$person = new BasePerson("5a7fe017e662dc7ec495262d"); 
+?> -->
 	</head>
 	<body>
 		<div class="header standard-bkgd-color standard-shadow margin0 wth50">
@@ -27,18 +27,18 @@
 			</table>
 		</div>
 		<br />
-		<div id="container">
-			<div class="demographics center" id="demographics">
+		<div class='id-holder container'>
+			<!-- <div class="demographics center" id="demographics">
 				<?php 
-					echo $person->displayDemographics(); 
+					//echo $person->displayDemographics(); 
 				?>
 			</div>
 			<div class="center">
 				<button type="button" id="new-note-button">New Note</button>
 			</div>
 			<div class="margin0 wth50" id="notes">
-				<?php echo $person->displayNotes(); ?>
-			</div>
+				<?php // echo $person->displayNotes(); ?>
+			</div> -->
 		</div>
 		<div id="javascript">
 			<script type="text/javascript" src="frontEnd.js"></script>

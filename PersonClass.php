@@ -88,7 +88,7 @@ Class BasePerson extends AbstractPerson {
 	 */
 	public function setSex() {
 		$sexChar = MongoHelper::getDocSex($this->personDocument);
-		$sexChar === 'M' ? $this->sex = "Male": "Female";
+		$sexChar === 'M' ? $this->sex = "Male": $this->sex = "Female";
 	}
 
 	/* Called on construct, fetches notes from the database.
@@ -98,6 +98,19 @@ Class BasePerson extends AbstractPerson {
 	public function setNotesFromDB() {
 		$this->setPersonDocument();
 		$this->notes = MongoHelper::getDocNotes($this->personDocument);
+	}
+
+	public function render() {
+		return 
+		'<div class="demographics center" id="demographics">' .
+			$this->displayDemographics() .
+		'</div>
+		<div class="center">
+			<button type="button" id="new-note-button">New Note</button>
+		</div>
+		<div class="margin0 wth50" id="notes">'.
+			$this->displayNotes() .
+		'</div>';
 	}
 
    /** Method echos html elements on the initial load of the page.

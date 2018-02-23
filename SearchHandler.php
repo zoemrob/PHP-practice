@@ -49,7 +49,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 		case 'mongoId':
 			$mongoId = $data;
 			$person = new BasePerson($mongoId);
-			$readyToSend = HelperClass::formatClientData('person', ['demographics' => $person->displayDemographics(), 'notes' => $person->displayNotes(), 'mongoId' => $person->getMongoId()]);
+			$readyToSend = HelperClass::formatClientData('person', ['render' => $person->render(), 'mongoId' => $person->getMongoId()]/*['demographics' => $person->displayDemographics(), 'notes' => $person->displayNotes(), 'mongoId' => $person->getMongoId()]*/);
 			echo json_encode($readyToSend);
 			break;
 		case 'newEntryRequest':

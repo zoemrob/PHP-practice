@@ -24,7 +24,6 @@ const load = () => {
 			containerDiv.innerHTML = data;
 			getFormData();
 		});
-
 	}
 
 
@@ -322,6 +321,7 @@ function setNewNoteEvent() {
 						const newInfo = parseResponse(response);
 						if (newInfo) {
 							notes.innerHTML = newInfo;
+							setNoteMouseoverEvents();
 						}
 					})
 				}

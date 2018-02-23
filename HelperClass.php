@@ -44,9 +44,9 @@ Class HelperClass {
 	 */
 	public static function generateNewEntryForm() {
 		$data = 
-			'<div class="center">
-				<form id="new-entry-form">
-					<p class="subheader margin0">New Entry</p>
+			'<div class="center">' .
+				//<form id="new-entry-form">
+					'<p class="subheader margin0">New Entry</p>
 					<div class="pad10">
 						<div class="pad10">
 							<label>First Name:</label>
@@ -70,9 +70,9 @@ Class HelperClass {
 					</div>
 					<div class="pad10">
 						<button type="click" id="submit-button">SUBMIT</button>
-					</div>
-				</form>
-			</div>';
+					</div>' .
+				//</form>
+			'</div>';
 		return $data;
 	}
 	/* This method formats the data into JSON in the agreeable format and sends it.

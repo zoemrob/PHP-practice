@@ -12,7 +12,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 
 	switch ($clientData['dataType']) {
 		case 'name':
-			$cursor = MongoHelper::queryByName(MongoHelper::createDBInstance(), $data);
+			$cursor = MongoHelper::queryByNameSearch(MongoHelper::createDBInstance(), $data);
 			$readyToSend = HelperClass::formatClientData('mongoId&Name', HelperClass::formatSearchResults($cursor));
 			echo json_encode($readyToSend);
 			break;
@@ -36,6 +36,16 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 				echo json_encode($readyToSend);
 			}
 			break;
+		case 'newEntryData':
+			$firstName = $data['firstName'];
+			$lastName = $data['lastName'];
+/*			$age = $data['age'];
+			$sex = $data['sex'];*/
+			$newEntry = new NewEntry(json_encode($data));
+			$acknowledged = $newEntry->insertEntryIntoDB();
+			if ($acknowledged == 1) {
+				$data = MongoHelper::queryOneByName(MongoHelper::createDBInstance(), $firstName, $lastName);
+			}
 		case 'mongoId':
 			$mongoId = $data;
 			$person = new BasePerson($mongoId);
@@ -46,11 +56,6 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			echo $data ? 
 			json_encode(HelperClass::formatClientData('newEntryForm', HelperClass::generateNewEntryForm())) : 
 			json_encode(HelperClass::formatClientData('error', 'Something went wrong. Unable to request new entry.'));
-			break;
-		case 'newPersonEntry':
-			$newEntry = new NewEntry($receivedData);
-			$confirmation = $newEntry->insertEntryIntoDB();
-			echo json_encode($confirmation);
 			break;
 	}	
 

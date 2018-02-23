@@ -48,7 +48,7 @@ Class NewEntry extends AbstractPerson {
 
 	// this method formats the $JSONString into a usable array for the object, and sets the $receivedData property.
 	private function setReceivedData($JSONString) {
-		$this->receivedData = HelperClass::JSONtoArray($JSONString)['data'];
+		$this->receivedData = HelperClass::JSONtoArray($JSONString);
 	}
 
 	// this method allows for a method value/name to be passed into the constructor. For future use after sanitizing input.

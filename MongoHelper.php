@@ -11,13 +11,18 @@ Class MongoHelper {
 		$db = new MongoDB\Client("mongodb://localhost:27017");
 		return $db->coworkerjournal->coworkerjournal;
 	}
-
+/*
 	public static function getMongoIdString($cursor) {
 		$results = array();
 		foreach($cursor as $mongoId) {
 			$results[] = $mongoId->_id;
 		}
 		return $results;
+	}*/
+
+	public static function getSingleMongoIdString($cursor) {
+		$oid = $cursor->_id;
+		return $oid->__toString();
 	}
 
 	/*
@@ -34,8 +39,21 @@ Class MongoHelper {
 		return $document;
 	}
 
+	// will be used only internally. Returns mongoId string.
+	public static function queryOneByName($collection, $first, $last) {
+		$result = $collection->findOne(
+			[
+				'firstName' => $first,
+				'lastName' => $last
+			]
+		);
+		$preformatted = self::getSingleMongoIdString($result);
+		return $preformatted;
+	}
+
+
 	// used for search bar feature
-	public static function queryByName($collection, $name) {
+	public static function queryByNameSearch($collection, $name) {
 		$regexp = new MongoDB\BSON\Regex('^' . $name, 'i');
 		$result = $collection->find(
 			[

@@ -40,23 +40,15 @@ const load = () => {
 			removeDeleteButton(mousedOverNote);
 		});
 	}
- // MUST REWORK WITH THE COMMUNICATION CONTRACT AND parseServerData()
 	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.onclick = () => {
 		const newEntryRequest = formatServerData('newEntryRequest', true);
-		console.log(newEntryRequest);
 		postAjax('SearchHandler.php', newEntryRequest, response => {
 			const data = parseResponse(response);
-			console.log(data);
 			containerDiv.innerHTML = data;
-			// appends an additional javascript script when the element is clicked
-			(tag => {
-		    const scriptTag = document.createElement(tag), // create a script tag
-			    firstScriptTag = document.getElementsByTagName(tag)[0]; // find the first script tag in the document
-		    scriptTag.src = 'newEntryHandler.js';
-		    firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag); // append the script to the DOM
-			})('script');
+			getFormData();
 		});
+
 	}
 
 
@@ -168,7 +160,8 @@ const load = () => {
 		
 	};
 
-} 
+}
+
 const delay = (function(){
   let timer = 0;
   return function(callback, ms){
@@ -298,4 +291,57 @@ function postAjax(url, data, onSuccess) {
 
 function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+
+function getFormData () {
+								const notes = document.getElementById("notes"),
+									mongoIdContainer = document.getElementsByClassName('id-holder')[0],
+									demographicsDiv = document.getElementById('demographics');
+
+	const form = document.getElementById('submit-button');
+	form.addEventListener('click', () => {
+		let completeMessage = true;
+		const firstName = document.getElementById('first-name').value;
+		const lastName = document.getElementById('last-name').value;
+		const age = document.getElementById('age').value;
+		try {
+			if (firstName === '' || lastName === '' || age === '') {
+				throw "You must fill out all the fields."
+			}
+		} catch (e) {
+			window.alert(e);
+			completeMessage = false;
+		}
+		// assigns sex and verifies a gender was selected.
+		let sex;
+		try {
+			if (document.getElementById('male').checked) {
+				sex = document.getElementById('male').value;
+			} else if (document.getElementById('female').checked) {
+				sex = document.getElementById('female').value;
+			} else {
+				throw "You must select a gender.";
+			}
+		} catch (e) {
+			window.alert(e);
+			completeMessage = false;
+		}
+
+		if (completeMessage) {
+			const newEntryData = {
+				"firstName" : firstName,
+				"lastName" : lastName,
+				"age" : Number.parseInt(age),
+				"sex" : sex,
+			};
+			const readyToSend = formatServerData('newEntryData', newEntryData);
+			postAjax('SearchHandler.php', readyToSend, response => {
+				console.log(parseResponse(response));
+				mongoIdContainer.setAttribute('id', parseResponse(response).mongoId);
+				demographicsDiv.innerHTML = parseResponse(response).demographics;
+				notes.innerHTML = parseResponse(response).notes;
+			});
+		}
+	});
 }

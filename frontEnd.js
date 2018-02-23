@@ -43,9 +43,12 @@ const load = () => {
  // MUST REWORK WITH THE COMMUNICATION CONTRACT AND parseServerData()
 	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.onclick = () => {
-		postAjax('personInstanceFormHandler.php', 1, response => {
-			const data = JSON.parse(response);
-			containerDiv.innerHTML = (data['displayData']);
+		const newEntryRequest = formatServerData('newEntryRequest', true);
+		console.log(newEntryRequest);
+		postAjax('SearchHandler.php', newEntryRequest, response => {
+			const data = parseResponse(response);
+			console.log(data);
+			containerDiv.innerHTML = data;
 			// appends an additional javascript script when the element is clicked
 			(tag => {
 		    const scriptTag = document.createElement(tag), // create a script tag
@@ -189,7 +192,6 @@ function formatServerData (dataType, data) {
 function parseResponse(response) {
 	const formattedResponse = JSON.parse(response),
 		dataType = formattedResponse.dataType; // get dataType
-
 	switch (dataType) {
 		case 'mongoId&Name':
 			return formattedResponse.data;
@@ -204,6 +206,9 @@ function parseResponse(response) {
 			return formattedResponse.data;
 			break;
 		case 'person':
+			return formattedResponse.data;
+			break;
+		case 'newEntryForm':
 			return formattedResponse.data;
 			break;
 	}

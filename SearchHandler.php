@@ -2,6 +2,7 @@
 //require('MongoHelper.php');
 //require('HelperClass.php');
 require('PersonClass.php');
+require('NewEntryClass.php');
 
 $clientData = json_decode(file_get_contents('php://input'), true);
 
@@ -40,6 +41,17 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			$person = new BasePerson($mongoId);
 			$readyToSend = HelperClass::formatClientData('person', ['demographics' => $person->displayDemographics(), 'notes' => $person->displayNotes(), 'mongoId' => $person->getMongoId()]);
 			echo json_encode($readyToSend);
+			break;
+		case 'newEntryRequest':
+			echo $data ? 
+			json_encode(HelperClass::formatClientData('newEntryForm', HelperClass::generateNewEntryForm())) : 
+			json_encode(HelperClass::formatClientData('error', 'Something went wrong. Unable to request new entry.'));
+			break;
+		case 'newPersonEntry':
+			$newEntry = new NewEntry($receivedData);
+			$confirmation = $newEntry->insertEntryIntoDB();
+			echo json_encode($confirmation);
+			break;
 	}	
 
 } else {

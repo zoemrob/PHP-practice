@@ -43,8 +43,8 @@ Class HelperClass {
 	/* Method creates new entry form to allow a new database entry to be added.
 	 */
 	public static function generateNewEntryForm() {
-		$data = ['displayData' => '
-			<div class="center">
+		$data = 
+			'<div class="center">
 				<form id="new-entry-form">
 					<p class="subheader margin0">New Entry</p>
 					<div class="pad10">
@@ -72,9 +72,8 @@ Class HelperClass {
 						<button type="click" id="submit-button">SUBMIT</button>
 					</div>
 				</form>
-			</div>
-		'];
-		return json_encode($data);
+			</div>';
+		return $data;
 	}
 	/* This method formats the data into JSON in the agreeable format and sends it.
 	 * @param $dataType str, lets client know how to process data.

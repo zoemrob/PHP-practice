@@ -336,21 +336,21 @@ function setNoteMouseoverEvents() {
 			mousedOverNoteId = mousedOverNote.getAttribute('id');
 
 		// createDeleteButton
-		mousedOverNote.mouseenter = () => {
+		mousedOverNote.addEventListener('mouseenter', () => {
 			mousedOverNote.setAttribute('id', 'moused-over-note');
 			mousedOverNoteText.classList.toggle('margin-btm-0');
 			mousedOverNoteText.classList.toggle('bottom-corner-radius');
 			mousedOverNote.appendChild(createDeleteButton());
-		};
+		});
 
 		// removeDeleteButton
-		mousedOverNote.mouseleave = () => {
+		mousedOverNote.addEventListener('mouseleave', () => {
 			mousedOverNote.setAttribute('id', mousedOverNoteId);
 			mousedOverNote.children[1].removeAttribute('id');
 			mousedOverNoteText.classList.toggle('margin-btm-0');
 			mousedOverNoteText.classList.toggle('moused-over-note-text');
 			mousedOverNoteText.classList.toggle('bottom-corner-radius');
 			removeDeleteButton(mousedOverNote);
-		};
+		});
 	}
 }

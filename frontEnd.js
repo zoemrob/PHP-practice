@@ -326,6 +326,7 @@ function setNewNoteEvent() {
 	};
 }
 
+// BROKEN :(
 function setNoteMouseoverEvents() {
 		const notes = document.getElementById("notes"); console.log(notes);
 	

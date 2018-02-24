@@ -153,15 +153,16 @@ function createDeleteButton () {
 
 	const button = document.createElement('button'),
 		buttonDiv = document.createElement('div'),
-		targetNoteToDelete = document.getElementById('moused-over-note');
+		targetNoteToDelete = document.getElementById('moused-over-note')
+		previousId = targetNoteToDelete.getAttribute('id');
 	
 	button.innerHTML = 'DELETE NOTE';
-	button.classList.add('montserrat-font')
+	button.classList.add('montserrat-font');
 	button.setAttribute('id', 'moused-over-delete-button');
 	console.log(button);
 	button.onclick = () => {
 		deleteNoteFromUI([targetNoteToDelete]);
-		// here will be a call to the deleteNoteFromDB function;
+
 	};
 
 	buttonDiv.classList.add('bottom-corner-radius', 'standard-bkgd-color');
@@ -199,6 +200,7 @@ function deleteNoteFromUI (elements) {
 	try {
 		if (Array.isArray(elements)) {
 			elements.forEach(noteToDelete => {
+				noteToDelete.
 				noteToDelete.remove();
 			});
 		}

@@ -158,7 +158,8 @@ function createDeleteButton () {
 	button.innerHTML = 'DELETE NOTE';
 	button.classList.add('montserrat-font')
 	button.setAttribute('id', 'moused-over-delete-button');
-	button.addEventListener.onclick = () => {
+	console.log(button);
+	button.onclick = () => {
 		deleteNoteFromUI([targetNoteToDelete]);
 		// here will be a call to the deleteNoteFromDB function;
 	};

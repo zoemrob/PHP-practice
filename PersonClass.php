@@ -155,6 +155,11 @@ Class BasePerson extends AbstractPerson {
                 	// throws this exception if the index is does not exist.
                 }
                 unset($this->notes[$index]);
+                
+
+                // CURRENT WORK IN PROGRESSS
+                MongoHelper::deleteNoteFromDB($this->getCollection(), $this->getMongoId(), $index);
+
             }
             $message = "Your Note" .
                     count($verifiedNotesToDelete) > 0 ? 's' : '' .

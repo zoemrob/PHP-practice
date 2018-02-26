@@ -25,7 +25,7 @@
 
 		</div>
 		<div id="javascript">
-			<script type="text/javascript" src="frontEnd.js"></script>
+			<script type="text/javascript" src="reworked.js"></script>
 		</div>
 	</body>
 </html>

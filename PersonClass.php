@@ -126,7 +126,7 @@ Class BasePerson extends AbstractPerson {
 					<div class='note-date-div' id='note-date-div-" . $key . "'>
 						<p class='note-date margin-btm-0 pad10' id='note-date-" . $key . "'>" . $note['date'] . " <span class='inline-em'>you wrote</span>:</p>
 					</div>
-					<div class='note-text-div' id='note-text-div-" . $key ."'> 
+					<div id='note-text-div-" . $key ."'> 
 						<p class='note-text montserrat-font bottom-corner-radius standard-bkgd-color' id='note-text-" . $key . "'>" . $note['note'] . "</p>
 					</div>
 				</div>";

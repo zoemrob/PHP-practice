@@ -1,6 +1,4 @@
 <?php
-//require('MongoHelper.php');
-//require('HelperClass.php');
 require('PersonClass.php');
 require('NewEntryClass.php');
 
@@ -39,8 +37,6 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 		case 'newEntryData':
 			$firstName = $data['firstName'];
 			$lastName = $data['lastName'];
-/*			$age = $data['age'];
-			$sex = $data['sex'];*/
 			$newEntry = new NewEntry(json_encode($data));
 			$acknowledged = $newEntry->insertEntryIntoDB();
 			if ($acknowledged == 1) {
@@ -49,7 +45,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 		case 'mongoId':
 			$mongoId = $data;
 			$person = new BasePerson($mongoId);
-			$readyToSend = HelperClass::formatClientData('person', ['render' => $person->render(), 'mongoId' => $person->getMongoId()]/*['demographics' => $person->displayDemographics(), 'notes' => $person->displayNotes(), 'mongoId' => $person->getMongoId()]*/);
+			$readyToSend = HelperClass::formatClientData('person', ['render' => $person->render(), 'mongoId' => $person->getMongoId()]);
 			echo json_encode($readyToSend);
 			break;
 		case 'newEntryRequest':

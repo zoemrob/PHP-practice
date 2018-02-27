@@ -81,7 +81,7 @@ function createDeleteButton () {
 	button.setAttribute('id', 'moused-over-delete-button');
 	button.onclick = () => {
 		deleteNoteFromUI([targetNoteToDelete]);
-		// here will be a call to the deleteNoteFromDB function;
+		deleteNoteFromDB([targetNoteToDelete]);
 	};
 	buttonDiv.classList.add(
 		'bottom-corner-radius',
@@ -141,6 +141,16 @@ function deleteNoteFromUI (elements) {
 	} catch(error) {
 		console.log(`Expecting Array. Received ${typeof elements} instead.`);
 	}
+}
+
+// 14 char
+function deleteNoteFromDB(elements) {
+	elements.forEach(noteToDelete => {
+	const targetNoteToDelete = noteToDelete.children[0],
+		idOfNoteToDelete = targetNoteToDelete.getAttribute('id'),
+		noteIndex = idOfNoteToDelete.slice(14);
+		console.log(noteIndex);
+	});	
 }
 
 /** Fetches form data, verifies the values are valid.

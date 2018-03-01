@@ -185,17 +185,17 @@ Class BasePerson extends AbstractPerson {
 			"<br />" .
 			"<textarea cols='50' rows='10' class='fix-size' id='new-note-entry' maxlength='500' minlength='1' placeholder='Write your new note here...'></textarea>" .
 			"<br />" .
-			"<button id='submit-new-note' type='button'>Enter Note</button>" .
+			"<button id='submit-new-note' type='button' class='modal-submit-button'>Enter Note</button>" .
 		"</div>";
 	}
 
 	public function createNoteDeleteConfirm() {
 		return
-		"<div class='modal standard-bkgd-color standard-shadow montserrat-font margin0' id='confirm-delete-modal'>" .
+		"<div class='modal standard-bkgd-color standard-shadow montserrat-font margin0 center' id='confirm-delete-modal'>" .
 			"<span id='close-note-modal'>&times;</span>" .
 			"<span>Are you sure you want to delete this note about " . $this->getName() . "?</span>" .
 			"<br />" .
-			"<button id='confirm-delete-button' type='button'>Confirm Delete</button>" .	
+			"<button id='confirm-delete-button' type='button' class='modal-submit-button'>Confirm Delete</button>" .	
 		"</div>";
 	}
 

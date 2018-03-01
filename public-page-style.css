@@ -159,6 +159,6 @@
 	cursor: pointer;
 }
 
-#submit-new-note {
+.modal-submit-button {
 	margin-left: 85%;
 }

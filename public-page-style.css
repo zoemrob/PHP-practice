@@ -1,3 +1,7 @@
+html {
+	overflow-y: scroll;
+}
+
 .montserrat-font {
 	font-family: 'Montserrat', sans-serif;
 }
@@ -7,12 +11,25 @@
 	border-bottom-right-radius: 10px;
 }
 
+.top-corner-radius {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;	
+}
+
 .standard-shadow {
 	box-shadow: 10px 10px 25px #202021;
 }
 
 .center {
 	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.left {
+	text-align: left;
 }
 
 .standard-bkgd-color {
@@ -40,12 +57,54 @@
 	max-width: 50%;
 }
 
+.wth25 {
+	max-width: 25%;
+}
+
+.wth215px {
+	max-width: 215px;
+}
+
 .floatR {
 	float: right;
 }
 
+.floatL {
+	float: left;
+}
+
 .hide {
 	display: none;
+}
+
+.default-border {
+	border-style: solid;
+	border-width: 2px;
+	border-color: #000;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.fixed {
+	position: absolute;
+}
+
+.z3 {
+	z-index: 3;
+}
+
+.abs {
+	position: absolute;
+}
+
+.nav-button-1 {
+	margin-left: 3%;
+}
+
+.nav-button-2 {
+	margin-left: 10%
 }
 /***************************************/
 .note-date {
@@ -112,17 +171,17 @@
 #new-entry-button {
 	margin-right: 10%;
 }
+
 .search-bar {
-	margin-left: 15%;
+	margin-left: 10%;
 	width: 25%;
-	float: left;
-	z-index: 3;
 	overflow: scroll;
 	background-color: #EEEEECFF;
+	text-align: left;
 }
 
 .search-results {
-	
+	margin-left: 5px;
 }
 
 .modal-bkgd {

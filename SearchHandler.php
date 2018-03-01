@@ -66,6 +66,11 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			$readyToSend = HelperClass::formatClientData('confirmModal', $person->createNoteDeleteConfirm());
 			echo json_encode($readyToSend);
 			break;
+		case 'homepage':
+			echo $data ?
+			json_encode(HelperClass::formatClientData('homepage', HelperClass::generateHomepage())) :
+			json_encode(HelperClass::formatClientData('error', 'Something went wrong. Unable to go to homepage.'));
+			break;
 	}	
 
 } else {

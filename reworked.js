@@ -51,6 +51,8 @@ function parseResponse(response) {
 			return formattedResponse.data;
 		case 'confirmModal':
 			return formattedResponse.data;
+		case 'homepage':
+			return formattedResponse.data;
 	}
 }
 
@@ -192,7 +194,7 @@ function deleteNoteFromDB(elements) {
 
 /** Fetches form data, verifies the values are valid.
  */
-function getFormData () {
+function getFormEvents () {
 	const containerDiv = document.getElementsByClassName('container')[0],
 		form = document.getElementById('submit-button');
 	form.onclick = () => {
@@ -303,16 +305,26 @@ const load = () => {
 		javascriptFiles = document.getElementById("javascript"),
 		searchField = document.getElementById("search"),
 		navBar = document.getElementById("nav-div"),
-		searchBar = document.getElementById("js-searches");
+		searchBar = document.getElementById("js-searches")
+		homepageButton = document.getElementById('home-button');
 	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.onclick = () => {
 		const newEntryRequest = formatServerData('newEntryRequest', true);
 		postAjax('SearchHandler.php', newEntryRequest, response => {
 			const data = parseResponse(response);
 			containerDiv.innerHTML = data;
-			getFormData();
+			getFormEvents();
 		});
 	}
+
+	homepageButton.onclick = () => {
+		const homepageRequest = formatServerData('homepage', true);
+		postAjax('SearchHandler.php', homepageRequest, response => {
+			const data = parseResponse(response);
+			containerDiv.innerHTML = data;
+		})
+	}
+
 	// *** Search Bar Function ***
 	setTimeout(() => {
 		searchField.onkeyup = () => {

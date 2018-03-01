@@ -44,9 +44,8 @@ Class HelperClass {
 	 */
 	public static function generateNewEntryForm() {
 		$data = 
-			'<div class="center">' .
-				//<form id="new-entry-form">
-					'<p class="subheader margin0">New Entry</p>
+			'<div class="wth25 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border">' .
+					'<p class="subheader margin0 bold">New Entry</p>
 					<div class="pad10">
 						<div class="pad10">
 							<label>First Name:</label>
@@ -71,10 +70,32 @@ Class HelperClass {
 					<div class="pad10">
 						<button type="click" id="submit-button">SUBMIT</button>
 					</div>' .
-				//</form>
 			'</div>';
 		return $data;
 	}
+
+	public static function generateHomepage() {
+		$data = 
+			"<div class='wth50 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border'>
+				<span class='subheader bold'>This application allows you to keep a record of the various things your co-workers do throughout the day.</span>
+				<span class='inline-em pad10'>(This is a joke.)</span>
+				<br />
+				<br />
+				<span class='subheader'>It's for recording useful tidbits such as:</span>
+				<ul>
+					<li class='pad10'>How many cups of coffee do they drink a day?</li>
+					<li class='pad10'>A funny joke they told. <span class='inline-em'>Matt, you kidder!</span></li>
+					<li class='pad10'>A valuable contribution to standup.</li>
+					<li class='pad10'>Are they wearing a new ring today? Is it cool?</li>
+					<li class='pad10 inline-em'>And much more...</li>
+				</ul>
+				<p class='bold right pad10'>
+					To get started, click \"New Entry\", or type in the search bar to retrieve an existing entry!
+				</p>
+			</div>";
+		return $data;
+	}
+
 	/* This method formats the data into JSON in the agreeable format and sends it.
 	 * @param $dataType str, lets client know how to process data.
 	 * @param $data, mixed, data to send to client

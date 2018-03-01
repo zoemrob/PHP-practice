@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Co-Worker Journal</title>
+		<link href="public-page-style.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	</head>
+	<body>
+		<div class="header standard-bkgd-color standard-shadow margin0 wth50">
+			<p class="header-text center">Co-Worker Journal</p>
+		</div>
+		<div class="nav-div center standard-bkgd-color standard-shadow margin0 wth50" id="nav-div">
+			<table class='search-bar wth215px abs' id='js-searches'>
+				<tr id='js-append-searches'>
+					<td>
+						<input id="search" type="text" placeholder="Search" class="navigation pad10">
+					</td>
+				</tr>
+			</table>
+			<button id="new-entry-button" type="button" class="pad10 abs nav-button-1">New Entry</button>
+			<button id="home-button" type="button" class="pad10 abs nav-button-2">Back to Home</button>
+		</div>
+		<br />
+		<div class='id-holder container'>
+			<div class="wth50 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border">
+				<span class="subheader bold">This application allows you to keep a record of the various things your co-workers do throughout the day.</span>
+				<span class="inline-em pad10">(This is a joke.)</span>
+				<br />
+				<br />
+				<span class="subheader">It's for recording useful tidbits such as:</span>
+				<ul>
+					<li class="pad10">How many cups of coffee do they drink a day?</li>
+					<li class="pad10">A funny joke they told. <span class="inline-em">Matt, you kidder!</span></li>
+					<li class="pad10">A valuable contribution to standup.</li>
+					<li class="pad10">Are they wearing a new ring today? Is it cool?</li>
+					<li class="pad10 inline-em">And much more...</li>
+				</ul>
+				<p class="bold right pad10">
+					To get started, click "New Entry", or type in the search bar to retrieve an existing entry!
+				</p>
+			</div>
+		</div>
+		<div id="javascript">
+			<script type="text/javascript" src="reworked.js"></script>
+		</div>
+	</body>
+</html>

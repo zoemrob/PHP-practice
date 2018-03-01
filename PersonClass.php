@@ -109,10 +109,12 @@ Class BasePerson extends AbstractPerson {
 		return 
 		'<div class="demographics center" id="demographics">' .
 			$this->displayDemographics() .
+			"<div class='right'>
+				<button class='right pad10' type='button' id='new-note-button'>New Note</button>
+			</div>" .
+			"</div>" .
 		'</div>
-		<div class="center">
-			<button type="button" id="new-note-button">New Note</button>
-		</div>
+
 		<div class="margin0 wth50" id="notes">'.
 			$this->displayNotes() .
 		'</div>';
@@ -122,9 +124,10 @@ Class BasePerson extends AbstractPerson {
 	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
 	 */
 	public function displayDemographics() {
-		return "<p class='id-holder subheader center margin0' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
-			 "<p class='subheader center margin0'>Age: " . $this->getAge() . "</p>\n" .
-			 "<p class='subheader center margin0'>Sex: " . $this->getSex() . "</p>\n";
+		return "<div class='wth25 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border left'>" . 
+			"<p class='id-holder subheader margin0' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
+			"<p class='subheader margin0'>Age: " . $this->getAge() . "</p>\n" .
+			"<p class='subheader margin0'>Sex: " . $this->getSex() . "</p>\n";
 	}
 
    /** Method echos html elements on the initial load of the page.

@@ -59,7 +59,13 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			$person = new BasePerson($mongoId);
 			$response = $person->deleteNotes($noteIndexes);
 			echo json_encode($response);
-			echo json_encode($person->getNotes());
+			break;
+		case 'confirmModalRequest':
+			$mongoId = $data;
+			$person = new BasePerson($mongoId);
+			$readyToSend = HelperClass::formatClientData('confirmModal', $person->createNoteDeleteConfirm());
+			echo json_encode($readyToSend);
+			break;
 	}	
 
 } else {

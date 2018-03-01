@@ -63,14 +63,6 @@ Class BasePerson extends AbstractPerson {
 		return $this->notes;
 	}
 
-	/* echos/returns demographic information to UI/console
-	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
-	 */
-	public function displayDemographics() {
-		return "<p class='id-holder subheader center margin0' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
-			 "<p class='subheader center margin0'>Age: " . $this->getAge() . "</p>\n" .
-			 "<p class='subheader center margin0'>Sex: " . $this->getSex() . "</p>\n";
-	}
 
 	/* Method sets age for Person instance based on $this->personDocument.
 	 */
@@ -100,6 +92,10 @@ Class BasePerson extends AbstractPerson {
 		$this->notes = MongoHelper::getDocNotes($this->personDocument);
 	}
 
+	/** Method renders person instance to the DOM.
+	 *
+	 *
+	 */
 	public function render() {
 		return 
 		'<div class="demographics center" id="demographics">' .
@@ -111,6 +107,15 @@ Class BasePerson extends AbstractPerson {
 		<div class="margin0 wth50" id="notes">'.
 			$this->displayNotes() .
 		'</div>';
+	}
+
+	/* echos/returns demographic information to UI/console
+	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
+	 */
+	public function displayDemographics() {
+		return "<p class='id-holder subheader center margin0' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
+			 "<p class='subheader center margin0'>Age: " . $this->getAge() . "</p>\n" .
+			 "<p class='subheader center margin0'>Sex: " . $this->getSex() . "</p>\n";
 	}
 
    /** Method echos html elements on the initial load of the page.
@@ -182,6 +187,16 @@ Class BasePerson extends AbstractPerson {
 			"<br />" .
 			"<button id='submit-new-note' type='button'>Enter Note</button>" .
 		"</div>";
-	}	
+	}
+
+	public function createNoteDeleteConfirm() {
+		return
+		"<div class='modal standard-bkgd-color standard-shadow montserrat-font margin0' id='confirm-delete-modal'>" .
+			"<span id='close-note-modal'>&times;</span>" .
+			"<span>Are you sure you want to delete this note about " . $this->getName() . "?</span>" .
+			"<br />" .
+			"<button id='confirm-delete-button' type='button'>Confirm Delete</button>" .	
+		"</div>";
+	}
 
 }

@@ -49,6 +49,8 @@ function parseResponse(response) {
 			return formattedResponse.data;
 		case 'newEntryForm':
 			return formattedResponse.data;
+		case 'confirmModal':
+			return formattedResponse.data;
 	}
 }
 
@@ -80,8 +82,33 @@ function createDeleteButton () {
 	button.classList.add('montserrat-font');
 	button.setAttribute('id', 'moused-over-delete-button');
 	button.onclick = () => {
-		deleteNoteFromUI([targetNoteToDelete]);
-		deleteNoteFromDB([targetNoteToDelete]);
+		const confirmModal = document.createElement('div');
+		const mongoId = document.getElementsByClassName('container')[0].getAttribute('id');
+		const confirmModalRequest = formatServerData('confirmModalRequest', mongoId);
+		confirmModal.classList.add('modal-bkgd');
+		document.body.append(confirmModal);
+		postAjax('SearchHandler.php', confirmModalRequest, response => {
+			confirmModal.innerHTML = parseResponse(response);
+		});
+		setTimeout(() => {
+			const closeModal = document.getElementById('close-note-modal'),
+				confirmDelete = document.getElementById('confirm-delete-button');
+			// closes modal if close button is clicked.
+			closeModal.onclick = () => {
+				confirmModal.remove();	
+			};
+			// closes modal if outside of the text entry is clicked.
+			confirmModal.onclick = event => {
+				event.target == confirmModal ? confirmModal.remove() : '';
+			}
+
+			confirmDelete.onclick = () => {
+				deleteNoteFromUI([targetNoteToDelete]);
+				deleteNoteFromDB([targetNoteToDelete]);				
+				confirmModal.remove();
+			};
+		},
+		50);
 	};
 	buttonDiv.classList.add(
 		'bottom-corner-radius',
@@ -159,7 +186,7 @@ function deleteNoteFromDB(elements) {
 	};
 	const data = formatServerData('deleteNote', notesAndId);
 	postAjax('SearchHandler.php', data, response => {
-		console.log(response);
+		window.alert(response);
 	});
 }
 

@@ -1,6 +1,7 @@
+/* Set so page doesn't re-adjust when a person with a lot of notes is loaded. */
 html {
 	overflow-y: scroll;
-}
+} 
 
 .montserrat-font {
 	font-family: 'Montserrat', sans-serif;

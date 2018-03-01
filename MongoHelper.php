@@ -192,11 +192,12 @@ Class MongoHelper {
 				'_id' => new MongoDB\BSON\ObjectId($mongoId)
 			],
 			[
-				$pull => [
+				'$pull' => [
 					'notes' => null
 				]
 			]
-		);
+		)->isAcknowledged();
+		return $result;
 	}
 
 	public static function insertNewEntryIntoDB($collection, $firstName, $lastName, $age, $sex) {

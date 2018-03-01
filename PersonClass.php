@@ -141,34 +141,28 @@ Class BasePerson extends AbstractPerson {
 	 */
     public function deleteNotes(array $notesToDelete, $deleteAll = false) {
         try{
-            $verifiedNotesToDelete = [];
             if ($deleteAll) {
                 $notesToDelete = array_keys($this->notes);
                 // if $deleteAll is true, fill $verifiedNotesToDelete with all of the indexes of $this->notes.
             }
 
             foreach($notesToDelete as $index) {
+            	$deletedNoteCount = 0;
                 if (isset($this->notes[$index])) {
-                    $verifiedNotesToDelete[] = $this->notes[$index]; 
+	                unset($this->notes[$index]);
+	                $success = MongoHelper::deleteNoteFromDB($this->getCollection(), $this->getMongoId(), $index);
+	                if ($success == 1) {
+	                	$deletedNoteCount++;
+	                }
                 } else {
                     throw new Exception("The note you are trying to delete does not exist.\n");
                 	// throws this exception if the index is does not exist.
                 }
-                unset($this->notes[$index]);
-                
-
-                // CURRENT WORK IN PROGRESSS
-                MongoHelper::deleteNoteFromDB($this->getCollection(), $this->getMongoId(), $index);
-
             }
-            $message = "Your Note" .
-                    count($verifiedNotesToDelete) > 0 ? 's' : '' .
-                    " about " . $this->name .
-                    " for notes: " .
-                    join(',', array_column($verifiedNotesToDelete, 'note'));
-            echo json_encode(['message' => $message, 'notes' => $verifiedNotesToDelete]);
+            $message = "You successfully deleted " . $deletedNoteCount . " note" . ($deletedNoteCount > 1 ? "s" : "") . " about " . $this->getName() . ".";
+            return $message;
         } catch (Exception $ex) {
-            echo $ex;
+            return $ex;
         }
     }
 

@@ -53,6 +53,13 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			json_encode(HelperClass::formatClientData('newEntryForm', HelperClass::generateNewEntryForm())) : 
 			json_encode(HelperClass::formatClientData('error', 'Something went wrong. Unable to request new entry.'));
 			break;
+		case 'deleteNote':
+			$mongoId = $data['mongoId'];
+			$noteIndexes = $data['noteIndexes'];
+			$person = new BasePerson($mongoId);
+			$response = $person->deleteNotes($noteIndexes);
+			echo json_encode($response);
+			echo json_encode($person->getNotes());
 	}	
 
 } else {

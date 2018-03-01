@@ -145,12 +145,22 @@ function deleteNoteFromUI (elements) {
 
 // 14 char
 function deleteNoteFromDB(elements) {
+	const personId = document.getElementsByClassName('id-holder')[0].getAttribute('id'),
+		notes = [];
 	elements.forEach(noteToDelete => {
 	const targetNoteToDelete = noteToDelete.children[0],
 		idOfNoteToDelete = targetNoteToDelete.getAttribute('id'),
 		noteIndex = idOfNoteToDelete.slice(14);
-		console.log(noteIndex);
-	});	
+		notes.push(noteIndex);
+	});
+	const notesAndId = {
+		'noteIndexes': notes,
+		'mongoId' : personId
+	};
+	const data = formatServerData('deleteNote', notesAndId);
+	postAjax('SearchHandler.php', data, response => {
+		console.log(response);
+	});
 }
 
 /** Fetches form data, verifies the values are valid.

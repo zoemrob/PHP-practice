@@ -1,34 +1,37 @@
 <?php
 require('vendor/autoload.php');
-
+/*
+	Database static helper methods.
+*/
 Class MongoHelper {
 
-    /*
-	 *	This method is used to create an instance of the coworkerjournal db.
+    /** 
+	 * Method creates instance of db.
+	 * @return Obj: DB instance object.
 	 */
 	public static function createDBInstance() {
 
 		$db = new MongoDB\Client("mongodb://localhost:27017");
 		return $db->coworkerjournal->coworkerjournal;
 	}
-/*
-	public static function getMongoIdString($cursor) {
-		$results = array();
-		foreach($cursor as $mongoId) {
-			$results[] = $mongoId->_id;
-		}
-		return $results;
-	}*/
 
-	public static function getSingleMongoIdString($cursor) {
+	/** 
+	 *  Method is for internal use, converting ObjectId object into string.
+	 * 
+	 *  @param Obj: MongoId Cursor
+	 *  @return String: ObjectId string from Cursor.
+	 */
+	private static function getSingleMongoIdString($cursor) {
 		$oid = $cursor->_id;
 		return $oid->__toString();
 	}
 
-	/*
+	/**
 	 *	This method returns the BSON Document of a DB by ObjectId
-	 *	@param $collection = instance of MongoDB->coworkerjournal->Collection that is being queried
-	 *	@param $mongoId = the ObjectId of the Document being retrieved.
+	 *	@param Obj: instance of MongoDB->coworkerjournal->Collection that is being queried
+	 *	@param String:the ObjectId of the Document being retrieved.
+	 *
+	 *  @return Obj: Cursor for document.
 	 */
 	public static function queryById($collection, $mongoId) {
 		$document = $collection->findOne(
@@ -39,7 +42,14 @@ Class MongoHelper {
 		return $document;
 	}
 
-	// will be used only internally. Returns mongoId string.
+	/**
+	 *  This method returns the MongoId string of a result of a name search.
+	 *	@param Obj: instance of MongoDB->coworkerjournal->Collection that is being queried
+	 *  @param String: first name of person to query
+	 *  @param String: last name of person to query
+	 *
+	 *  @return String: MongoId string for person
+	 */
 	public static function queryOneByName($collection, $first, $last) {
 		$result = $collection->findOne(
 			[
@@ -47,12 +57,18 @@ Class MongoHelper {
 				'lastName' => $last
 			]
 		);
-		$preformatted = self::getSingleMongoIdString($result);
-		return $preformatted;
+		$mongoId = self::getSingleMongoIdString($result);
+		return $mongoId;
 	}
 
 
-	// used for search bar feature
+	/**
+	 *  This method searches for first/last name by regular expression.
+	 *	@param Obj: instance of MongoDB->coworkerjournal->Collection that is being queried
+	 *  @param String: name string from $_POST method in search bar.
+	 *
+	 *  @return Array: ObjectId, first name, last name
+	 */
 	public static function queryByNameSearch($collection, $name) {
 		$regexp = new MongoDB\BSON\Regex('^' . $name, 'i');
 		$result = $collection->find(
@@ -77,20 +93,12 @@ Class MongoHelper {
 		return $result;
 	}
 
-
-	// CURTIS METHODS
-	public static function getNotes($collection, $match) {
-	    return $collection->findOne($match, ['notes.date' => 1, 'notes.note' => 1])['notes'] ?? [];
-	}
-
-	public static function getNotesById($collection, $id) {
-	    return self::getNotes($collection, ['_id' => $id]);
-	}
-
-	public static function getNotesByName($collection, $name) {
-	    return self::getNotes($collection, ['firstName' => new MongoDB\BSON\Regex('^' . $name, 'i')]);
-	}
-
+	/**
+	 *  Method returns an array of elements to be used for search bar results.
+	 *  @param Obj: Mongo Cursor object
+	 *
+	 *  @return Array: array of results.
+	 */
 	public static function getNameAndMongoId($cursor) {
 		$results = array();
 		foreach($cursor as $document) {
@@ -103,60 +111,60 @@ Class MongoHelper {
 		return $results;
 	}
 
-	/*
+	/**
 	 *	This method returns the "firstName" &/or "lastName" value from a Document.
-	 *	@param $BSONDocument = BSON object Document
-	 *	@param $lastName = boolean value that determines whether or not "lastName" value is returned.
+	 *	@param Obj: Mongo Cursor
+	 *	@param bool: determines whether or not "lastName" value is returned.
+	 *
+	 *  @return String: string of name.
 	 */
-	public static function getDocName($BSONDocument, $lastName = true) {
-		return $lastName ? $BSONDocument->firstName . " " . $BSONDocument->lastName : $BSONDocument->firstName;
+	public static function getDocName($cursor, $lastName = true) {
+		return $lastName ? $cursor->firstName . " " . $cursor->lastName : $cursor->firstName;
 	}
 
-	/*
+	/**
 	 *	This method returns the "age" value from the Document.
-	 *	@param $BSONDocument = BSON object Document
+	 *	@param Obj: Mongo Cursor Object
+	 *
+	 *  @return Int: age of person
 	 */
-	public static function getDocAge($BSONDocument) {
-		return $BSONDocument->age;
+	public static function getDocAge($cursor) {
+		return $cursor->age;
 	}
 
-	/*
+	/**
 	 *	This method returns the "gender" value from the Document.
-	 *	@param $BSONDocument = BSON object Document
+	 *	@param Obj: Mongo Cursor object
+	 *
+	 *  @return String: gender value of person.
 	 */
-	public static function getDocSex($BSONDocument) {
-		return $BSONDocument->sex;
+	public static function getDocSex($cursor) {
+		return $cursor->sex;
 	}
 
 
-	// Will be deprecated!!!
-	public static function getDocNotes($BSONDocument) {
+	/**
+	 *  This method returns the notes from the cursor, formats into array.
+	 *  @param Obj: Mongo Cursor Object.
+	 *
+	 *  @return Array: array of notes from cursor.
+	 */
+	public static function getDocNotes($cursor) {
 		$notes = array();
-		foreach($BSONDocument->notes as $noteObj) {
+		foreach($cursor->notes as $noteObj) {
 			$note = ['date' => $noteObj['date'], 'note' => $noteObj['note']];
 			$notes[] = $note;
 		}
 		return $notes;
 	}
 
-	public static function returnNoteInfo($notes, $person = null) {
-		if ($person) {
-			foreach($notes as $note) {
-				$person->notes[] = ['date' => $note['date'], 'note' => $note['note']];
-			}
-		} else {
-			$notesArray = array();
-			foreach($notes as $note) {
-				$notesArray[] = ['date' => $note['date'], 'note' => $note['note']];
-			}
-			return $notesArray;		
-		}
-	}
-
-	/* This method will insert the note into the notes array in the Person's Document. 
-	 * @param $collection = obj - Instance of database->collection
-	 * @param $mongoId = str - Unique ObjectId
-	 * @param $note = array - containing 'date' and 'note'
+	/** 
+	 *  This method will insert the note into the notes array in the Person's Document. 
+	 *	@param Obj: instance of MongoDB->coworkerjournal->Collection that is being queried
+	 *  @param String: ObjectId string.
+	 *  @param Array: containing 'date' and 'note'
+	 *
+	 *  @return Int: success or fail message.
 	 */
 	public static function insertNoteDB($collection, $mongoId, $note) {
 		$result = $collection->updateOne(
@@ -169,12 +177,16 @@ Class MongoHelper {
 					]
 				]
 			);
-		return $result->isAcknowledged(); // returns 1 if success, returns 0 if failed. Should be used to respond to AJAX request.
+		return $result->isAcknowledged();
 	}
-	/* Method will delete a note from a Document in an aray
-	 * @param $collection = obj, db->collection to delete from
-	 * @param $mongoId = string, of document to delete from
-	 * @param $index = int, index of notes to delete from in document.
+
+	/** 
+	 *  Method will delete a note from a Document in an aray
+	 *	@param Obj: instance of MongoDB->coworkerjournal->Collection that is being queried
+	 *  @param String: ObjectId string.
+	 *  @param Int: index of notes to delete from in document.
+ 	 *
+	 *  @return Int: success or fail message.
 	 */
 	public static function deleteNoteFromDB($collection, $mongoId, $index) {
 		$collection->updateOne(
@@ -200,6 +212,16 @@ Class MongoHelper {
 		return $result;
 	}
 
+	/**
+	 *  Method takes form data from $_POST request, creates a new document, returns confirmation.
+	 *	@param Obj: instance of MongoDB->coworkerjournal->Collection that is being queried
+	 *  @param String: First name
+	 *  @param String: Last name
+	 *  @param Int: age of person
+	 *  @param String: Sex character.
+	 *
+	 *  @return Int: success or fail message.
+	 */
 	public static function insertNewEntryIntoDB($collection, $firstName, $lastName, $age, $sex) {
 		$result = $collection->insertOne(
 			[
@@ -213,3 +235,30 @@ Class MongoHelper {
 		return $result->isAcknowledged();
 	}
 }
+
+/*	public static function returnNoteInfo($notes, $person = null) {
+		if ($person) {
+			foreach($notes as $note) {
+				$person->notes[] = ['date' => $note['date'], 'note' => $note['note']];
+			}
+		} else {
+			$notesArray = array();
+			foreach($notes as $note) {
+				$notesArray[] = ['date' => $note['date'], 'note' => $note['note']];
+			}
+			return $notesArray;		
+		}
+	}
+*/
+	/*// CURTIS METHODS
+	public static function getNotes($collection, $match) {
+	    return $collection->findOne($match, ['notes.date' => 1, 'notes.note' => 1])['notes'] ?? [];
+	}
+
+	public static function getNotesById($collection, $id) {
+	    return self::getNotes($collection, ['_id' => $id]);
+	}
+
+	public static function getNotesByName($collection, $name) {
+	    return self::getNotes($collection, ['firstName' => new MongoDB\BSON\Regex('^' . $name, 'i')]);
+	}*/

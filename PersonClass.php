@@ -10,55 +10,65 @@ Class BasePerson extends AbstractPerson {
 	protected $mongoId;
 	protected $notes = [];
 
-   /*  __construct method allows for the optional parameters to be created upon initialization
-	* @param $mongoId
-	* @param $name = string, name of person creating entry
+   /*  __construct method queries by mongoId, returns cursor, sets properties.
 	*
+	* @param String: MongoId
 	*/
 	public function __construct($mongoId) {
 		//this is where the Person requested is queried.
-		if ($mongoId) {
-			$this->setCollection();
-			$this->setMongoId($mongoId);
-			$this->setPersonDocument();
-			$this->setAge();
-			$this->setName();
-			$this->setSex();
-			$this->setNotesFromDB();
-		} else {
-
-		}
+		$this->setCollection();
+		$this->setMongoId($mongoId);
+		$this->setPersonDocument();
+		$this->setAge();
+		$this->setName();
+		$this->setSex();
+		$this->setNotesFromDB();
 	}
  	
+ 	/** Method queries by MongoId passed into constructor.
+ 	 * sets Mongo cursor.
+ 	 */
 	public function setPersonDocument() {
-			$this->personDocument = MongoHelper::queryById($this->getCollection(), $this->getMongoId());		
+		$this->personDocument = MongoHelper::queryById($this->getCollection(), $this->getMongoId());		
 	}
 
 	/* Method sets mongoId for person instance.
-	 * @param $mongoId = str of mongoId
+	 * @param String: MongoId
 	 */
 	public function setMongoId($mongoId) {
 		$this->mongoId = $mongoId;
 	}
 
+	/** Method returns ObjectId 
+	 * @return String: person objectId
+	 */
 	public function getMongoId() {
 		return $this->mongoId;
 	}
 
 	/* Method returns the BSON DB document from the object instance.
 	 * 
-	 *
+	 * @return obj: Mongo Cursor
 	 */
 	public function getPersonDocument() {
 		return $this->personDocument;
 	}
 
+	/** Method takes text from post request and inserts into DB.
+	 *
+	 * @param String: note text from $_POST
+	 *
+	 * @return Int: confirmation of updateOne method.
+	 */
 	public function setNoteFromUI($note) {
 		$confirmation = MongoHelper::insertNoteDB($this->getCollection(), $this->getMongoId(), HelperClass::makeNote($note));
 		$confirmation == 1 ? $this->setNotesFromDB() : '';
 		return $confirmation;
 	}
 
+	/** Gets notes
+	 * @return Array: formatted list of notes from DB.
+	 */
 	public function getNotes() {
 		return $this->notes;
 	}
@@ -85,7 +95,6 @@ Class BasePerson extends AbstractPerson {
 
 	/* Called on construct, fetches notes from the database.
 	 *
-	 *
 	 */
 	public function setNotesFromDB() {
 		$this->setPersonDocument();
@@ -94,7 +103,7 @@ Class BasePerson extends AbstractPerson {
 
 	/** Method renders person instance to the DOM.
 	 *
-	 *
+	 * @return String: formatted HTML.
 	 */
 	public function render() {
 		return 
@@ -139,9 +148,12 @@ Class BasePerson extends AbstractPerson {
 		return $formattedNotes;
 	}
 
-	/* Method will receive an array from UI. After selecting "Delete messages" and checking the notes to delete.
+	/** Method delete notes from the database.
+	 *
 	 * @param $notesToDelete, array.
 	 * @param $deleteAll, optional bool to delete all notes.
+	 *
+	 * @return String: confirmation message on how many notes were deleted.
 	 * FUTURE PLANNING: Instead of deleting the notes permanently, store them in a seperate DB category, where "Deleted Notes can be viewed".
 	 */
     public function deleteNotes(array $notesToDelete, $deleteAll = false) {
@@ -171,12 +183,10 @@ Class BasePerson extends AbstractPerson {
         }
     }
 
-	/* Method used simply for debugging.
-	 */
-	public function debugNotes() {
-		var_dump($this->notes);
-	}
-
+    /** Creates the modal for a new note entry.
+     *
+     * @return String: formatted HTML.
+     */
 	public function createNewNoteForm() {
 		return 
 		"<div class='modal standard-bkgd-color standard-shadow montserrat-font margin0' id='new-note-modal-content'>" .
@@ -189,6 +199,10 @@ Class BasePerson extends AbstractPerson {
 		"</div>";
 	}
 
+	/** Creates delete note modal confirmation.
+	 *
+	 * @return String: formatted HTML.
+	 */
 	public function createNoteDeleteConfirm() {
 		return
 		"<div class='modal standard-bkgd-color standard-shadow montserrat-font margin0 center' id='confirm-delete-modal'>" .

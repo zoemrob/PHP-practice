@@ -1,0 +1,3 @@
+<?php
+$html = file_get_contents('http://odevax.ode.state.oh.us/htbin/www_getirn.com?SELECTION=COUNTY&county=01&district=');
+echo $html;

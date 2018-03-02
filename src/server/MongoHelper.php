@@ -255,8 +255,17 @@ Class MongoHelper {
 	 * @param Obj: Mongo collection object
 	 * @param Array: Array of fields to update.
 	 */
-	public static function updateEntryFields($collection, $fields) {
-
+	public static function updateEntryFields($collection, $mongoId, $fields) {
+		$fields = self::convertToMongoFields($fields);
+		$result = $collection->updateOne(
+			[
+				'_id': new MongoDB\BSON\ObjectId($mongoId)
+			],
+			[
+				'$set' => $fields
+			]
+		)->getModifiedCount();
+		return $result;
 	}
 
 	/**

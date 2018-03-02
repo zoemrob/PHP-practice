@@ -8,6 +8,12 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 
 	$data = $clientData['data'];
 
+	if (is_array($data)) {
+        array_walk($testdata, function(&$item){
+		    $item = strip_tags($item);
+		});
+    }
+
 	switch ($clientData['dataType']) {
 		case 'name':
 			$cursor = MongoHelper::queryByNameSearch(MongoHelper::createDBInstance(), $data);

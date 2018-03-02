@@ -89,7 +89,7 @@ function createDeleteButton () {
 		const confirmModalRequest = formatServerData('confirmModalRequest', mongoId);
 		confirmModal.classList.add('modal-bkgd');
 		document.body.append(confirmModal);
-		postAjax('SearchHandler.php', confirmModalRequest, response => {
+		postAjax('src/server/form-handler.php', confirmModalRequest, response => {
 			confirmModal.innerHTML = parseResponse(response);
 		});
 		setTimeout(() => {
@@ -187,7 +187,7 @@ function deleteNoteFromDB(elements) {
 		'mongoId' : personId
 	};
 	const data = formatServerData('deleteNote', notesAndId);
-	postAjax('SearchHandler.php', data, response => {
+	postAjax('src/server/form-handler.php', data, response => {
 		window.alert(response);
 	});
 }
@@ -233,7 +233,7 @@ function getFormEvents () {
 				"sex" : sex,
 			};
 			const readyToSend = formatServerData('newEntryData', newEntryData);
-			postAjax('SearchHandler.php', readyToSend, response => {
+			postAjax('src/server/form-handler.php', readyToSend, response => {
 				const personData = parseResponse(response);
 				containerDiv.setAttribute('id', personData.mongoId);
 				containerDiv.innerHTML = personData.render;
@@ -257,7 +257,7 @@ function setNewNoteEvent() {
 
 		noteModal.classList.add('modal-bkgd');
 		document.body.appendChild(noteModal);	
-		postAjax('SearchHandler.php', newNoteRequest, response => {
+		postAjax('src/server/form-handler.php', newNoteRequest, response => {
 			noteModal.innerHTML = parseResponse(response);
 		});
 		// Modal events, set a 50 millisecond timeout to have time to fetch the elements
@@ -280,7 +280,7 @@ function setNewNoteEvent() {
 					window.alert('You have to enter a note!');
 				} else {
 					const data = formatServerData('newNote', {'mongoId': mongoId, 'note': entry});
-					postAjax('SearchHandler.php', data, response => {
+					postAjax('src/server/form-handler.php', data, response => {
 						const newInfo = parseResponse(response);
 						if (newInfo) {
 							notes.innerHTML = newInfo;
@@ -310,7 +310,7 @@ const load = () => {
 	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.onclick = () => {
 		const newEntryRequest = formatServerData('newEntryRequest', true);
-		postAjax('SearchHandler.php', newEntryRequest, response => {
+		postAjax('src/server/form-handler.php', newEntryRequest, response => {
 			const data = parseResponse(response);
 			containerDiv.innerHTML = data;
 			getFormEvents();
@@ -319,7 +319,7 @@ const load = () => {
 
 	homepageButton.onclick = () => {
 		const homepageRequest = formatServerData('homepage', true);
-		postAjax('SearchHandler.php', homepageRequest, response => {
+		postAjax('src/server/form-handler.php', homepageRequest, response => {
 			const data = parseResponse(response);
 			containerDiv.innerHTML = data;
 		})
@@ -331,7 +331,7 @@ const load = () => {
 			if (searchField.value !== '') {
 				delay(() => {
 					const nameData = formatServerData('name', searchField.value);
-					postAjax('SearchHandler.php', nameData, response => {
+					postAjax('src/server/form-handler.php', nameData, response => {
 						const results = parseResponse(response),
 							searchResultLocation = document.getElementById('js-append-searches');
 						results.forEach(result => {
@@ -345,7 +345,7 @@ const load = () => {
 								const child = tr.firstChild,
 									// where the ObjectId value is stored.
 									mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
-								postAjax('SearchHandler.php', mongoIdData, response => {
+								postAjax('src/server/form-handler.php', mongoIdData, response => {
 									const personData = parseResponse(response);
 									containerDiv.setAttribute('id', personData.mongoId);
 									containerDiv.innerHTML = personData.render;

@@ -250,4 +250,34 @@ Class MongoHelper {
 		}
 		return $message;
 	}
+	/**
+	 *
+	 * @param Obj: Mongo collection object
+	 * @param Array: Array of fields to update.
+	 */
+	public static function updateEntryFields($collection, $fields) {
+
+	}
+
+	/**
+	 *  Method converts $_POST elements to proper mongo field names
+	 *  @param Array: array of elements received.
+	 *  
+	 *  @return Array: formatted correctly.
+	 */
+	private static function convertToMongoFields($fields) {
+		$result = array();
+		array_walk($fields, function(&$val, $key) use (&$result) {
+			switch($key) {
+				case 'first-name':
+					$key = 'firstName';
+					break;
+				case 'last-name':
+					$key = 'lastName';
+					break;
+			}
+			$result[$key] = $val;
+		});
+		return $result;
+	}
 }

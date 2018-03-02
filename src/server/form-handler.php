@@ -100,10 +100,11 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 		case 'updatedData':
 			$elementsToUpdate = array();
 			foreach($data as $key => $value) {
-				if (!empty($key) && isset($value)) {
-					$elementsToUpdate[] = $value;
+				if (!empty($value) && isset($value)) {
+					$elementsToUpdate[$key] = $value;
 				}
 			}
+			$elementsToUpdate = MongoHelper::convertToMongoFields($elementsToUpdate);
 			echo json_encode($elementsToUpdate);
 			break;
 	}	

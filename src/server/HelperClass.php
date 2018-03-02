@@ -135,7 +135,7 @@ Class HelperClass {
 	public static function formatSearchResults($cursor){
 		$htmlStringSearchResults = array();
 		$data = MongoHelper::getNameAndMongoId($cursor);
-		if (!empty($data) {
+		if (!empty($data)) {
 			foreach($data as $person) {
 				$htmlStringSearchResults[] =
 					"<td id='" . $person['mongoId'] . "'>" . $person['firstName'] . " " . $person['lastName'] . "</td>";

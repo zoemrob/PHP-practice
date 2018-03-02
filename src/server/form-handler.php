@@ -79,9 +79,20 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			json_encode(HelperClass::formatClientData('homepage', HelperClass::generateHomepage())) :
 			json_encode(HelperClass::formatClientData('error', 'Something went wrong. Unable to go to homepage.'));
 			break;
+		case 'deleteEntryConfirmModalRequest':
+			echo $data ?
+			json_encode(HelperClass::formatClientData('deleteEntryConfirmModal', HelperClass::generateEntryConfirmModal())) :
+			json_encode(HelperClass::formatClientData('error', 'Something went wrong.'));
+			break;
+		case 'deleteEntry':
+			$mongoId = $data;
+			$deleteMessage = MongoHelper::deleteDBEntry(MongoHelper::createDBInstance(), $mongoId);
+			$readyToSend = HelperClass::generateEntryDeleteConfirmation($deleteMessage);
+			echo json_encode(HelperClass::formatClientData('deletedEntry', $readyToSend));
+			break;
 	}	
 
 } else {
-	echo json_encode(HelperClass::formatClientData('error', 1)); // will create a list of constants on the server side, and communicate a constant which will be received on the client.
+	echo json_encode(HelperClass::formatClientData('error', 'Server couldn\'t process data.')); // will create a list of constants on the server side, and communicate a constant which will be received on the client.
 	// 1 = 'no value given'
 }

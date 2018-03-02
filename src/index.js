@@ -53,6 +53,10 @@ function parseResponse(response) {
 			return formattedResponse.data;
 		case 'homepage':
 			return formattedResponse.data;
+		case 'deleteEntryConfirmModal':
+			return formattedResponse.data;
+		case 'deletedEntry':
+			return formattedResponse.data;
 	}
 }
 
@@ -70,11 +74,19 @@ function postAjax(url, data, onSuccess) {
 	};
 }
 
+/**
+ * @return node: container div node.
+ */
+function getContainerDiv() {
+	return document.getElementsByClassName('container')[0];
+}
+
 /****************************************************************************
 	UI FUNCTIONS	
 ****************************************************************************/
 
 /** Creates a delete button div and assigns event listener to button.
+ * @return node: HTML node for button.
  */
 function createDeleteButton () {
 	const button = document.createElement('button'),
@@ -85,7 +97,7 @@ function createDeleteButton () {
 	button.setAttribute('id', 'moused-over-delete-button');
 	button.onclick = () => {
 		const confirmModal = document.createElement('div');
-		const mongoId = document.getElementsByClassName('container')[0].getAttribute('id');
+		const mongoId = getContainerDiv().getAttribute('id');
 		const confirmModalRequest = formatServerData('confirmModalRequest', mongoId);
 		confirmModal.classList.add('modal-bkgd');
 		document.body.append(confirmModal);
@@ -174,7 +186,8 @@ function deleteNoteFromUI (elements) {
 
 // 14 char
 function deleteNoteFromDB(elements) {
-	const personId = document.getElementsByClassName('id-holder')[0].getAttribute('id'),
+	const containerDiv = getContainerDiv();
+		personId = containerDiv.getAttribute('id'),
 		notes = [];
 	elements.forEach(noteToDelete => {
 	const targetNoteToDelete = noteToDelete.children[0],
@@ -195,7 +208,7 @@ function deleteNoteFromDB(elements) {
 /** Fetches form data, verifies the values are valid.
  */
 function getFormEvents () {
-	const containerDiv = document.getElementsByClassName('container')[0],
+	const containerDiv = getContainerDiv(),
 		form = document.getElementById('submit-button');
 	form.onclick = () => {
 		let completeMessage = true,
@@ -239,6 +252,7 @@ function getFormEvents () {
 				containerDiv.innerHTML = personData.render;
 				setNewNoteEvent();
 				setNoteMouseoverEvents();
+				deleteEntryEvent();
 			});
 		}
 	};
@@ -248,7 +262,7 @@ function getFormEvents () {
  */
 function setNewNoteEvent() {
 	const newNoteButton = document.getElementById("new-note-button");
-		containerDiv = document.getElementsByClassName('container')[0];
+		containerDiv = getContainerDiv();
 
 	newNoteButton.onclick = () => {
 		const mongoId = containerDiv.getAttribute('id'),
@@ -295,13 +309,51 @@ function setNewNoteEvent() {
 	};
 }
 
+function deleteEntryEvent() {
+	const deleteEntryButton = document.getElementById('delete-entry-button'),
+		containerDiv = getContainerDiv();
+	deleteEntryButton.onclick = () => {
+		const confirmEntryModal = document.createElement('div'),
+			mongoId = containerDiv.getAttribute('id'),
+			confirmModalRequest = formatServerData('deleteEntryConfirmModalRequest', true);
+		postAjax('src/server/form-handler.php', confirmModalRequest, response => {
+			const confirmEntryDeleteModal = parseResponse(response);
+			confirmEntryModal.classList.add('modal-bkgd');
+			confirmEntryModal.innerHTML = confirmEntryDeleteModal;
+			document.body.appendChild(confirmEntryModal);
+			setTimeout(() => {
+				const closeModal = document.getElementById('close-note-modal'),
+					confirmDelete = document.getElementById('confirm-delete-button');
+				// closes modal if close button is clicked.
+				closeModal.onclick = () => {
+					confirmEntryModal.remove();	
+				};
+				// closes modal if outside of the text entry is clicked.
+				confirmEntryModal.onclick = event => {
+					event.target == confirmEntryModal ? confirmEntryModal.remove() : '';
+				}
+
+				confirmDelete.onclick = () => {
+					const deleteEntry = formatServerData('deleteEntry', mongoId);
+					postAjax('src/server/form-handler.php', deleteEntry, response => {
+						const deleteMessage = parseResponse(response);
+						containerDiv.innerHTML = deleteMessage;
+					})
+					confirmEntryModal.remove();
+				};
+			},
+			50);
+		})
+	};
+}
+
 /****************************************************************************
 	CODE TO RUN ON PAGE LOAD
 ****************************************************************************/
 
 const load = () => {
 	const newEntryButton = document.getElementById("new-entry-button"),
-		containerDiv = document.getElementsByClassName("container")[0],
+		containerDiv = getContainerDiv(),
 		javascriptFiles = document.getElementById("javascript"),
 		searchField = document.getElementById("search"),
 		navBar = document.getElementById("nav-div"),
@@ -351,6 +403,7 @@ const load = () => {
 									containerDiv.innerHTML = personData.render;
 									setNewNoteEvent();
 									setNoteMouseoverEvents();
+									deleteEntryEvent();
 								});
 								// reset value of search field when a result is clicked.
 								searchField.value = '';

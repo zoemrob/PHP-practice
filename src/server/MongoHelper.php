@@ -234,4 +234,20 @@ Class MongoHelper {
 		);
 		return $result->isAcknowledged();
 	}
+
+	public static function deleteDBEntry($collection, $mongoId) {
+		$name = self::getDocName(self::queryById($collection, $mongoId));
+		$deletedDocument = $collection->deleteOne(
+			[
+				'_id' => new MongoDB\BSON\ObjectId($mongoId)
+			]
+		)->isAcknowledged();
+		
+		if ($deletedDocument == 1) {
+			$message = "You have successfully deleted " . $name . " from the database.";
+		} else {
+			$message = "Something went wrong. We are working on it.";
+		}
+		return $message;
+	}
 }

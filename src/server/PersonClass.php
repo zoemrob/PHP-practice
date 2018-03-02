@@ -112,8 +112,11 @@ Class BasePerson extends AbstractPerson {
 		return 
 		'<div class="demographics center" id="demographics">' .
 			$this->displayDemographics() .
-			"<div class='right'>
-				<button class='right pad10' type='button' id='new-note-button'>New Note</button>
+			"<div class='floatL'>
+				<button class='pad10' type='button' id='new-note-button'>New Note</button>
+			</div>
+			<div class='right'>
+				<button class='pad10' type='button' id='delete-entry-button'>Delete Entry</button>
 			</div>" .
 			"</div>" .
 		'</div>

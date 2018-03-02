@@ -96,6 +96,27 @@ Class HelperClass {
 		return $data;
 	}
 
+	public static function generateEntryConfirmModal() {
+		$data = 
+			"<div class='modal standard-bkgd-color standard-shadow montserrat-font margin0 center' id='confirm-delete-modal'>" .
+			"<span id='close-note-modal'>&times;</span>" .
+			"<span class='subheader bold'>Are you sure you want to delete this entry?</span>" .
+			"<br />" .
+			"<span class='inline-em pad10'>This cannot be undone.</span>" .
+			"<button id='confirm-delete-button' type='button' class='modal-submit-button'>Confirm Delete</button>" .	
+		"</div>";
+		return $data;
+	}
+
+	public static function generateEntryDeleteConfirmation($message) {
+		$data =
+		'<div class="wth25 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border center">
+			<p class="subheader margin0 bold">' . $message . '</p>
+			<span class="inline-em pad10">Click "Back to Home" or search for another entry.</span>
+		</div>';
+		return $data;
+	}
+
 	/* This method formats the data into JSON in the agreeable format and sends it.
 	 * @param $dataType str, lets client know how to process data.
 	 * @param $data, mixed, data to send to client
@@ -114,9 +135,13 @@ Class HelperClass {
 	public static function formatSearchResults($cursor){
 		$htmlStringSearchResults = array();
 		$data = MongoHelper::getNameAndMongoId($cursor);
-		foreach($data as $person) {
-			$htmlStringSearchResults[] =
-				"<td id='" . $person['mongoId'] . "'>" . $person['firstName'] . " " . $person['lastName'] . "</td>";
+		if (!empty($data) {
+			foreach($data as $person) {
+				$htmlStringSearchResults[] =
+					"<td id='" . $person['mongoId'] . "'>" . $person['firstName'] . " " . $person['lastName'] . "</td>";
+			}
+		} else {
+			$htmlStringSearchResults[] = 'No results';
 		}
 		return $htmlStringSearchResults;
 	}

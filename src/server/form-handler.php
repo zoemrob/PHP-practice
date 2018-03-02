@@ -12,6 +12,8 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
         array_walk($testdata, function(&$item){
 		    $item = strip_tags($item);
 		});
+    } else {
+    	$data = strip_tags($data);
     }
 
 	switch ($clientData['dataType']) {
@@ -31,7 +33,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			$note = $data['note'];
 			$person = new BasePerson($mongoId);
 			$success = $person->setNoteFromUI($note);
-						// if the note was successfully added, send the new person note data.
+			// if the note was successfully added, send the new person note data.
 			if ($success == 1) {
 				$readyToSend = HelperClass::formatClientData('newNoteSet', $person->displayNotes());
 				echo json_encode($readyToSend);

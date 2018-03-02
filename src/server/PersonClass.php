@@ -10,8 +10,8 @@ Class BasePerson extends AbstractPerson {
 	protected $mongoId;
 	protected $notes = [];
 
-   /*  __construct method queries by mongoId, returns cursor, sets properties.
-	*
+   /**
+	*  __construct method queries by mongoId, returns cursor, sets properties.
 	* @param String: MongoId
 	*/
 	public function __construct($mongoId) {
@@ -32,30 +32,32 @@ Class BasePerson extends AbstractPerson {
 		$this->personDocument = MongoHelper::queryById($this->getCollection(), $this->getMongoId());		
 	}
 
-	/* Method sets mongoId for person instance.
+	/**
+	 * Method sets mongoId for person instance.
 	 * @param String: MongoId
 	 */
 	public function setMongoId($mongoId) {
 		$this->mongoId = $mongoId;
 	}
 
-	/** Method returns ObjectId 
+	/**
+	 * Method returns ObjectId 
 	 * @return String: person objectId
 	 */
 	public function getMongoId() {
 		return $this->mongoId;
 	}
 
-	/* Method returns the BSON DB document from the object instance.
-	 * 
+	/**
+	 *  Method returns the BSON DB document from the object instance.
 	 * @return obj: Mongo Cursor
 	 */
 	public function getPersonDocument() {
 		return $this->personDocument;
 	}
 
-	/** Method takes text from post request and inserts into DB.
-	 *
+	/**
+	 * Method takes text from post request and inserts into DB.
 	 * @param String: note text from $_POST
 	 *
 	 * @return Int: confirmation of updateOne method.
@@ -66,7 +68,8 @@ Class BasePerson extends AbstractPerson {
 		return $confirmation;
 	}
 
-	/** Gets notes
+	/**
+	 * Gets notes
 	 * @return Array: formatted list of notes from DB.
 	 */
 	public function getNotes() {
@@ -101,8 +104,8 @@ Class BasePerson extends AbstractPerson {
 		$this->notes = MongoHelper::getDocNotes($this->personDocument);
 	}
 
-	/** Method renders person instance to the DOM.
-	 *
+	/**
+	 * Method renders person instance to the DOM.
 	 * @return String: formatted HTML.
 	 */
 	public function render() {
@@ -120,8 +123,9 @@ Class BasePerson extends AbstractPerson {
 		'</div>';
 	}
 
-	/* echos/returns demographic information to UI/console
-	 * will have to call this function on page load or something like that, or I can adjust this to render if $loaded = true
+	/**
+	 * echos/returns demographic information to UI/console
+	 * @return String: formatted HTML
 	 */
 	public function displayDemographics() {
 		return "<div class='wth25 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border left'>" . 
@@ -130,9 +134,10 @@ Class BasePerson extends AbstractPerson {
 			"<p class='subheader margin0'>Sex: " . $this->getSex() . "</p>\n";
 	}
 
-   /** Method echos html elements on the initial load of the page.
-    *  Uses $this->notes indexes to create unique ids and classes for every html element,
-    *
+   /**
+    * Method echos html elements on the initial load of the page.
+    * Uses $this->notes indexes to create unique ids and classes for every html element,
+    * @return String: formatted HTML
     */
 	public function displayNotes() {
 		$formattedNotes = "";
@@ -151,8 +156,8 @@ Class BasePerson extends AbstractPerson {
 		return $formattedNotes;
 	}
 
-	/** Method delete notes from the database.
-	 *
+	/**
+	 * Method delete notes from the database.
 	 * @param $notesToDelete, array.
 	 * @param $deleteAll, optional bool to delete all notes.
 	 *
@@ -186,8 +191,8 @@ Class BasePerson extends AbstractPerson {
         }
     }
 
-    /** Creates the modal for a new note entry.
-     *
+    /**
+     * Creates the modal for a new note entry.
      * @return String: formatted HTML.
      */
 	public function createNewNoteForm() {
@@ -202,8 +207,8 @@ Class BasePerson extends AbstractPerson {
 		"</div>";
 	}
 
-	/** Creates delete note modal confirmation.
-	 *
+	/** 
+	 * Creates delete note modal confirmation.
 	 * @return String: formatted HTML.
 	 */
 	public function createNoteDeleteConfirm() {

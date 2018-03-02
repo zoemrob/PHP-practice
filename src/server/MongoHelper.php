@@ -235,30 +235,3 @@ Class MongoHelper {
 		return $result->isAcknowledged();
 	}
 }
-
-/*	public static function returnNoteInfo($notes, $person = null) {
-		if ($person) {
-			foreach($notes as $note) {
-				$person->notes[] = ['date' => $note['date'], 'note' => $note['note']];
-			}
-		} else {
-			$notesArray = array();
-			foreach($notes as $note) {
-				$notesArray[] = ['date' => $note['date'], 'note' => $note['note']];
-			}
-			return $notesArray;		
-		}
-	}
-*/
-	/*// CURTIS METHODS
-	public static function getNotes($collection, $match) {
-	    return $collection->findOne($match, ['notes.date' => 1, 'notes.note' => 1])['notes'] ?? [];
-	}
-
-	public static function getNotesById($collection, $id) {
-	    return self::getNotes($collection, ['_id' => $id]);
-	}
-
-	public static function getNotesByName($collection, $name) {
-	    return self::getNotes($collection, ['firstName' => new MongoDB\BSON\Regex('^' . $name, 'i')]);
-	}*/

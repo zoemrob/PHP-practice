@@ -69,8 +69,8 @@ Class HelperClass {
 					</div>
 					<div class="pad10">
 						<button type="click" id="submit-button">SUBMIT</button>
-					</div>' .
-			'</div>';
+					</div>
+			</div>';
 		return $data;
 	}
 

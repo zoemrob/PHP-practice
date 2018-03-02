@@ -90,6 +90,22 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			$readyToSend = HelperClass::generateEntryDeleteConfirmation($deleteMessage);
 			echo json_encode(HelperClass::formatClientData('deletedEntry', $readyToSend));
 			break;
+		case 'editRequestForm':
+			$mongoId = $data;
+			$person = new BasePerson($mongoId);
+			$form = $person->updateDemographicsForm();
+			$readyToSend = HelperClass::formatClientData('editEntryForm', $form);
+			echo json_encode($readyToSend);
+			break;
+		case 'updatedData':
+			$elementsToUpdate = array();
+			foreach($data as $key => $value) {
+				if (!empty($key) && isset($value)) {
+					$elementsToUpdate[] = $value;
+				}
+			}
+			echo json_encode($elementsToUpdate);
+			break;
 	}	
 
 } else {

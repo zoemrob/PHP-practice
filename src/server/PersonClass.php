@@ -132,6 +132,7 @@ Class BasePerson extends AbstractPerson {
 	 */
 	public function displayDemographics() {
 		return "<div class='wth25 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border left'>" . 
+			"<span id='js-edit-button' class='edit-button'>edit</span>" .
 			"<p class='id-holder subheader margin0' id='" . $this->getMongoId() . "'>Name: " . $this->getName() . "</p>\n" .
 			"<p class='subheader margin0'>Age: " . $this->getAge() . "</p>\n" .
 			"<p class='subheader margin0'>Sex: " . $this->getSex() . "</p>\n";
@@ -222,6 +223,37 @@ Class BasePerson extends AbstractPerson {
 			"<br />" .
 			"<button id='confirm-delete-button' type='button' class='modal-submit-button'>Confirm Delete</button>" .	
 		"</div>";
+	}
+
+	public function updateDemographicsForm() {
+		$form = '<div class="wth25 standard-bkgd-color standard-shadow top-corner-radius bottom-corner-radius margin0 pad10 montserrat-font default-border">' .
+					'<p class="subheader margin0 bold inline-em">Update details for ' . $this->getName() . '...</p>
+					<div class="pad10">
+						<div class="pad10">
+							<label>Update First Name:</label>
+							<input class="edit-input" id="first-name" name="first-name" type="text" placeholder="Enter first name">
+						</div>
+						<div class="pad10">
+							<label>Update Last Name:</label>
+							<input class="edit-input" id="last-name" name="last-name" type="text" placeholder="Enter last name">
+						</div>
+						<div class="pad10">
+							<label>Update Age:</label>
+							<input class="edit-input" id="age" name="age" type="number" placeholder="Age">
+						</div>
+						<div class="pad10">
+							<label> Update Gender:</label>
+							<input class="edit-input" type="radio" class="gender-input" name="gender-input" id="male" value="M">
+							<label for="male">Male</label>
+							<input class="edit-input" type="radio" class="gender-input" name="gender-input" id="female" value="F">
+							<label for="female">Female</label>
+						</div>
+					</div>
+					<div class="pad10">
+						<button type="click" id="submit-button">SUBMIT</button>
+					</div>
+			</div>';
+		return $form;
 	}
 
 }

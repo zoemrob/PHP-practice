@@ -57,6 +57,8 @@ function parseResponse(response) {
 			return formattedResponse.data;
 		case 'deletedEntry':
 			return formattedResponse.data;
+		case 'editEntryForm':
+			return formattedResponse.data;
 	}
 }
 
@@ -253,6 +255,7 @@ function getFormEvents () {
 				setNewNoteEvent();
 				setNoteMouseoverEvents();
 				deleteEntryEvent();
+				editEntryDemographicEvent();
 			});
 		}
 	};
@@ -347,6 +350,46 @@ function deleteEntryEvent() {
 	};
 }
 
+function editEntryDemographicEvent() {
+	const editButton = document.getElementById('js-edit-button'),
+		containerDiv = getContainerDiv(),
+		mongoId = containerDiv.getAttribute('id');
+		editButton.onclick = () => {
+		const editRequestForm = formatServerData('editRequestForm', mongoId);
+		postAjax('src/server/form-handler.php', editRequestForm, response => {
+			const editEntryForm = parseResponse(response);
+			console.log(editEntryForm);
+			containerDiv.innerHTML = editEntryForm;
+			// sets delay for elements to be fetched.
+			setTimeout(() => {
+				const form = document.getElementById('submit-button');
+				form.onclick = () => {
+					const fields = document.querySelectorAll('.edit-input'),
+						fetchedFields = {};
+					fields.forEach(field => {
+						// sets the key for fetchedFields to the id of the field.
+						const key = field.getAttribute('id');
+						// assigns gender based on which radio option is checked.
+						if (key == 'male' || key == 'female') {
+							if (field.checked) {
+								fetchedFields['gender'] = field.value;
+							}
+						} else {
+							fetchedFields[key] = field.value;
+						}
+					});
+					console.log(fetchedFields);
+					const updatedData = formatServerData('updatedData', fetchedFields);
+					postAjax('src/server/form-handler.php', updatedData, response => {
+						console.log(response);
+					})
+				}
+			},
+			50);
+		})
+	}
+}
+
 /****************************************************************************
 	CODE TO RUN ON PAGE LOAD
 ****************************************************************************/
@@ -404,6 +447,7 @@ const load = () => {
 									setNewNoteEvent();
 									setNoteMouseoverEvents();
 									deleteEntryEvent();
+									editEntryDemographicEvent();
 								});
 								// reset value of search field when a result is clicked.
 								searchField.value = '';

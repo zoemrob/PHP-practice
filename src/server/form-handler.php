@@ -99,11 +99,12 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			break;
 		case 'updatedData':
 			$elementsToUpdate = array();
-			foreach($data as $key => $value) {
+			foreach($data['fields'] as $key => $value) {
 				if (!empty($value) && isset($value)) {
 					$elementsToUpdate[$key] = $value;
 				}
 			}
+			$mongoId = $data['mongoId'];
 			// NEED TO GET THE MONGO ID FROM THE CONTAINER DIV THEN PULL UP THE NEW INSTANCE OF THE PERSON WITH UPDATED INFO.
 			$confirmation = MongoHelper::updateEntryFields(MongoHelper::createDBInstance(), $mongoId, $elementsToUpdate);
 			echo json_encode($elementsToUpdate);

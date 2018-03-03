@@ -379,7 +379,7 @@ function editEntryDemographicEvent() {
 						}
 					});
 					console.log(fetchedFields);
-					const updatedData = formatServerData('updatedData', fetchedFields);
+					const updatedData = formatServerData('updatedData', {'mongoId': mongoId, 'fields':fetchedFields});
 					postAjax('src/server/form-handler.php', updatedData, response => {
 						console.log(response);
 					})

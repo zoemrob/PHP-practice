@@ -259,7 +259,7 @@ Class MongoHelper {
 		$fields = self::convertToMongoFields($fields);
 		$result = $collection->updateOne(
 			[
-				'_id': new MongoDB\BSON\ObjectId($mongoId)
+				'_id' => new MongoDB\BSON\ObjectId($mongoId)
 			],
 			[
 				'$set' => $fields

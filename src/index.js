@@ -358,7 +358,6 @@ function editEntryDemographicEvent() {
 		const editRequestForm = formatServerData('editRequestForm', mongoId);
 		postAjax('src/server/form-handler.php', editRequestForm, response => {
 			const editEntryForm = parseResponse(response);
-			console.log(editEntryForm);
 			containerDiv.innerHTML = editEntryForm;
 			// sets delay for elements to be fetched.
 			setTimeout(() => {
@@ -372,16 +371,30 @@ function editEntryDemographicEvent() {
 						// assigns gender based on which radio option is checked.
 						if (key == 'male' || key == 'female') {
 							if (field.checked) {
-								fetchedFields['gender'] = field.value;
+								fetchedFields['sex'] = field.value;
 							}
 						} else {
 							fetchedFields[key] = field.value;
 						}
 					});
+					fetchedFields['mongoId'] = mongoId;
 					console.log(fetchedFields);
-					const updatedData = formatServerData('updatedData', {'mongoId': mongoId, 'fields':fetchedFields});
+					const updatedData = formatServerData('updatedData', fetchedFields);
+					console.log(updatedData);
 					postAjax('src/server/form-handler.php', updatedData, response => {
 						console.log(response);
+						const updatedEntry = parseResponse(response);
+						if (updatedEntry != '' && updatedEntry != undefined && updatedEntry != null) {
+							if (updatedEntry == 'You didn\'t change any of the fields!') {
+								window.alert(updatedEntry);
+							} else {
+								containerDiv.innerHTML = updatedEntry;
+								setNewNoteEvent();
+								setNoteMouseoverEvents();
+								deleteEntryEvent();
+								editEntryDemographicEvent();
+							}
+						}
 					})
 				}
 			},

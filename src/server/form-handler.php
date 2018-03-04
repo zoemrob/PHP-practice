@@ -9,7 +9,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 	$data = $clientData['data'];
 
 	if (is_array($data)) {
-        array_walk($testdata, function(&$item){
+        array_walk($data, function(&$item){
 		    $item = strip_tags($item);
 		});
     } else {
@@ -38,7 +38,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 				$readyToSend = HelperClass::formatClientData('newNoteSet', $person->displayNotes());
 				echo json_encode($readyToSend);
 			} else {
-				$readyToSend = HelperClass::formatClientData('error', 'Something went wrong. Your note was not added successfully.');
+				$readyToSend = HelperClass::sendError('Something went wrong. Your note was not added successfully.');
 				echo json_encode($readyToSend);
 			}
 			break;
@@ -59,7 +59,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 		case 'newEntryRequest':
 			echo $data ? 
 			json_encode(HelperClass::formatClientData('newEntryForm', HelperClass::generateNewEntryForm())) : 
-			json_encode(HelperClass::formatClientData('error', 'Something went wrong. Unable to request new entry.'));
+			json_encode(HelperClass::sendError('Something went wrong. Unable to request new entry.'));
 			break;
 		case 'deleteNote':
 			$mongoId = $data['mongoId'];
@@ -77,12 +77,12 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 		case 'homepage':
 			echo $data ?
 			json_encode(HelperClass::formatClientData('homepage', HelperClass::generateHomepage())) :
-			json_encode(HelperClass::formatClientData('error', 'Something went wrong. Unable to go to homepage.'));
+			json_encode(HelperClass::sendError('Something went wrong. Unable to go to homepage.'));
 			break;
 		case 'deleteEntryConfirmModalRequest':
 			echo $data ?
 			json_encode(HelperClass::formatClientData('deleteEntryConfirmModal', HelperClass::generateEntryConfirmModal())) :
-			json_encode(HelperClass::formatClientData('error', 'Something went wrong.'));
+			json_encode(HelperClass::sendError('Something went wrong.'));
 			break;
 		case 'deleteEntry':
 			$mongoId = $data;
@@ -99,19 +99,28 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			break;
 		case 'updatedData':
 			$elementsToUpdate = array();
-			foreach($data['fields'] as $key => $value) {
+			foreach($data as $key => $value) {
 				if (!empty($value) && isset($value)) {
+					if ($key == 'mongoId') {
+						continue;
+					}
 					$elementsToUpdate[$key] = $value;
 				}
 			}
+//			echo json_encode($elementsToUpdate);
 			$mongoId = $data['mongoId'];
-			// NEED TO GET THE MONGO ID FROM THE CONTAINER DIV THEN PULL UP THE NEW INSTANCE OF THE PERSON WITH UPDATED INFO.
 			$confirmation = MongoHelper::updateEntryFields(MongoHelper::createDBInstance(), $mongoId, $elementsToUpdate);
-			echo json_encode($elementsToUpdate);
+			if ($confirmation == 1) {
+				$person = new BasePerson($mongoId);
+				$readyToSend = HelperClass::formatClientData('person', $person->render());
+				echo json_encode($readyToSend);
+			} else {
+				echo json_encode(HelperClass::sendError('You didn\'t change any of the fields!'));
+			}
 			break;
 	}	
 
 } else {
-	echo json_encode(HelperClass::formatClientData('error', 'Server couldn\'t process data.')); // will create a list of constants on the server side, and communicate a constant which will be received on the client.
+	echo json_encode(HelperClass::sendError('Server couldn\'t process data.')); // will create a list of constants on the server side, and communicate a constant which will be received on the client.
 	// 1 = 'no value given'
 }

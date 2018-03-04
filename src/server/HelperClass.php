@@ -145,4 +145,8 @@ Class HelperClass {
 		}
 		return $htmlStringSearchResults;
 	}
+
+	public static function sendError($errorMessage) {
+		return self::formatClientData('error', $errorMessage);
+	}
 }

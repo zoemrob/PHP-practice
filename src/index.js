@@ -18,6 +18,12 @@ function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+// for promises
+function insertHTML(node, content) {
+	node.innerHTML = content;
+	return true;
+}
+
 /** Delays a function execution by a certain amount of time.
  * @param {function}: callback function to be executed.
  * @param {int}: amount of time to delay in milliseconds.
@@ -34,6 +40,7 @@ const delay = (function(){
  * @param {JSON str}: A JSON string of server data.
  */
 function parseResponse(response) {
+	console.log(response);
 	const formattedResponse = JSON.parse(response),
 		dataType = formattedResponse.dataType; // get dataType
 	switch (dataType) {
@@ -197,8 +204,9 @@ function deleteNoteFromDB(elements) {
 		noteIndex = idOfNoteToDelete.slice(14);
 		notes.push(noteIndex);
 	});
+	formattedNotes = notes.join(','); // join into string with comma delimiter
 	const notesAndId = {
-		'noteIndexes': notes,
+		'noteIndexes': formattedNotes,
 		'mongoId' : personId
 	};
 	const data = formatServerData('deleteNote', notesAndId);
@@ -299,6 +307,7 @@ function setNewNoteEvent() {
 					const data = formatServerData('newNote', {'mongoId': mongoId, 'note': entry});
 					postAjax('src/server/form-handler.php', data, response => {
 						const newInfo = parseResponse(response);
+						console.log(response);
 						if (newInfo) {
 							notes.innerHTML = newInfo;
 							setNoteMouseoverEvents();

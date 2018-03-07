@@ -33,6 +33,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			$note = $data['note'];
 			$person = new BasePerson($mongoId);
 			$success = $person->setNoteFromUI($note);
+			// echo json_encode(HelperClass::sendError($success));
 			// if the note was successfully added, send the new person note data.
 			if ($success == 1) {
 				$readyToSend = HelperClass::formatClientData('newNoteSet', $person->displayNotes());
@@ -64,6 +65,7 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 		case 'deleteNote':
 			$mongoId = $data['mongoId'];
 			$noteIndexes = $data['noteIndexes'];
+			$noteIndexes = explode(',', $noteIndexes);
 			$person = new BasePerson($mongoId);
 			$response = $person->deleteNotes($noteIndexes);
 			echo json_encode($response);

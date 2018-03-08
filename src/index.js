@@ -114,8 +114,6 @@ function createDeleteButton () {
 		document.body.append(confirmModal);
 		postAjax('src/server/form-handler.php', confirmModalRequest).then(response => {
 			confirmModal.innerHTML = parseResponse(response);
-		});
-		setTimeout(() => {
 			const closeModal = document.getElementById('close-note-modal'),
 				confirmDelete = document.getElementById('confirm-delete-button');
 			// closes modal if close button is clicked.
@@ -132,8 +130,7 @@ function createDeleteButton () {
 				deleteNoteFromDB([targetNoteToDelete]);				
 				confirmModal.remove();
 			};
-		},
-		50);
+		});
 	};
 	buttonDiv.classList.add(
 		'bottom-corner-radius',
@@ -195,15 +192,19 @@ function deleteNoteFromUI (elements) {
 	}
 }
 
-// 14 char
+/**
+ * Deletes notes from database for Entry
+ * @param {array}: Array of indexes
+ *
+ */
 function deleteNoteFromDB(elements) {
 	const containerDiv = getContainerDiv();
 		personId = containerDiv.getAttribute('id'),
 		notes = [];
 	elements.forEach(noteToDelete => {
-	const targetNoteToDelete = noteToDelete.children[0],
-		idOfNoteToDelete = targetNoteToDelete.getAttribute('id'),
-		noteIndex = idOfNoteToDelete.slice(14);
+		const targetNoteToDelete = noteToDelete.children[0],
+			idOfNoteToDelete = targetNoteToDelete.getAttribute('id'),
+			noteIndex = idOfNoteToDelete.slice(14); // to get the index
 		notes.push(noteIndex);
 	});
 	formattedNotes = notes.join(','); // join into string with comma delimiter
@@ -287,7 +288,6 @@ function setNewNoteEvent() {
 		postAjax('src/server/form-handler.php', newNoteRequest).then(response => {
 			noteModal.innerHTML = parseResponse(response);
 		// Modal events, set a 50 millisecond timeout to have time to fetch the elements
-		//setTimeout(() => {
 			const closeModal = document.getElementById('close-note-modal'),
 				submitNote = document.getElementById('submit-new-note');
 			// closes modal if close button is clicked.
@@ -308,7 +308,6 @@ function setNewNoteEvent() {
 					const data = formatServerData('newNote', {'mongoId': mongoId, 'note': entry});
 					postAjax('src/server/form-handler.php', data).then(response => {
 						const newInfo = parseResponse(response);
-						//console.log(response);
 						if (newInfo) {
 							let notes = document.getElementById('notes');
 							notes.innerHTML = newInfo;
@@ -319,8 +318,6 @@ function setNewNoteEvent() {
 				noteModal.remove();
 			};
 		});
-		//},
-		//50);	
 	};
 }
 
@@ -336,7 +333,6 @@ function deleteEntryEvent() {
 			confirmEntryModal.classList.add('modal-bkgd');
 			confirmEntryModal.innerHTML = confirmEntryDeleteModal;
 			document.body.appendChild(confirmEntryModal);
-			//setTimeout(() => {
 			const closeModal = document.getElementById('close-note-modal'),
 				confirmDelete = document.getElementById('confirm-delete-button');
 			// closes modal if close button is clicked.
@@ -356,8 +352,6 @@ function deleteEntryEvent() {
 				});
 				confirmEntryModal.remove();
 			};
-			//},
-			//50);
 		})
 	};
 }
@@ -372,7 +366,6 @@ function editEntryDemographicEvent() {
 			const editEntryForm = parseResponse(response);
 			containerDiv.innerHTML = editEntryForm;
 			// sets delay for elements to be fetched.
-			//setTimeout(() => {
 			const form = document.getElementById('submit-button');
 			form.onclick = () => {
 				const fields = document.querySelectorAll('.edit-input'),
@@ -409,8 +402,6 @@ function editEntryDemographicEvent() {
 					}
 				});
 			}
-			//},
-			//50);
 		})
 	}
 }
@@ -446,75 +437,72 @@ const load = () => {
 	}
 
 	// *** Search Bar Function ***
-	//setTimeout(() => {
-		searchField.onkeyup = () => {
-			if (searchField.value !== '') {
-				delay(() => {
-					const nameData = formatServerData('name', searchField.value);
-					postAjax('src/server/form-handler.php', nameData).then(response => {
-						const results = parseResponse(response),
-							searchResultLocation = document.getElementById('js-append-searches');
-						results.forEach(result => {
-							const tr = document.createElement('tr');
-							let searchResults = null;
-							tr.classList.add('search-result');
-							tr.innerHTML = result;
-							insertAfter(tr, searchResultLocation);
-							searchResults = document.getElementsByClassName('search-result');
-							tr.onclick = () => {
-								const child = tr.firstChild,
-									// where the ObjectId value is stored.
-									mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
-								postAjax('src/server/form-handler.php', mongoIdData).then(response => {
-									const personData = parseResponse(response);
-									containerDiv.setAttribute('id', personData.mongoId);
-									containerDiv.innerHTML = personData.render;
-									setNewNoteEvent();
-									setNoteMouseoverEvents();
-									deleteEntryEvent();
-									editEntryDemographicEvent();
-								});
-								// reset value of search field when a result is clicked.
-								searchField.value = '';
-								for (let i = searchResults.length - 1; i >= 0; i--) {
-									searchResults[0].remove();
-								}
-							};
-						});
-
-						navBar.onmouseleave = () => {
-							const visibleSearchResults = document.getElementsByClassName('search-result');
-							for (let i = 0, l = visibleSearchResults.length; i < l; i++) {
-								visibleSearchResults[i].classList.add('hide');
-							}	
-						}
-
-						navBar.onmouseenter = () => {
-							const hiddenSearchResults = document.getElementsByClassName('search-result');
-							for (let i = 0, l = hiddenSearchResults.length; i < l; i++) {
-								hiddenSearchResults[i].classList.remove('hide');
-							}	
-						}
+	searchField.onkeyup = () => {
+		if (searchField.value !== '') {
+			delay(() => {
+				const nameData = formatServerData('name', searchField.value);
+				postAjax('src/server/form-handler.php', nameData).then(response => {
+					const results = parseResponse(response),
+						searchResultLocation = document.getElementById('js-append-searches');
+					results.forEach(result => {
+						const tr = document.createElement('tr');
+						let searchResults = null;
+						tr.classList.add('search-result');
+						tr.innerHTML = result;
+						insertAfter(tr, searchResultLocation);
+						searchResults = document.getElementsByClassName('search-result');
+						tr.onclick = () => {
+							const child = tr.firstChild,
+								// where the ObjectId value is stored.
+								mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
+							postAjax('src/server/form-handler.php', mongoIdData).then(response => {
+								const personData = parseResponse(response);
+								containerDiv.setAttribute('id', personData.mongoId);
+								containerDiv.innerHTML = personData.render;
+								setNewNoteEvent();
+								setNoteMouseoverEvents();
+								deleteEntryEvent();
+								editEntryDemographicEvent();
+							});
+							// reset value of search field when a result is clicked.
+							searchField.value = '';
+							for (let i = searchResults.length - 1; i >= 0; i--) {
+								searchResults[0].remove();
+							}
+						};
 					});
-				}, 200); // sets 200ms after stopped typing to query.
 
-			} else {
-				const previousSearchResults = document.getElementsByClassName('search-result');
-				for (let i = 0, l = previousSearchResults.length; i < l; i++) {
-						previousSearchResults[0].remove();
+					navBar.onmouseleave = () => {
+						const visibleSearchResults = document.getElementsByClassName('search-result');
+						for (let i = 0, l = visibleSearchResults.length; i < l; i++) {
+							visibleSearchResults[i].classList.add('hide');
+						}	
 					}
-			}
-		};
-		searchField.onkeydown = () => {
+
+					navBar.onmouseenter = () => {
+						const hiddenSearchResults = document.getElementsByClassName('search-result');
+						for (let i = 0, l = hiddenSearchResults.length; i < l; i++) {
+							hiddenSearchResults[i].classList.remove('hide');
+						}	
+					}
+				});
+			}, 200); // sets 200ms after stopped typing to query.
+
+		} else {
 			const previousSearchResults = document.getElementsByClassName('search-result');
-			if (previousSearchResults) {			
-				for (let i = previousSearchResults.length - 1; i >= 0; i--) {
-				previousSearchResults[0].remove();
+			for (let i = 0, l = previousSearchResults.length; i < l; i++) {
+					previousSearchResults[0].remove();
 				}
+		}
+	};
+	searchField.onkeydown = () => {
+		const previousSearchResults = document.getElementsByClassName('search-result');
+		if (previousSearchResults) {			
+			for (let i = previousSearchResults.length - 1; i >= 0; i--) {
+			previousSearchResults[0].remove();
 			}
 		}
-	//}, 
-	//50);
+	}
 }
 
 window.onload = load;

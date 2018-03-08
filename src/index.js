@@ -74,13 +74,15 @@ function parseResponse(response) {
  * @param {JSON str}: Pre-formatted JSON string containing client data. 
  * @param {function}: callback function to be executed on server response.
  */
-function postAjax(url, data, onSuccess) {
-	const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-	xhr.open('POST', url, true);
-	xhr.send(data);
-	xhr.onload = () => {
-		onSuccess(xhr.responseText); // executes the callback function on the server response.
-	};
+function postAjax(url, data) {
+     return new Promise(function (resolve, reject) {
+          const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+          xhr.open('POST', url, true);
+          xhr.send(data);
+          xhr.onload = () => {
+               resolve(xhr.responseText)
+          };
+     });
 }
 
 /**
@@ -110,7 +112,7 @@ function createDeleteButton () {
 		const confirmModalRequest = formatServerData('confirmModalRequest', mongoId);
 		confirmModal.classList.add('modal-bkgd');
 		document.body.append(confirmModal);
-		postAjax('src/server/form-handler.php', confirmModalRequest, response => {
+		postAjax('src/server/form-handler.php', confirmModalRequest).then(response => {
 			confirmModal.innerHTML = parseResponse(response);
 		});
 		setTimeout(() => {
@@ -210,7 +212,7 @@ function deleteNoteFromDB(elements) {
 		'mongoId' : personId
 	};
 	const data = formatServerData('deleteNote', notesAndId);
-	postAjax('src/server/form-handler.php', data, response => {
+	postAjax('src/server/form-handler.php', data).then(response => {
 		window.alert(response);
 	});
 }
@@ -256,7 +258,7 @@ function getFormEvents () {
 				"sex" : sex,
 			};
 			const readyToSend = formatServerData('newEntryData', newEntryData);
-			postAjax('src/server/form-handler.php', readyToSend, response => {
+			postAjax('src/server/form-handler.php', readyToSend).then(response => {
 				const personData = parseResponse(response);
 				containerDiv.setAttribute('id', personData.mongoId);
 				containerDiv.innerHTML = personData.render;
@@ -282,11 +284,10 @@ function setNewNoteEvent() {
 
 		noteModal.classList.add('modal-bkgd');
 		document.body.appendChild(noteModal);	
-		postAjax('src/server/form-handler.php', newNoteRequest, response => {
+		postAjax('src/server/form-handler.php', newNoteRequest).then(response => {
 			noteModal.innerHTML = parseResponse(response);
-		});
 		// Modal events, set a 50 millisecond timeout to have time to fetch the elements
-		setTimeout(() => {
+		//setTimeout(() => {
 			const closeModal = document.getElementById('close-note-modal'),
 				submitNote = document.getElementById('submit-new-note');
 			// closes modal if close button is clicked.
@@ -305,19 +306,20 @@ function setNewNoteEvent() {
 					window.alert('You have to enter a note!');
 				} else {
 					const data = formatServerData('newNote', {'mongoId': mongoId, 'note': entry});
-					postAjax('src/server/form-handler.php', data, response => {
+					postAjax('src/server/form-handler.php', data).then(response => {
 						const newInfo = parseResponse(response);
-						console.log(response);
+						//console.log(response);
 						if (newInfo) {
 							notes.innerHTML = newInfo;
-							setNoteMouseoverEvents();
 						}
-					})
+					});
 				}
+				setNoteMouseoverEvents();
 				noteModal.remove();
 			};
-		},
-		50);	
+		});
+		//},
+		//50);	
 	};
 }
 
@@ -328,33 +330,33 @@ function deleteEntryEvent() {
 		const confirmEntryModal = document.createElement('div'),
 			mongoId = containerDiv.getAttribute('id'),
 			confirmModalRequest = formatServerData('deleteEntryConfirmModalRequest', true);
-		postAjax('src/server/form-handler.php', confirmModalRequest, response => {
+		postAjax('src/server/form-handler.php', confirmModalRequest).then(response => {
 			const confirmEntryDeleteModal = parseResponse(response);
 			confirmEntryModal.classList.add('modal-bkgd');
 			confirmEntryModal.innerHTML = confirmEntryDeleteModal;
 			document.body.appendChild(confirmEntryModal);
-			setTimeout(() => {
-				const closeModal = document.getElementById('close-note-modal'),
-					confirmDelete = document.getElementById('confirm-delete-button');
-				// closes modal if close button is clicked.
-				closeModal.onclick = () => {
-					confirmEntryModal.remove();	
-				};
-				// closes modal if outside of the text entry is clicked.
-				confirmEntryModal.onclick = event => {
-					event.target == confirmEntryModal ? confirmEntryModal.remove() : '';
-				}
+			//setTimeout(() => {
+			const closeModal = document.getElementById('close-note-modal'),
+				confirmDelete = document.getElementById('confirm-delete-button');
+			// closes modal if close button is clicked.
+			closeModal.onclick = () => {
+				confirmEntryModal.remove();	
+			};
+			// closes modal if outside of the text entry is clicked.
+			confirmEntryModal.onclick = event => {
+				event.target == confirmEntryModal ? confirmEntryModal.remove() : '';
+			}
 
-				confirmDelete.onclick = () => {
-					const deleteEntry = formatServerData('deleteEntry', mongoId);
-					postAjax('src/server/form-handler.php', deleteEntry, response => {
-						const deleteMessage = parseResponse(response);
-						containerDiv.innerHTML = deleteMessage;
-					})
-					confirmEntryModal.remove();
-				};
-			},
-			50);
+			confirmDelete.onclick = () => {
+				const deleteEntry = formatServerData('deleteEntry', mongoId);
+				postAjax('src/server/form-handler.php', deleteEntry).then(response => {
+					const deleteMessage = parseResponse(response);
+					containerDiv.innerHTML = deleteMessage;
+				});
+				confirmEntryModal.remove();
+			};
+			//},
+			//50);
 		})
 	};
 }
@@ -365,49 +367,49 @@ function editEntryDemographicEvent() {
 		mongoId = containerDiv.getAttribute('id');
 		editButton.onclick = () => {
 		const editRequestForm = formatServerData('editRequestForm', mongoId);
-		postAjax('src/server/form-handler.php', editRequestForm, response => {
+		postAjax('src/server/form-handler.php', editRequestForm).then(response => {
 			const editEntryForm = parseResponse(response);
 			containerDiv.innerHTML = editEntryForm;
 			// sets delay for elements to be fetched.
-			setTimeout(() => {
-				const form = document.getElementById('submit-button');
-				form.onclick = () => {
-					const fields = document.querySelectorAll('.edit-input'),
-						fetchedFields = {};
-					fields.forEach(field => {
-						// sets the key for fetchedFields to the id of the field.
-						const key = field.getAttribute('id');
-						// assigns gender based on which radio option is checked.
-						if (key == 'male' || key == 'female') {
-							if (field.checked) {
-								fetchedFields['sex'] = field.value;
-							}
+			//setTimeout(() => {
+			const form = document.getElementById('submit-button');
+			form.onclick = () => {
+				const fields = document.querySelectorAll('.edit-input'),
+					fetchedFields = {};
+				fields.forEach(field => {
+					// sets the key for fetchedFields to the id of the field.
+					const key = field.getAttribute('id');
+					// assigns gender based on which radio option is checked.
+					if (key == 'male' || key == 'female') {
+						if (field.checked) {
+							fetchedFields['sex'] = field.value;
+						}
+					} else {
+						fetchedFields[key] = field.value;
+					}
+				});
+				fetchedFields['mongoId'] = mongoId;
+				console.log(fetchedFields);
+				const updatedData = formatServerData('updatedData', fetchedFields);
+				console.log(updatedData);
+				postAjax('src/server/form-handler.php', updatedData).then(response => {
+					console.log(response);
+					const updatedEntry = parseResponse(response);
+					if (updatedEntry != '' && updatedEntry != undefined && updatedEntry != null) {
+						if (updatedEntry == 'You didn\'t change any of the fields!') {
+							window.alert(updatedEntry);
 						} else {
-							fetchedFields[key] = field.value;
+							containerDiv.innerHTML = updatedEntry;
+							setNewNoteEvent();
+							setNoteMouseoverEvents();
+							deleteEntryEvent();
+							editEntryDemographicEvent();
 						}
-					});
-					fetchedFields['mongoId'] = mongoId;
-					console.log(fetchedFields);
-					const updatedData = formatServerData('updatedData', fetchedFields);
-					console.log(updatedData);
-					postAjax('src/server/form-handler.php', updatedData, response => {
-						console.log(response);
-						const updatedEntry = parseResponse(response);
-						if (updatedEntry != '' && updatedEntry != undefined && updatedEntry != null) {
-							if (updatedEntry == 'You didn\'t change any of the fields!') {
-								window.alert(updatedEntry);
-							} else {
-								containerDiv.innerHTML = updatedEntry;
-								setNewNoteEvent();
-								setNoteMouseoverEvents();
-								deleteEntryEvent();
-								editEntryDemographicEvent();
-							}
-						}
-					})
-				}
-			},
-			50);
+					}
+				});
+			}
+			//},
+			//50);
 		})
 	}
 }
@@ -427,7 +429,7 @@ const load = () => {
 	// Event Listener which when clicked appends the new entry form to the public.php page.
 	newEntryButton.onclick = () => {
 		const newEntryRequest = formatServerData('newEntryRequest', true);
-		postAjax('src/server/form-handler.php', newEntryRequest, response => {
+		postAjax('src/server/form-handler.php', newEntryRequest).then(response => {
 			const data = parseResponse(response);
 			containerDiv.innerHTML = data;
 			getFormEvents();
@@ -436,19 +438,19 @@ const load = () => {
 
 	homepageButton.onclick = () => {
 		const homepageRequest = formatServerData('homepage', true);
-		postAjax('src/server/form-handler.php', homepageRequest, response => {
+		postAjax('src/server/form-handler.php', homepageRequest).then(response => {
 			const data = parseResponse(response);
 			containerDiv.innerHTML = data;
-		})
+		});
 	}
 
 	// *** Search Bar Function ***
-	setTimeout(() => {
+	//setTimeout(() => {
 		searchField.onkeyup = () => {
 			if (searchField.value !== '') {
 				delay(() => {
 					const nameData = formatServerData('name', searchField.value);
-					postAjax('src/server/form-handler.php', nameData, response => {
+					postAjax('src/server/form-handler.php', nameData).then(response => {
 						const results = parseResponse(response),
 							searchResultLocation = document.getElementById('js-append-searches');
 						results.forEach(result => {
@@ -462,7 +464,7 @@ const load = () => {
 								const child = tr.firstChild,
 									// where the ObjectId value is stored.
 									mongoIdData = formatServerData('mongoId', child.getAttribute('id'));
-								postAjax('src/server/form-handler.php', mongoIdData, response => {
+								postAjax('src/server/form-handler.php', mongoIdData).then(response => {
 									const personData = parseResponse(response);
 									containerDiv.setAttribute('id', personData.mongoId);
 									containerDiv.innerHTML = personData.render;
@@ -510,8 +512,8 @@ const load = () => {
 				}
 			}
 		}
-	}, 
-	50);
+	//}, 
+	//50);
 }
 
 window.onload = load;

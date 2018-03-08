@@ -22,7 +22,7 @@ Client: JavaScript (Vanilla, ES6)
 
 All data transmitted between the Client and Server is via AJAX requests using a common JSON interchange:
 
-```{'dataType': (string) , 'data', (mixed)}```
+`{'dataType': (string) , 'data', (mixed)}`
 
 The form handler processes the dataType, and executes various methods based on the dataType received.
 The server then sends back the appropriate dataType, which is parsed by the client.
@@ -41,7 +41,8 @@ The server then sends back the appropriate dataType, which is parsed by the clie
 			'note': 'Some example text' (string)
 		}
 	]
-}```
+}
+```
 
 # ******* Class Structure ********
 
@@ -75,5 +76,6 @@ Example:
 ```.bottom-corner-radius {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-}```
+}
+```
 

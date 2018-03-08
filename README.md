@@ -74,7 +74,8 @@ Attempted to create more modular, clear to read classes for styling.
 One style feature = one class.
 Example:
 
-```.bottom-corner-radius {
+```
+.bottom-corner-radius {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 }

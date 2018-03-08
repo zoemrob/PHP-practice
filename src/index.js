@@ -18,12 +18,6 @@ function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
-// for promises
-function insertHTML(node, content) {
-	node.innerHTML = content;
-	return true;
-}
-
 /** Delays a function execution by a certain amount of time.
  * @param {function}: callback function to be executed.
  * @param {int}: amount of time to delay in milliseconds.
@@ -37,10 +31,10 @@ const delay = (function(){
 })();
 
 /** Allows server data to be pre-processed if necessary
+ * Obviously looks goofy because everything currently is just returned.
  * @param {JSON str}: A JSON string of server data.
  */
 function parseResponse(response) {
-	//console.log(response);
 	const formattedResponse = JSON.parse(response),
 		dataType = formattedResponse.dataType; // get dataType
 	switch (dataType) {

@@ -29,7 +29,8 @@ The server then sends back the appropriate dataType, which is parsed by the clie
 
 # ******** Database Document Structure *********
 
-```{
+```
+{
 	_id: ObjectId(''),
 	firstName: 'Zoe' (string),
 	lastName: 'Robertson' (string),

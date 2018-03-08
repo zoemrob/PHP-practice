@@ -224,8 +224,11 @@ function getFormEvents () {
 			lastName = document.getElementById('last-name').value,
 			age = document.getElementById('age').value;
 		try {
+			if (age > 110 || age < 1) {
+				throw "Please enter an age between 1-110";
+			}
 			if (firstName === '' || lastName === '' || age === '') {
-				throw "You must fill out all the fields."
+				throw "You must fill out all the fields.";
 			}
 		} catch (e) {
 			window.alert(e);
@@ -378,9 +381,16 @@ function editEntryDemographicEvent() {
 					}
 				});
 				// checks if all of the fields are blank
-				if (fetchedFields.sex == undefined && fetchedFields['first-name'] == '' && fetchedFields['last-name'] == '' && fetchedFields.age == '') {
+				try {
+					if (fetchedFields.sex == undefined && fetchedFields['first-name'] == '' && fetchedFields['last-name'] == '' && fetchedFields.age == '') {
+						throw 'You must enter at least one field!';
+					}
+					if (fetchedFields.age != '' && (fetchedFields.age > 110 || fetchedFields.age < 1)) {
+						throw "Please enter an age between 1-110";
+					}					
+				} catch (e) {
 					fieldCheck = false;
-					window.alert('You must enter at least one field!');
+					window.alert(e);
 				}
 				fetchedFields['mongoId'] = mongoId;
 				const updatedData = formatServerData('updatedData', fetchedFields);

@@ -155,7 +155,7 @@ function removeDeleteButton () {
 /** Function is called on new person load or note refresh, assigns event listeners.
  */
 function setNoteMouseoverEvents() {
-	const notes = document.getElementById("notes");
+	let notes = document.getElementById("notes");
 	for (let i = notes.children.length - 1; i >= 0; i-- ) {
 		const mousedOverNote = notes.children[i],
 			mousedOverNoteText = mousedOverNote.children[1].children[0],
@@ -310,11 +310,12 @@ function setNewNoteEvent() {
 						const newInfo = parseResponse(response);
 						//console.log(response);
 						if (newInfo) {
+							let notes = document.getElementById('notes');
 							notes.innerHTML = newInfo;
+							setNoteMouseoverEvents();
 						}
 					});
 				}
-				setNoteMouseoverEvents();
 				noteModal.remove();
 			};
 		});

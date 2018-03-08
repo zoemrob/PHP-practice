@@ -40,7 +40,7 @@ const delay = (function(){
  * @param {JSON str}: A JSON string of server data.
  */
 function parseResponse(response) {
-	console.log(response);
+	//console.log(response);
 	const formattedResponse = JSON.parse(response),
 		dataType = formattedResponse.dataType; // get dataType
 	switch (dataType) {
@@ -72,7 +72,7 @@ function parseResponse(response) {
 /** Sends an asynchronous post request to the server.
  * @param {str}: URL to send data to. 
  * @param {JSON str}: Pre-formatted JSON string containing client data. 
- * @param {function}: callback function to be executed on server response.
+ * @return Obj: Returns a promise to allow content to fully load.
  */
 function postAjax(url, data) {
      return new Promise(function (resolve, reject) {
@@ -368,6 +368,7 @@ function editEntryDemographicEvent() {
 			// sets delay for elements to be fetched.
 			const form = document.getElementById('submit-button');
 			form.onclick = () => {
+				let fieldCheck = true;
 				const fields = document.querySelectorAll('.edit-input'),
 					fetchedFields = {};
 				fields.forEach(field => {
@@ -382,25 +383,30 @@ function editEntryDemographicEvent() {
 						fetchedFields[key] = field.value;
 					}
 				});
+				// checks if all of the fields are blank
+				if (fetchedFields.sex == undefined && fetchedFields['first-name'] == '' && fetchedFields['last-name'] == '' && fetchedFields.age == '') {
+					fieldCheck = false;
+					window.alert('You must enter at least one field!');
+				}
 				fetchedFields['mongoId'] = mongoId;
-				console.log(fetchedFields);
 				const updatedData = formatServerData('updatedData', fetchedFields);
-				console.log(updatedData);
-				postAjax('src/server/form-handler.php', updatedData).then(response => {
-					console.log(response);
-					const updatedEntry = parseResponse(response);
-					if (updatedEntry != '' && updatedEntry != undefined && updatedEntry != null) {
-						if (updatedEntry == 'You didn\'t change any of the fields!') {
-							window.alert(updatedEntry);
-						} else {
-							containerDiv.innerHTML = updatedEntry;
-							setNewNoteEvent();
-							setNoteMouseoverEvents();
-							deleteEntryEvent();
-							editEntryDemographicEvent();
+				if (fieldCheck) {
+					postAjax('src/server/form-handler.php', updatedData).then(response => {
+						const updatedEntry = parseResponse(response);
+						if (updatedEntry != '' && updatedEntry != undefined && updatedEntry != null) {
+							if (updatedEntry == 'You entered the same values!') {
+								// alerts error if server returned error.
+								window.alert(updatedEntry);
+							} else {
+								containerDiv.innerHTML = updatedEntry;
+								setNewNoteEvent();
+								setNoteMouseoverEvents();
+								deleteEntryEvent();
+								editEntryDemographicEvent();
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 		})
 	}

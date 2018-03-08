@@ -1,7 +1,9 @@
 <?php
 require('HelperClass.php');
 require('MongoHelper.php');
-
+/*
+	Provides the scaffolding for BasePerson and NewEntry
+*/
 abstract Class AbstractPerson {
 	
 	protected $collection;

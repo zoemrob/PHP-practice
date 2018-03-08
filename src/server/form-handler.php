@@ -1,13 +1,15 @@
 <?php
 require('PersonClass.php');
 require('NewEntryClass.php');
-
+/*
+	
+*/
 $clientData = json_decode(file_get_contents('php://input'), true);
 
 if (isset($clientData['data']) && !empty($clientData['data'])) {
 
 	$data = $clientData['data'];
-
+	// sanitize html data
 	if (is_array($data)) {
         array_walk($data, function(&$item){
 		    $item = strip_tags($item);
@@ -33,8 +35,6 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 			$note = $data['note'];
 			$person = new BasePerson($mongoId);
 			$success = $person->setNoteFromUI($note);
-			// echo json_encode(HelperClass::sendError($success));
-			// if the note was successfully added, send the new person note data.
 			if ($success == 1) {
 				$readyToSend = HelperClass::formatClientData('newNoteSet', $person->displayNotes());
 				echo json_encode($readyToSend);
@@ -117,7 +117,8 @@ if (isset($clientData['data']) && !empty($clientData['data'])) {
 				$readyToSend = HelperClass::formatClientData('person', $person->render());
 				echo json_encode($readyToSend);
 			} else {
-				echo json_encode(HelperClass::sendError('You didn\'t change any of the fields!'));
+				// if the values entered match existing values, throw error
+				echo json_encode(HelperClass::sendError('You entered the same values!'));
 			}
 			break;
 	}	

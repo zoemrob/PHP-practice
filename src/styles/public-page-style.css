@@ -3,6 +3,10 @@ html {
 	overflow-y: scroll;
 } 
 
+body {
+	background-image: url('paper-background.png');
+}
+
 .montserrat-font {
 	font-family: 'Montserrat', sans-serif;
 }
